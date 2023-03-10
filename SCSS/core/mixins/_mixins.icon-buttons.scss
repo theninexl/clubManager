@@ -1,0 +1,71 @@
+@mixin icon-button {
+    border-radius:99px;
+    cursor:pointer;
+    display: inline-flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+@mixin icon-button-big {      
+    min-width: getSize($large);
+    height: getSize($huge);
+    padding:0 getSize($small);
+    @include icon-button;  
+    @extend .cm-u-text-black-mouse;
+
+    span {
+        font-size: getSize($bigger);
+    }
+}
+
+@mixin icon-button-small {
+    @include icon-button;  
+    width: getSize($large);
+    height: getSize($large);
+
+    span {
+        font-size: getSize($big);
+    }
+}
+
+@mixin icon-button-primary {
+    background-color:getColor(white);
+    box-shadow:0px 0px 0px 1px getColor(scarpaFlowLight) inset;
+
+    span {
+        color:getColor(scarpaFlow);
+    }
+}
+
+@mixin icon-button-secondary {
+    background-color:getColor(scarpaFlowLight);
+
+    span {
+        color:getColor(scarpaFlow);
+    }
+}
+
+@mixin icon-button-pressed {
+    background-color:getColor(sandyBrown);
+
+    span {
+        color:getColor(scarpaFlow);
+    }
+}
+
+@mixin icon-button-success {
+    background-color:getColor(success);
+
+    span {
+        color:getColor(scarpaFlow);
+    }
+}
+
+@mixin icon-button-error {
+    background-color:getColor(danger);
+
+    span {
+        color:getColor(scarpaFlow);
+    }
+}

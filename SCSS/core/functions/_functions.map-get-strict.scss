@@ -1,0 +1,21 @@
+// Map Get Strict
+//
+// Sass does not throw an error if a key does not exist in a map. This function adds the missing functionallity.
+// If the key does not exist it will throw an error, otherwise it will return the value from the map.
+//
+// function: map-get-strict($map, $key, $mapName) ;
+//
+// $map:        - name of the map that contains the key.
+// $key:        - name of key to lookup.
+// $mapName:    - Plain English version of the map name to improve logs.
+//
+// Style guide: Core.Functions.Map-Get-Strict
+
+@function map-get-strict($map, $key, $mapName) {
+    @if map-has-key($map, $key) {
+      @return map-get($map, $key);
+    }
+    @else {
+      @return _error("#{$key} does not exist in #{$mapName}");
+    }
+  }

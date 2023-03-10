@@ -1,0 +1,10 @@
+@mixin margins($marginTopUnits, $marginBottomUnits){
+    $mtPxValue: $marginTopUnits * $lineHeightDT;
+    $mtRemValue: calc($mtPxValue / 10);
+    $mbPxValue: $marginBottomUnits * $lineHeightDT;
+    $mbRemValue: calc($mbPxValue / 10);
+    margin-top: $mtPxValue * 1px; 
+    margin-top: $mtRemValue * 1rem; 
+    margin-bottom: $mbPxValue *1px; 
+    margin-bottom: $mbRemValue *1rem; 
+}

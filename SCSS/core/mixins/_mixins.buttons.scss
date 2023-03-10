@@ -1,0 +1,51 @@
+@mixin button {
+    border:0;
+    border-radius:99px;
+    cursor:pointer;
+}
+
+@mixin button-primary {
+    color:getColor(scarpaFlow);
+    background-color: getColor(sandyBrown);
+}
+
+@mixin button-secondary {
+    color:getColor(scarpaFlow);
+    background-color: getColor(straw);
+}
+
+@mixin button-transparent {
+    color:getColor(sandyBrown);
+    background-color: getColor(white);
+    box-shadow:0px 0px 0px 2px getColor(sandyBrown) inset;
+}
+
+@mixin button-ghost {
+    color:getColor(sandyBrown);
+    background:transparent;
+}
+
+@mixin button-inactive {
+    color:getColor(white);
+    background-color: getColor(scarpaFlowLight);
+}
+
+@mixin button-cat {
+    padding:getSize($medium) getSize($bigger);
+    @include button;
+    @extend .cm-u-text-cat;
+    @include cm-qs-bold;
+}
+
+@mixin button-cat-small {
+    padding: getSize($tiny) getSize($big);
+    @include button;
+    @extend .cm-u-text-cat;
+    @include cm-qs-bold;
+}
+
+@mixin button-mouse {
+    padding: getSize($tiny) getSize($big);
+    @include button;
+    @extend .cm-u-text-black-mouse;
+}

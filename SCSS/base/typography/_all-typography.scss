@@ -1,0 +1,53 @@
+// import google fonts
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+html {
+    font-size: 62.5%; /*Transform to base 10 for easier REM calculations*/ 
+    box-sizing: border-box;
+}
+
+body {
+    @include font-size($defFontSizeDT, $lineHeightDT);
+    @include cm-qs-normal;
+    color:getColor(scarpaFlow);
+}
+
+.cm-u-text-mouse {
+    @include font-size($mouseFontSizeDT, $lineHeightDT);
+}
+
+.cm-u-text-black-mouse {
+    @extend .cm-u-text-mouse;
+    @include cm-qs-bold;
+}
+
+.cm-u-text-cat {
+    @include font-size($defFontSizeDT, $lineHeightDT);
+}
+
+.cm-u-text-black-cat {
+    @extend .cm-u-text-cat;
+    @include cm-qs-bold;
+}
+
+.cm-u-text-dog {
+    @include font-size($fontSizeJumpDT1, $lineHeightDT);
+}
+
+.cm-u-text-wolf {
+    @include font-size($fontSizeJumpDT2, calc($lineHeightDT*2));
+    @include cm-qs-medium;
+}
+
+.cm-u-text-bear {
+    @include font-size($fontSizeJumpDT3, calc($lineHeightDT*2));
+}
+
+.cm-u-text-elephant {
+    @include font-size($fontSizeJumpDT4, calc($lineHeightDT*3));
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 1, 'opsz' 48;
+}

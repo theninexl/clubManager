@@ -1,0 +1,47 @@
+@mixin font-size($sizeValue, $lineHeight){
+	$remValue: calc($sizeValue / 10);
+	$pxValue: $sizeValue;
+	$linePxValue: $lineHeight;
+	$lineRemValue: calc($linePxValue / 10);
+	font-size: $pxValue * 1px; 
+	font-size: $remValue * 1rem;
+	line-height: $linePxValue * 1px; 
+	line-height: $lineRemValue * 1rem;  
+}
+
+@mixin font-styles {
+    font-stretch: normal;  
+    -webkit-font-smoothing: antialiased;  
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin font-weight-normal {
+    font-weight: $qs-regular; 
+}
+
+@mixin font-weight-medium {
+    font-weight: $qs-medium; 
+}
+
+@mixin font-weight-bold {
+    font-weight: $qs-bold;
+}
+
+
+@mixin cm-qs-normal {
+    font-family: $quicksand;
+    @include font-weight-normal;
+    @include font-styles;
+}
+
+@mixin cm-qs-medium {
+    font-family: $quicksand;
+    @include font-weight-medium;
+    @include font-styles;
+}
+
+@mixin cm-qs-bold {
+    font-family: $quicksand;
+    @include font-weight-bold;
+    @include font-styles;
+}

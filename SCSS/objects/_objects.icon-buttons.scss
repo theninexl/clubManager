@@ -1,0 +1,57 @@
+.cm-o-icon-button{
+    $block:&;
+    
+    &--primary {
+        @include icon-button-big;
+        @include icon-button-primary;
+    }
+
+    &--secondary {
+        @include icon-button-big;
+        @include icon-button-secondary;
+    }
+
+    &--pressed {
+        @include icon-button-big;
+        @include icon-button-pressed;
+    }
+
+    &--success {
+        @include icon-button-big;
+        @include icon-button-success;
+    }
+
+    &--error {
+        @include icon-button-big;
+        @include icon-button-error;
+    }
+
+}
+
+.cm-o-icon-button-small {
+    $block:&;    
+    &--primary {
+        @include icon-button-small;
+        @include icon-button-primary;
+    }
+
+    &--secondary {
+        @include icon-button-small;
+        @include icon-button-secondary;
+    }
+
+    &--pressed {
+        @include icon-button-small;
+        @include icon-button-pressed;
+    }
+
+    &--success {
+        @include icon-button-small;
+        @include icon-button-success;
+    }
+
+    &--error {
+        @include icon-button-small;
+        @include icon-button-error;
+    }
+}

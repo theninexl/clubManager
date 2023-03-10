@@ -1,0 +1,87 @@
+.cm-o-button-cat {
+    $block:&;
+
+    &--primary {
+        @include button-cat;
+        @include button-primary;        
+    }
+    
+    &--secondary {
+        @include button-cat;
+        @include button-secondary;        
+    }
+    
+    &--transparent {
+        @include button-cat;
+        @include button-transparent;        
+    }
+
+    &--ghost {
+        @include button-cat;
+        @include button-ghost;        
+    }
+
+    &--inactive {
+        @include button-cat;
+        @include button-inactive;        
+    }
+}
+
+.cm-o-button-cat-small {
+    $block:&;
+    
+    &--primary {
+        @include button-primary;
+        @include button-cat-small;
+    }
+
+    &--secondary {
+        @include button-cat-small;
+        @include button-secondary;        
+    }
+
+    &--transparent {
+        @include button-cat-small;
+        @include button-transparent;        
+    }
+
+    &--ghost {
+        @include button-cat-small;
+        @include button-ghost;        
+    }
+
+    &--inactive {
+        @include button-cat-small;
+        @include button-inactive;        
+    }
+    
+}
+
+.cm-o-button-mouse {
+    $block:&;
+    
+    &--primary {
+        @include button-mouse;
+        @include button-primary;
+    }
+
+    &--secondary {
+        @include button-mouse;
+        @include button-secondary;
+    }
+    
+    &--transparent {
+        @include button-mouse;
+        @include button-transparent;
+    }
+
+    &--ghost {
+        @include button-mouse;
+        @include button-ghost;
+    }
+
+    &--inactive {
+        @include button-mouse;
+        @include button-inactive;
+    }      
+}

@@ -1,0 +1,12 @@
+$baseGrid:2;
+
+$base:calc($baseGrid * 1); //2px
+$tiny:calc($base * 2); //4px
+$small:calc($tiny * 2); //8px
+$medium:calc($tiny * 2) + calc($base * 2); //12px
+$big:calc($small * 2); //16px
+$bigger:calc($medium * 2); //24px
+$large:calc($big * 2); //32px
+$huge:calc($bigger * 2); //48px
+$gigantic:calc($bigger * 3); //72px
+
