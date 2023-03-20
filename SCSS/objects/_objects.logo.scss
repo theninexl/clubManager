@@ -1,0 +1,18 @@
+.cm-o-logo {
+    $block:&;
+    color:getColor(scarpaFlow);
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap:getSize($small);
+    @include cm-qs-bold;
+
+    &:hover {
+        text-decoration:none;
+    }
+}
+
+.cm-o-logo--centered {
+    @extend .cm-o-logo;
+    justify-content: center;
+}

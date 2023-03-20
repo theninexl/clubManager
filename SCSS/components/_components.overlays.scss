@@ -1,0 +1,10 @@
+.cm-c-overlay {
+    $block:&;
+    &-notifications {
+        @extend .cm-o-overlay;
+        position:absolute;
+        right:0;
+        z-index: 99;
+        margin-top:24px;
+    }
+}

@@ -1,5 +1,17 @@
 .cm-o-notification-bubble {
+    background-color: getColor(sandyBrown);
+    border:1px solid getColor(white);
+    border-radius:99px;
+    color: getColor(scarpaFlow);
     display: flex;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
+    min-width: getSize($big);
     height: getSize($bigger);
+    padding: 0 getSize($tiny);
+    position: absolute;
+    top:0;
+    right: getSize($tiny) * -1;
+    @extend .cm-u-text-mouse;
 }

@@ -1,0 +1,15 @@
+.cm-l-headtool {
+    $block:&;
+    display: flex;
+    flex-flow: row nowrap;
+
+    &__title {
+        flex-grow: 1;
+    }
+    &__toolbar {
+        display: flex;
+        flex-flow:row nowrap;
+        flex-grow: 0;
+        gap: getSize($small);
+    }
+}

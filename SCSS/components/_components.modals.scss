@@ -1,0 +1,26 @@
+.cm-c-modal {
+    $block:&;
+    background-color: getColor(modalBg);
+    position:fixed;
+    height: 100vh;
+    width: 100%;
+    z-index: 100;
+
+    &__smallContent {
+        background-color: getColor(white);
+        border:2px solid getColor(scarpaFlowLight);
+        border-radius: getSize($small);
+        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+        margin:0 auto;
+        padding: getSize($bigger);
+        position: relative;
+        top:40%;
+        width: getCols(3);
+
+        .modal-footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+}

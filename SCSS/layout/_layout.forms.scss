@@ -1,0 +1,69 @@
+.cm-l-form {
+    $block: &;
+
+    &-simple {
+        $block: &;
+        display: flex;
+        flex-flow: column nowrap;
+
+        &__row {
+            display: flex;
+            flex-flow: column nowrap;
+            margin-bottom:getSize($big);
+            label {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                gap:getSize($small);
+            }
+        }
+    }
+
+    &-panel {
+        $block: &;
+
+        &__row {
+            display: flex;
+            flex-flow: row wrap;
+            padding:getSize($small) 0;
+            gap:getSize($small);
+
+            .panel-field-long {
+                display:flex;
+                flex-direction:row;
+                align-items: center;
+                gap:8px;
+
+                span:not(.material-symbols-outlined) {
+                    width:getCols(2);
+                }
+
+                input[type=text], input[type=email], input[type=password], .cm-c-field-icon, .cm-c-select-icon {
+                    width:getCols(4);
+                }
+
+                .assistance {
+                    width: unset;
+                    @extend .cm-u-text-mouse;
+                }
+            }
+
+            .panel-field-short {
+                display: flex;
+                display:flex;
+                flex-direction:row;
+                align-items: center;
+                gap:getSize($small);
+                margin-bottom:getSize($small);
+
+                span:not(.material-symbols-outlined) {
+                    width:getCols(2);
+                }
+
+                input[type=text], input[type=email], input[type=password], .cm-c-field-icon, .cm-c-select-icon {
+                    width:getCols(2);
+                }
+            }
+        }
+    }
+}

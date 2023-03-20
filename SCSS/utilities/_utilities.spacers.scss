@@ -1,6 +1,6 @@
 .cm-u-spacer {
     $block:&;
-
+    // margin top
     &-mt-base { margin-top:getSize($base); }
     &-mt-tiny { margin-top: getSize($tiny);}
     &-mt-small{ margin-top: getSize($small);}
@@ -9,8 +9,9 @@
     &-mt-bigger{ margin-top: getSize($bigger);}
     &-mt-large{ margin-top: getSize($large);}
     &-mt-huge{ margin-top: getSize($huge);}
+    &-mt-enormous{ margin-top: getSize($enormous);}
     &-mt-gigantic{ margin-top: getSize($gigantic);}
-
+    // margin bottom
     &-mb-base { margin-bottom:getSize($base); }
     &-mb-tiny { margin-bottom: getSize($tiny);}
     &-mb-small{ margin-bottom: getSize($small);}
@@ -19,9 +20,9 @@
     &-mb-bigger{ margin-bottom: getSize($bigger);}
     &-mb-large{ margin-bottom: getSize($large);}
     &-mb-huge{ margin-bottom: getSize($huge);}
+    &-mb-enormous{ margin-bottom: getSize($enormous);}
     &-mb-gigantic{ margin-bottom: getSize($gigantic);}
-
+    // margin auto
     &-m-auto{margin:auto};
-    &-mlr-auto{margin:unset auto};
-
+    &-mlr-auto{margin:0 auto};
 }

@@ -1,0 +1,196 @@
+.cm-c-form-simple {
+    $block:&;
+
+    input[type=text], input[type=number], input[type=email], input[type=password], input[type=date]{
+        border:1px solid getColor(scarpaFlowLight);
+        border-radius: 99px;
+        height:getSize($huge);
+        padding: 0 getSize($medium);
+        @include font-size($defFontSizeDT, $lineHeightDT);
+        @include cm-qs-normal;
+
+        &:focus, &:focus-visible, &:active {
+            border-color:getColor(sandyBrown);
+            outline:none;
+        }
+
+        &:invalid, &:focus:invalid {
+            border-color:getColor(danger);
+            outline:none;
+        }
+    }
+
+    input[type="radio"], input[type="checkbox"] {
+        /* Add if not using autoprefixer */
+        -webkit-appearance: none;
+        appearance: none;
+        /* For iOS < 15 to remove gradient background */
+        background-color: #fff;
+        /* Not removed via appearance */
+        margin: 0;
+        border:1px solid getColor(scarpaFlowLight);
+        border-radius:50%;
+        height: getSize($bigger);
+        width: getSize($bigger);
+        display: grid;
+        place-content: center;
+
+        &::before {
+            content:"check";
+            border-radius:50%;
+            box-shadow: inset getSize($bigger) getSize($bigger) getColor(success);
+            display: flex;
+            justify-content:center;
+            align-items: center;
+            height: getSize($bigger);
+            width: getSize($bigger);
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+        }
+
+        &:checked::before {
+            color:getColor(scarpaFlow);
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 20px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+            transform: scale(1);
+        }
+    }
+
+    &__radio-toggle {
+        border:1px solid getColor(scarpaFlowLight);
+        background-color: getColor(white);
+        border-radius:99px;
+        position: relative;
+        height: getSize($huge);
+        width: getSize($doubleHuge);
+
+        input[type="checkbox"] {
+            border:1px solid getColor(scarpaFlowLight);
+            background-color: getColor(scarpaFlowLight);
+            height: getSize($huge);
+            width: getSize($huge);
+            right:0;
+            position: absolute;
+            transition: transform 0.4s cubic-bezier(0.45, 1.8, 0.5, 0.75);
+        }
+
+        input[type="checkbox"]::before {
+            right:0;
+            position: absolute;
+            transform: scale(1);
+            opacity:0;
+        }
+
+        input[type="checkbox"]:checked::before {
+            content:"check";
+            border-radius:50%;
+            box-shadow: inset 0 getSize($huge) getColor(success);
+            display: flex;
+            justify-content:center;
+            align-items: center;
+            height: getSize($huge);
+            width: getSize($huge);
+            opacity:1;
+        }
+
+    }
+
+        input[type="checkbox"]:checked {
+            transform:translateX(-48px);
+            position: absolute;
+            
+        }
+
+
+    .error {
+        color: getColor(danger);
+        @include cm-qs-bold;
+    }    
+}
+
+.cm-c-field-icon {
+    $block:&;
+    border:1px solid getColor(scarpaFlowLight);
+    border-radius: 99px;
+    height:getSize($huge);
+    display: inline-flex;
+    overflow: hidden;
+    &__input {
+        $block:&;
+        border:0;
+        outline: none;
+        padding: 0 getSize($medium);
+        flex-grow:1;
+        @include font-size($defFontSizeDT, $lineHeightDT);
+        @include cm-qs-normal;
+    }
+    /* clears the ‘X’ from Internet Explorer */
+    input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
+    input[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
+    /* clears the ‘X’ from Chrome */
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-results-button,
+    input[type="search"]::-webkit-search-results-decoration { display: none; }
+}
+
+.cm-c-select-icon {
+    $block:&;
+    border:1px solid getColor(scarpaFlowLight);
+    border-radius: 99px;
+    height:getSize($huge);
+    display: inline-flex;
+    overflow: hidden;
+    flex-grow:1;
+    position:relative;
+
+    &__select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: transparent;
+        border:0;
+        color:getColor(scarpaFlow);
+        outline: none;
+        padding: 0 getSize($medium);
+        flex-grow:1;
+        @include font-size($defFontSizeDT, $lineHeightDT);
+        @include cm-qs-normal;
+    }
+    &::after {
+        content:"expand_more";
+        border-radius:50%;
+        box-shadow: inset getSize($huge) getSize($huge) getColor(scarpaFlowLight);
+        display: flex;
+        justify-content:center;
+        align-items: center;
+        height: getSize($huge);
+        width: getSize($huge);
+        color:getColor(scarpaFlow);
+        font-family: 'Material Symbols Outlined';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 20px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+        position:absolute;
+        right:0;
+        z-index: -1;
+    }
+}

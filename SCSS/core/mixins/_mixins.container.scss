@@ -1,0 +1,6 @@
+@mixin cm-container {
+        max-width: getBreakpoint(max);
+        margin-left: auto;
+        margin-right: auto;
+        position:relative;
+}

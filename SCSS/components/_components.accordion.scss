@@ -1,0 +1,30 @@
+.cm-c-accordion {
+    $block:&;
+
+    &__button {
+        border-bottom:1px solid getColor(success);
+        display: flex;
+        align-items: center;
+        height: getSize($huge);
+        color:getColor(scarpaFlow);
+        margin-bottom:getSize($bigger);
+
+        &.active {
+            color:getColor(success);
+        }
+
+        .accordion-button {
+            $block:&;
+            &__text {
+                flex-grow:1;
+            }
+            &__icon {
+                height: getSize($bigger);
+            }
+        }
+    }
+
+    &__panel {
+        margin-bottom:getSize($bigger);
+    }
+}

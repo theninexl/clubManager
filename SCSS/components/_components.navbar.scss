@@ -1,0 +1,88 @@
+.cm-c-navbar {
+    $block: &;
+    border-bottom: 1px solid getColot(scarpaFlowLight);
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    
+
+    &__left {
+        flex-grow: 1;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        gap:getSize($bigger);
+    }
+
+    &__right {
+        flex-grow: 0;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+    }
+}
+
+.navbar-links {
+    $block: &;
+
+    &-hrz {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: stretch;
+        gap: getSize($small);
+        height: getSize($huge);
+    }
+
+    &-vert {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: getSize($small);
+    }
+    
+
+    &__link {
+        border-radius:99px;
+        cursor:pointer;
+        display: inline-block;
+        line-height: getSize($huge);
+        padding: 0 getSize($medium);
+        @include cm-qs-bold;
+
+        &:hover {
+            text-decoration: none;
+            background-color: getColor(scarpaHover);
+        }
+
+        &.active {
+            background-color: getColor(sandyBrown);
+            color:getColor(scarpaFlow);
+        }
+
+        &.inactive {
+            background-color: getColor(white);
+            color:getColor(scarpaFlowLight);
+            cursor: initial;
+            &:hover {
+                color:getColor(scarpaFlowLight);
+                cursor: initial;
+            }
+        }
+    }
+
+    &__textbutt {
+        background-color:getColor(white);
+        box-shadow:0px 0px 0px 1px getColor(scarpaFlowLight) inset;
+        border-radius:99px;
+        color:getColor(scarpaFlow);
+        cursor:pointer;
+        display: block;
+        line-height: getSize($huge);
+        padding: 0 getSize($medium);
+        @extend .cm-u-text-black-mouse;
+
+        &:hover {
+            text-decoration: none;
+            background-color: getColor(scarpaHover);
+        }
+    }
+}

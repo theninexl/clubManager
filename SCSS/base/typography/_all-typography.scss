@@ -48,6 +48,22 @@ body {
     @include font-size($fontSizeJumpDT4, calc($lineHeightDT*3));
 }
 
+.cm-u-text-link {
+    color:getColor(sandyBrown);
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+a {
+    @extend .cm-u-text-link;
+}
+
+strong {
+    @include cm-qs-bold;
+}
+
 .material-symbols-outlined {
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 1, 'opsz' 48;
 }

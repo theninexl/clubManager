@@ -1,0 +1,6 @@
+@function getCols($cols) {
+    $col: calc((getBreakpoint(max) - getGutter(regular)*11) / 12);
+    $gutters: $cols - 1;
+    $width: ($col * $cols) + (getGutter(regular)* $gutters);
+    @return $width;
+}

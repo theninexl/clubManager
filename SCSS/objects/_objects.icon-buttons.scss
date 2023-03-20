@@ -4,6 +4,10 @@
     &--primary {
         @include icon-button-big;
         @include icon-button-primary;
+
+        &.active {
+            @include icon-button-pressed;
+        }
     }
 
     &--secondary {
@@ -53,5 +57,13 @@
     &--error {
         @include icon-button-small;
         @include icon-button-error;
+    }
+}
+
+.cm-o-icon-button-enormous {
+    $block:&;    
+    &--deco {
+        @include icon-button-enormous;
+        @include icon-button-deco;
     }
 }

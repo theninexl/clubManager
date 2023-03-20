@@ -6,5 +6,7 @@ $colorPalette: (
     straw:#CECE7E,
     success:#0FCC81,
     warning:#FECD39,
-    danger:#F93A3A
+    danger:#F93A3A,
+    scarpaHover: fade-out(#454548,0.95),
+    modalBg: fade-out(#454548,0.15)
 );

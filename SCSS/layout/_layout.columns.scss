@@ -1,0 +1,5 @@
+.cm-l-4col {
+    $block: &;
+    margin:0 auto;
+    width: getCols(4);
+}

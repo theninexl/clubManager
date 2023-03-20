@@ -1,0 +1,37 @@
+.cm-l-table-players {
+    $block:&;
+    display: flex;
+    flex-direction: column;
+
+    &__header, &__body {
+        tr {
+            border-bottom:1px solid getColor(scarpaFlowLight);  
+            display: flex;
+            flex:1;
+        }
+
+        .table-players-td-long {
+            flex:1;
+        }
+
+        .table-players-td-short {
+            width: 60px;
+        }
+    }
+
+    &__header {
+        @extend .cm-u-text-black-mouse;
+
+        tr {
+            align-items: end;
+        }
+    }
+
+    &__body {
+        @extend .cm-u-text-mouse;
+        tr {
+            align-items: center;
+            height: getSize($huge);
+        }
+    }
+}

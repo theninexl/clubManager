@@ -1,0 +1,66 @@
+.cm-o-overlay {
+    $block:&;
+    border:2px solid getColor(scarpaFlowLight);
+    border-radius: getSize($small);
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+    padding: getSize($small) 0;
+    width: 250px;
+
+    &__option {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        padding: getSize($small) getSize($medium);
+        &:hover {
+            text-decoration: none;
+            background-color: getColor(scarpaHover);
+        }
+
+        .option {
+            $block:&;
+            &--text {
+                color: getColor(scarpaFlow);
+                flex-grow: 1;
+                @include cm-qs-bold;
+                
+            }
+
+            &--icon {
+                text-decoration: none;
+                flex-grow: 0;
+            }
+        }
+    }
+
+    &__notification {
+        display: flex;
+        flex-flow: column nowrap;
+        padding: getSize($small) getSize($medium);
+        &:hover {
+            text-decoration: none;
+            background-color: getColor(scarpaHover);
+        }
+
+        .notification {
+            $block:&;
+            &--text {
+                color: getColor(scarpaFlow);
+                @include cm-qs-bold;
+                
+            }
+
+            &--date {
+                color: getColor(scarpaFlow);
+                
+            }
+        }
+
+        &:nth-child(even) {
+            background-color: getColor(scarpaFlowLight);
+            &:hover {
+                text-decoration: none;
+                background-color: getColor(scarpaHover);
+            }
+        }
+    }
+}

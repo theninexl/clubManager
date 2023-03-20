@@ -1,4 +1,5 @@
 @mixin icon-button {
+    border:0;
     border-radius:99px;
     cursor:pointer;
     display: inline-flex;
@@ -8,14 +9,26 @@
 }
 
 @mixin icon-button-big {      
-    min-width: getSize($large);
+    width: getSize($huge);
     height: getSize($huge);
-    padding:0 getSize($small);
+    padding:0;
     @include icon-button;  
     @extend .cm-u-text-black-mouse;
 
-    span {
+    span:not(.cm-o-notification-bubble) {
         font-size: getSize($bigger);
+    }
+}
+
+@mixin icon-button-enormous {      
+    min-width: getSize($enormous);
+    height: getSize($enormous);
+    padding:0;
+    @include icon-button;  
+    @extend .cm-u-text-black-mouse;
+
+    span:not(.cm-o-notification-bubble) {
+        font-size: getSize($huge);
     }
 }
 
@@ -36,10 +49,20 @@
     span {
         color:getColor(scarpaFlow);
     }
+
+    &:is(a, a:hover){
+        color:getColor(scarpaFlow);
+        text-decoration:none;
+    }
+
+    &:hover {
+        background-color: getColor(scarpaHover);
+    }
 }
 
 @mixin icon-button-secondary {
     background-color:getColor(scarpaFlowLight);
+    box-shadow:none;
 
     span {
         color:getColor(scarpaFlow);
@@ -48,6 +71,7 @@
 
 @mixin icon-button-pressed {
     background-color:getColor(sandyBrown);
+    box-shadow:none;
 
     span {
         color:getColor(scarpaFlow);
@@ -56,6 +80,7 @@
 
 @mixin icon-button-success {
     background-color:getColor(success);
+    box-shadow:none;
 
     span {
         color:getColor(scarpaFlow);
@@ -64,6 +89,16 @@
 
 @mixin icon-button-error {
     background-color:getColor(danger);
+    box-shadow:none;
+
+    span {
+        color:getColor(scarpaFlow);
+    }
+}
+
+@mixin icon-button-deco {
+    background-color:getColor(straw);
+    box-shadow:none;
 
     span {
         color:getColor(scarpaFlow);

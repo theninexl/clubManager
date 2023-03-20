@@ -1,0 +1,54 @@
+.cm-l-container {
+    $block: &;
+    @include cm-container;
+
+    &--no-padding {
+        padding:0;
+    }
+
+    &--big-padding {
+        padding-top: getLines(2);
+        padding-bottom: getLines(2);
+
+        @media screen and (min-width: getBreakpoint(medium)){
+            padding-top: getLines(2);
+            padding-bottom: getLines(2);
+        }
+    }
+
+    &--big-top-padding {
+        padding-top: getLines(2);
+        @media screen and (min-width: getBreakpoint(medium)){
+            padding-top: getLines(5);
+        }
+    }
+
+    &--big-bottom-padding {
+        padding-bottom: getLines(2);
+        @media screen and (min-width: getBreakpoint(medium)){
+            padding-bottom: getLines(5);
+        }
+    }
+
+    &-2col {
+        $block: &;
+        display: flex;
+        flex-flow: row nowrap;
+        min-height: calc(100vh - getLines(8));
+        padding-top: getLines(4);
+        @include cm-container;
+
+        &__aside {
+            border-right:1px solid getColor(scarpaFlowLight);
+            width: getCols(2);
+            & nav {
+                position: fixed;
+            }
+        }
+
+        &__body {
+            flex-grow: 1;
+            padding-left: getGutter(regular);
+        }
+    }
+}
