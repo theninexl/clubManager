@@ -23,4 +23,22 @@
             justify-content: space-between;
         }
     }
+
+    &__bigContent {
+        background-color: getColor(white);
+        border:2px solid getColor(scarpaFlowLight);
+        border-radius: getSize($small);
+        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+        margin:0 auto;
+        padding: getSize($bigger);
+        position: relative;
+        top:40%;
+        width: getCols(12);
+
+        .modal-footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
 }

@@ -123,7 +123,7 @@
     border:1px solid getColor(scarpaFlowLight);
     border-radius: 99px;
     height:getSize($huge);
-    display: inline-flex;
+    display: flex;
     overflow: hidden;
     &__input {
         $block:&;

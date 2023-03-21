@@ -17,6 +17,10 @@
         .table-players-td-short {
             width: 60px;
         }
+
+        .table-players-td-auto {
+            flex-grow:0;
+        }
     }
 
     &__header {
