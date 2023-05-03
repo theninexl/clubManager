@@ -30,13 +30,19 @@
     background:transparent;
 }
 
+@mixin button-ghost-inactive {
+    color:getColor(scarpaFlowLight);
+    background: transparent;
+    cursor: default;
+}
+
 @mixin button-inactive {
     color:getColor(white);
     background-color: getColor(scarpaFlowLight);
 }
 
 @mixin button-cat {
-    padding:getSize($medium) getSize($bigger);
+    padding:getSize($medium);
     @include button;
     @extend .cm-u-text-cat;
     @include cm-qs-bold;

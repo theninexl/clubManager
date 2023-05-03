@@ -1,10 +1,20 @@
 .cm-c-modal {
     $block:&;
-    background-color: getColor(modalBg);
     position:fixed;
     height: 100vh;
     width: 100%;
     z-index: 100;
+
+    &-background {
+        background-color: getColor(modalBg);
+        content: '';
+        display:block;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top:0;
+        z-index: -1;
+    }
 
     &__smallContent {
         background-color: getColor(white);
@@ -15,7 +25,7 @@
         padding: getSize($bigger);
         position: relative;
         top:40%;
-        width: getCols(3);
+        width: getCols(4);
 
         .modal-footer {
             display: flex;
@@ -32,7 +42,7 @@
         margin:0 auto;
         padding: getSize($bigger);
         position: relative;
-        top:40%;
+        top:25%;
         width: getCols(12);
 
         .modal-footer {

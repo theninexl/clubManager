@@ -11,11 +11,13 @@
 
         &:focus, &:focus-visible, &:active {
             border-color:getColor(sandyBrown);
+            border-width:2px;
             outline:none;
         }
 
         &:invalid, &:focus:invalid {
             border-color:getColor(danger);
+            border-width:4px;
             outline:none;
         }
     }

@@ -1,14 +1,61 @@
+.cm-l-tabledata {
+    $block:&;
+    display: flex;
+    flex-direction: column;
+
+    &__row, &__header {
+        border-bottom:1px solid getColor(scarpaFlowLight);  
+        // display: grid;
+        // grid-auto-flow: column;
+        // grid-auto-columns: 2fr;
+        display:flex;
+        gap: 8px;
+    }
+
+    &__header {
+        @extend .cm-u-text-black-mouse;
+    }
+
+    &__row {
+        @extend .cm-u-text-mouse;
+        align-items: center;
+        height: getSize($huge);
+    }
+
+    .tablecell {
+        $block:&;
+        &-long {
+            flex:2;
+            //overflow: hidden;
+            //white-space: nowrap;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+
+        &-medium {
+            flex:1;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+        &-short {
+            flex:0;
+            max-width: 60px;
+            min-width: 60px;
+        }
+    }
+}
+
 .cm-l-table-players {
     $block:&;
     display: flex;
     flex-direction: column;
 
-    &__header, &__body {
-        tr {
-            border-bottom:1px solid getColor(scarpaFlowLight);  
-            display: flex;
-            flex:1;
-        }
+    &__header tr, &__body tr {
+        border-bottom:1px solid getColor(scarpaFlowLight);  
+        display: flex;
+        flex:1;
 
         .table-players-td-long {
             flex:1;
@@ -23,19 +70,14 @@
         }
     }
 
-    &__header {
+    &__header tr {
         @extend .cm-u-text-black-mouse;
-
-        tr {
-            align-items: end;
-        }
+        align-items: end;
     }
 
-    &__body {
+    &__body tr {
         @extend .cm-u-text-mouse;
-        tr {
-            align-items: center;
-            height: getSize($huge);
-        }
+        align-items: center;
+        height: getSize($huge);
     }
 }

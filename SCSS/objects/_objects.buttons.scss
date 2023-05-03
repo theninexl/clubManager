@@ -18,7 +18,16 @@
 
     &--ghost {
         @include button-cat;
-        @include button-ghost;        
+        @include button-ghost;
+        
+        &.active {
+            @include button-primary;
+        }
+    }
+
+    &--ghost-inactive {
+        @include button-cat;
+        @include button-ghost-inactive;
     }
 
     &--inactive {
