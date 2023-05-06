@@ -23,9 +23,9 @@ manageUsersBtn.addEventListener('click',()=>{
         let uri = window.location.toString();
         let clean_uri = uri.substring(0,uri.indexOf("#"));
         window.history.replaceState({},document.title,clean_uri);
-    } else if ( manageUsersBtn.classList.contains('active')) {
-        manageUsersBtn.classList.remove('active');
-        navigator();
+    // } else if ( manageUsersBtn.classList.contains('active')) {
+    //     manageUsersBtn.classList.remove('active');
+    //     navigator();
     } else {
         manageUsersBtn.classList.add('active');
         manageTeamBtn.classList.remove('active');
@@ -113,7 +113,7 @@ const navigator = () => {
     document.documentElement.scrollTop = 0;
     
 }
-
+//pagina de inicio
 const homePage = () => {
     // location.hash='';
     // let uri = window.location.toString();
@@ -125,7 +125,7 @@ const homePage = () => {
     usersListSection.classList.add('cm-u-inactive');
     playersListSection.classList.add('cm-u-inactive');
 }
-
+//pagina listado usuarios
 const manageUsers = () => {
     manageUsersBtn.classList.add('active');
     usersListSection.classList.remove('cm-u-inactive');
@@ -135,7 +135,7 @@ const manageUsers = () => {
     getUsers();
     cleanUserDetails();
 }
-
+//pagina añadir usuario
 const addUsers = () => {
     cleanUserDetails();
     usersListSection.classList.add('cm-u-inactive');
@@ -144,7 +144,7 @@ const addUsers = () => {
     userDetailsFormUpdateBtn.classList.add('cm-u-inactive');
     userDetailsFormDeleteBtn.classList.add('cm-u-inactive');
 }
-
+//pagina editar detalles usuario
 const editUserPage = () => {
     //console.log('edituser');
     cleanUserDetails();
@@ -156,7 +156,7 @@ const editUserPage = () => {
     const [_,userID] = location.hash.split('='); 
     getUser(userID);
 }
-
+//modal buscar usuarios
 const searchUsers = () => {
     // console.log('SEARCH');
     // console.log(location.search);
@@ -173,7 +173,7 @@ const searchUsers = () => {
     getUsers();
     filterUsers(searchTerm);
 }
-
+//modal confirmar borrar 
 const confirmDeleteModal = ()=>{
     const [_,userID] = location.hash.split('='); 
     modalSmall.innerHTML = '';
@@ -211,7 +211,7 @@ const confirmDeleteModal = ()=>{
         modalContainer.classList.add('cm-u-inactive');
     })
 }
-
+//pagina listado plantilla jugadores
 const manageTeam = () => {
     manageTeamBtn.classList.add('active');
     usersListSection.classList.add('cm-u-inactive');
@@ -221,7 +221,7 @@ const manageTeam = () => {
     getPlayers();
     cleanPlayerDetails();
 }
-
+//pagina añadir jugador
 const addPlayers = () => {
     cleanPlayerDetails();
     playersListSection.classList.add('cm-u-inactive');
@@ -232,7 +232,7 @@ const addPlayers = () => {
     playerDetailsFormUpdateBtn.classList.add('cm-u-inactive');
     playerDetailsFormDeleteBtn.classList.add('cm-u-inactive');
 }
-
+//pagina editar detalles jugador
 const editPlayerPage = () => {
     cleanPlayerDetails();
     playersListSection.classList.add('cm-u-inactive');
@@ -246,7 +246,7 @@ const editPlayerPage = () => {
     const [_,playerID] = location.hash.split('='); 
     getPlayer(playerID);
 }
-
+//modal confirmar borrar jugador
 const confirmDeletePlayerModal = ()=>{
     const [_,playerID] = location.hash.split('='); 
     modalSmall.innerHTML = '';
@@ -284,7 +284,7 @@ const confirmDeletePlayerModal = ()=>{
         modalContainer.classList.add('cm-u-inactive');
     })
 }
-
+//modal buscar jugadores
 const searchPlayers = () => {
     // console.log('SEARCH');
     // console.log(location.search);

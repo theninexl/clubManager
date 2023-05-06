@@ -9,15 +9,141 @@ const api = axios.create({
         //'api_key': API_KEY,
     }
 });
+
 //Utils
 
-const listUsers = (users,container,{clean = true} = {}) => {
+//pagination and sorting parameters
+let currentListPage = 1;
+const listLimit = 10;
+let listSortBy = 'id';
+let listOrder = 'desc';
 
+//añadir la paginación a las tablas con listados
+const paginateList = (users, container) =>{
+    const count = users.count;
+    const maxPages = Math.ceil(count/listLimit);
+    const paginationContainer = document.createElement('div');
+    paginationContainer.classList.add('cm-l-tabledata__footer');
+    paginationContainer.classList.add('cm-u-spacer-mt-medium');
+    const paginationCellBack = document.createElement('div');
+    paginationCellBack.classList.add('tablecell-long');
+    const paginationCellInfo = document.createElement('div');
+    paginationCellInfo.classList.add('tablecell-long');
+    paginationCellInfo.classList.add('cm-u-centerText');
+    paginationCellInfo.textContent = `Page ${currentListPage} of ${maxPages}`;
+    const paginationCellForward = document.createElement('div');
+    paginationCellForward.classList.add('tablecell-long');
+    paginationCellForward.classList.add('cm-u-textRight');
+    const paginationButtonForward = document.createElement('button');
+    paginationButtonForward.classList.add('cm-o-icon-button-small--primary');
+    paginationButtonForward.id = 'goNextPage';
+    paginationButtonForward.textContent = '>';
+    const paginationButtonBack = document.createElement('button');
+    paginationButtonBack.classList.add('cm-o-icon-button-small--disabled');
+    paginationButtonBack.id = 'goPrevPage';
+    paginationButtonBack.textContent = '<';
+    paginationCellBack.appendChild(paginationButtonBack);
+    paginationCellForward.appendChild(paginationButtonForward);
+    paginationContainer.appendChild(paginationCellBack);
+    paginationContainer.appendChild(paginationCellInfo);
+    paginationContainer.appendChild(paginationCellForward);
+    if (location.hash.startsWith('#manageUsers')){ 
+        tablePaginationUsers.innerHTML = '';
+        tablePaginationUsers.appendChild(paginationContainer);}
+    else if (location.hash.startsWith('#manageTeam')){ 
+        tablePaginationPlayers.innerHTML = '';
+        tablePaginationPlayers.appendChild(paginationContainer);}
+
+    const activatePagination = () => {
+        const goNextBtn = document.querySelector('#goNextPage');
+        const goPrevBtn = document.querySelector('#goPrevPage');
+        const goNextBtnActive = goNextBtn.classList.contains('cm-o-icon-button-small--primary');
+        const goPrevBtnActive = goPrevBtn.classList.contains('cm-o-icon-button-small--primary');
+
+        if (goNextBtnActive) {
+            goNextBtn.addEventListener('click',()=>{
+                currentListPage++;
+                if (location.hash.startsWith('#manageUsers')){ getUsers({page:currentListPage});}
+                else if (location.hash.startsWith('#manageTeam')){ getPlayers({page:currentListPage})}
+            })
+        }
+    
+        if (goPrevBtnActive) {
+            goPrevBtn.addEventListener('click',()=>{
+                currentListPage--;
+                if (location.hash.startsWith('#manageUsers')){ getUsers({page:currentListPage});}
+                else if (location.hash.startsWith('#manageTeam')){ getPlayers({page:currentListPage})}
+            })
+        }
+    }
+
+    if (maxPages > 1 && currentListPage === 1) {
+        // console.log('estoy al principio');
+        paginationButtonForward.classList.remove('cm-o-icon-button-small--primary');
+        paginationButtonForward.classList.add('cm-o-icon-button-small--primary');
+        paginationButtonBack.classList.remove('cm-o-icon-button-small--primary');
+        paginationButtonBack.classList.add('cm-o-icon-button-small--disabled');
+        activatePagination();
+    } else if (maxPages > 1 && currentListPage === maxPages) {
+        // console.log('estoy al final');
+        paginationButtonForward.classList.remove('cm-o-icon-button-small--primary');
+        paginationButtonForward.classList.add('cm-o-icon-button-small--disabled');
+        paginationButtonBack.classList.remove('cm-o-icon-button-small--disabled');
+        paginationButtonBack.classList.add('cm-o-icon-button-small--primary');
+        activatePagination();
+    } else if (maxPages > 1 && currentListPage < maxPages) {
+        // console.log('estoy en medio');
+        paginationButtonBack.classList.remove('cm-o-icon-button-small--disabled');
+        paginationButtonBack.classList.add('cm-o-icon-button-small--primary');
+        activatePagination();
+    } else {
+        // console.log('solo hay una página');
+        if (location.hash.startsWith('#manageUsers')){tablePaginationUsers.innerHTML = '';}
+        else if (location.hash.startsWith('#manageTeam')){tablePaginationPlayers.innerHTML = '';}
+    }
+}
+//funcionalidad de reordenar los elementos de un listado por campo
+sortBtns.forEach(btn => {
+    //span que cuelgan del botón y que muestran los iconos descendentes o ascendentes
+    const descIcon = btn.querySelector(':scope > span.sortIcon--desc');
+    const ascIcon = btn.querySelector(':scope > span.sortIcon--asc');  
+
+    btn.addEventListener('click', event => {
+        //oculto todos los iconos de todos los botones en cada click
+        sortBtns.forEach(btn =>{ 
+            const descIcon = btn.querySelector(':scope > span.sortIcon--desc');
+            const ascIcon = btn.querySelector(':scope > span.sortIcon--asc');  
+            ascIcon.classList.add('cm-u-inactive');
+            descIcon.classList.add('cm-u-inactive'); 
+        });        
+        //muestro el icono correspondiente para el botón que se pulsa
+        if (listOrder === 'desc'){ 
+            listOrder = 'asc';
+            descIcon.classList.remove('cm-u-inactive');
+            ascIcon.classList.add('cm-u-inactive');
+        } else { 
+            listOrder = 'desc';
+            ascIcon.classList.remove('cm-u-inactive');
+            descIcon.classList.add('cm-u-inactive');            
+        };
+        //recojo el nombre del campo
+        const sortField = btn.getAttribute('data-field');
+        //llamo a la api para que filtre por ese campo
+        if (location.hash.startsWith('#manageUsers')){ 
+            getUsers({page:currentListPage, sortBy:sortField, order:listOrder});
+        } else if (location.hash.startsWith('#manageTeam')){ 
+            getPlayers({page:currentListPage, sortBy:sortField, order:listOrder});
+        }        
+    })
+})
+//listar usuarios
+const listUsers = (users,container,{clean = true} = {}) => {
+    console.log('list users');
     if(clean) {
         container.innerHTML = '';
     }
 
-    users.forEach(user => {
+    users.items.forEach(user => {
         const personContainer = document.createElement('div');
         personContainer.classList.add('cm-l-tabledata__row');
         const personName = document.createElement('div');
@@ -60,7 +186,7 @@ const listUsers = (users,container,{clean = true} = {}) => {
         })
     })
 }
-
+//listar los detalles de usuario
 const listUserDetails = (user) => {
     userDetailsTitle.textContent = 'Edit user';
     userDetailsFieldName.setAttribute('value',user.userName);
@@ -71,7 +197,21 @@ const listUserDetails = (user) => {
     if (user.userForm2read === 'on'){userDetailsFieldForm2read.checked = true;}
     if (user.userForm2write === 'on'){userDetailsFieldForm2write.checked = true;}
 }
-
+//limpiar el formulario de detalles de usuario
+const cleanUserDetails = () => {
+    //console.log("cleanUserDetails");
+    userDetailsForm.reset();
+    userDetailsFieldName.removeAttribute('value');
+    userDetailsFieldLastname.removeAttribute('value');
+    userDetailsFieldEmail.removeAttribute('value');
+    userDetailsFieldPwd.removeAttribute('value');
+    userDetailsFieldPwd2.removeAttribute('value');
+    userDetailsFieldForm1read.checked = false;
+    userDetailsFieldForm1write.checked = false;
+    userDetailsFieldForm2read.checked = false;
+    userDetailsFieldForm2write.checked = false;
+}
+//listar resultados de busqueda
 const listSearchResults = (results,container,searchTerm,{clean = true} = {}) => {
     console.log(results);
     if(clean) {
@@ -132,27 +272,13 @@ const listSearchResults = (results,container,searchTerm,{clean = true} = {}) => 
         })
     }    
 }
-
-const cleanUserDetails = () => {
-    //console.log("cleanUserDetails");
-    userDetailsForm.reset();
-    userDetailsFieldName.removeAttribute('value');
-    userDetailsFieldLastname.removeAttribute('value');
-    userDetailsFieldEmail.removeAttribute('value');
-    userDetailsFieldPwd.removeAttribute('value');
-    userDetailsFieldPwd2.removeAttribute('value');
-    userDetailsFieldForm1read.checked = false;
-    userDetailsFieldForm1write.checked = false;
-    userDetailsFieldForm2read.checked = false;
-    userDetailsFieldForm2write.checked = false;
-}
-
+//listar plantilla de jugadores
 const listPlayers = (players,container,{clean = true}={}) => {
     if(clean) {
         container.innerHTML = '';
     }
 
-    players.forEach(player => {
+    players.items.forEach(player => {
         const playerContainer = document.createElement('div');
         playerContainer.classList.add('cm-l-tabledata__row');
         const playerName = document.createElement('div');
@@ -223,7 +349,7 @@ const listPlayers = (players,container,{clean = true}={}) => {
         })
     })
 }
-
+//listar detalles de jugador
 const listPlayerDetails = (player) => {
     if (player.active === 'on'){playerActive.checked = true;}
     playerDetailsTitle.textContent = 'Edit player';
@@ -253,7 +379,7 @@ const listPlayerDetails = (player) => {
     playerTransferCost.setAttribute('value',player.transferCost);
     playerSalary.setAttribute('value',player.netSalary);
 }
-
+//limpiar el formulario de detalles de jugador
 const cleanPlayerDetails = () => {
     //console.log("cleanUserDetails");
     playerDetailsForm.reset();
@@ -284,21 +410,22 @@ const cleanPlayerDetails = () => {
 
 //Api calls
 
-const getUsers = async () => {
-    //const res = await fetch('https://gorest.co.in/public/v2/users');
-    const { data } = await api('/users');
-    //console.log(data);
+//obtener usuarios
+const getUsers = async ({page = currentListPage, sortBy = 'id', order = 'asc'} = {}) => {
+    //console.log('getUsers: page:'+page+' limit:'+listLimit+' sortBy:'+sortBy+' order:'+order);
+    const { data } = await api('/users',{ params: { page: page, limit:listLimit, sortBy:sortBy, order:order } });
     const users = data;
-
+    //console.log(data);
     listUsers(users,usersListContainer);
+    paginateList(users, tablePaginationUsers);
 }
-
+//obtener detalles usuario
 const getUser = async (userID) => {
     const { data } = await api('/users/'+userID);
     const player = data;
     listUserDetails(player);
 }
-
+//añadir nuevo usuario
 const addNewUser = async () => {
     const newUserData = new FormData(userDetailsForm);
     const data = {};
@@ -325,7 +452,61 @@ const addNewUser = async () => {
       });
 
 }
+//actualizar usuario existente
+const updateUser = async (userID) => {
+    const updatedUserData = new FormData(userDetailsForm);
+    const data = {};
+    updatedUserData.forEach((value, key) => data[key] = value);
 
+    const updateUserData = await api.put('/users/'+userID, {
+        userName:data.userName,
+        userLastname:data.userLastname,
+        userEmail:data.userEmail,
+        userPwd:data.userPwd,
+        userForm1read:data.userForm1read,
+        userForm1write:data.userForm1write,
+        userForm2read:data.userForm2read,
+        userForm2write:data.userForm2write,
+      })
+      .then(function (response) {
+        //console.log(response);
+        location.hash = "#manageUsers";
+      })
+      .catch(function (error) {
+        console.warn(error);
+      });
+
+}
+//borrar usuario
+const deleteUser = async(userID) => {    
+    const deleteUser = await api.delete('/users/'+userID)
+    .then(response => {
+        location.hash = "#manageUsers";
+    }).catch(e => {
+        console.log(e);
+    });
+    
+}
+//filtrar usuarios por busqueda
+const filterUsers = async (searchTerm) => {
+    const { data } = await api.get('/users?search='+searchTerm);
+    const results = data;    
+    listSearchResults(results,searchResultsListContainer,searchTerm);
+}
+//obtener jugadores
+const getPlayers = async ({page = currentListPage, sortBy = 'id', order = 'asc'} = {}) => {
+    const { data } = await api('/players',{ params: { page: page, limit:listLimit } });
+    const players = data;
+    listPlayers(players,playersListContainer);
+    paginateList(players, tablePaginationPlayers);
+}
+//obtener detalles jugador
+const getPlayer = async (playerID) => {
+    const { data } = await api('/players/'+playerID);
+    const user = data;
+    listPlayerDetails(user);
+}
+//añadir nuevo jugador
 const addNewPlayer = async () => {
     console.log('hit add new player');
     const newPlayerData = new FormData(playerDetailsForm);
@@ -373,60 +554,7 @@ const addNewPlayer = async () => {
       });
 
 }
-
-const updateUser = async (userID) => {
-    const updatedUserData = new FormData(userDetailsForm);
-    const data = {};
-    updatedUserData.forEach((value, key) => data[key] = value);
-
-    const updateUserData = await api.put('/users/'+userID, {
-        userName:data.userName,
-        userLastname:data.userLastname,
-        userEmail:data.userEmail,
-        userPwd:data.userPwd,
-        userForm1read:data.userForm1read,
-        userForm1write:data.userForm1write,
-        userForm2read:data.userForm2read,
-        userForm2write:data.userForm2write,
-      })
-      .then(function (response) {
-        //console.log(response);
-        location.hash = "#manageUsers";
-      })
-      .catch(function (error) {
-        console.warn(error);
-      });
-
-}
-
-const deleteUser = async(userID) => {    
-    const deleteUser = await api.delete('/users/'+userID)
-    .then(response => {
-        location.hash = "#manageUsers";
-    }).catch(e => {
-        console.log(e);
-    });
-    
-}
-
-const filterUsers = async (searchTerm) => {
-    const { data } = await api.get('/users?search='+searchTerm);
-    const results = data;    
-    listSearchResults(results,searchResultsListContainer,searchTerm);
-}
-
-const getPlayers = async () => {
-    const { data } = await api('/players');
-    const players = data;
-    listPlayers(players,playersListContainer);
-}
-
-const getPlayer = async (playerID) => {
-    const { data } = await api('/players/'+playerID);
-    const user = data;
-    listPlayerDetails(user);
-}
-
+//actualizar jugador existente
 const updatePlayer = async (playerID) => {
     const updatedPlayerData = new FormData(playerDetailsForm);
     const data = {};
@@ -469,8 +597,7 @@ const updatePlayer = async (playerID) => {
       });
 
 }
-
-
+//borrar jugador
 const deletePlayer = async(playerID) => {    
     const deleteUser = await api.delete('/players/'+playerID)
     .then(response => {
@@ -480,7 +607,7 @@ const deletePlayer = async(playerID) => {
     });
     
 }
-
+//filtrar jugadores por busqueda
 const filterPlayers = async (searchTerm) => {
     const { data } = await api.get('/players?search='+searchTerm);
     const results = data;    

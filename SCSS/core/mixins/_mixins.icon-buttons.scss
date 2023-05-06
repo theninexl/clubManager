@@ -96,6 +96,17 @@
     }
 }
 
+@mixin icon-button-disabled {
+    background-color:getColor(white);
+    box-shadow:0px 0px 0px 1px getColor(scarpaFlowLight) inset;
+    cursor:initial;
+    color:getColor(scarpaFlowLight);
+
+    span {
+        color:getColor(scarpaFlowLight);
+    }
+}
+
 @mixin icon-button-deco {
     background-color:getColor(straw);
     box-shadow:none;

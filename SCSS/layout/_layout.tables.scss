@@ -3,20 +3,20 @@
     display: flex;
     flex-direction: column;
 
-    &__row, &__header {
-        border-bottom:1px solid getColor(scarpaFlowLight);  
-        // display: grid;
-        // grid-auto-flow: column;
-        // grid-auto-columns: 2fr;
+    &__row, &__header, &__footer {        
         display:flex;
         gap: 8px;
+    }
+
+    &__row, &__header {
+        border-bottom:1px solid getColor(scarpaFlowLight);  
     }
 
     &__header {
         @extend .cm-u-text-black-mouse;
     }
 
-    &__row {
+    &__row, &__footer {
         @extend .cm-u-text-mouse;
         align-items: center;
         height: getSize($huge);
@@ -24,6 +24,10 @@
 
     .tablecell {
         $block:&;
+        &-long, &-medium, &-short {
+            display: flex;
+            align-items: center;
+        }
         &-long {
             flex:2;
             //overflow: hidden;

@@ -58,6 +58,11 @@
         @include icon-button-small;
         @include icon-button-error;
     }
+
+    &--disabled {
+        @include icon-button-small;
+        @include icon-button-disabled;
+    }
 }
 
 .cm-o-icon-button-enormous {

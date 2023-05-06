@@ -7,13 +7,14 @@ const userDetailsSection = $('#userDetails');
 const playersListSection = $('#playersList');
 const playerDetailsSection = $('#playerDetails');
 
-
 //containers and lists
 const notifsContainer = $('#notifsList');
 const usersListContainer = $('#usersListContainer');
 const playersListContainer = $('#playersListContainer');
 const modalContainer = $('.cm-c-modal');
 const searchResultsListContainer = $('#searchResultsListContainer');
+const tablePaginationUsers = $('#tablePaginationUsers');
+const tablePaginationPlayers = $('#tablePaginationPlayers');
 
 //elements
 const logo = $('.cm-o-logo');
@@ -29,6 +30,7 @@ const modalBig = $('#modalBig');
 const modalContainerBg = $('.cm-c-modal-background');
 const searchUsersBtn = $('#searchUsersBtn');
 const searchPlayersBtn = $('#searchPlayersBtn');
+const sortBtns = document.querySelectorAll('.cm-o-sortButton');
 
 //forms and form buttons
 const userDetailsForm = $('#userDetailsForm');
@@ -59,7 +61,6 @@ const userDetailsFieldForm1write = $('#userForm1write');
 const userDetailsFieldForm2read = $('#userForm2read');
 const userDetailsFieldForm2write = $('#userForm2write');
 const userDetailsFormAddBtn = $('#userDetailsFormAddBtn');
-
 
 //playerDetails Fields
 const playerActive = $('#playerActive');
