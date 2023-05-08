@@ -15,6 +15,7 @@ const modalContainer = $('.cm-c-modal');
 const searchResultsListContainer = $('#searchResultsListContainer');
 const tablePaginationUsers = $('#tablePaginationUsers');
 const tablePaginationPlayers = $('#tablePaginationPlayers');
+const tablePaginationSearchResults = $('#tablePaginationSearchResults');
 
 //elements
 const logo = $('.cm-o-logo');
@@ -30,6 +31,7 @@ const modalBig = $('#modalBig');
 const modalContainerBg = $('.cm-c-modal-background');
 const searchUsersBtn = $('#searchUsersBtn');
 const searchPlayersBtn = $('#searchPlayersBtn');
+const searchUsersInModalBtn = $('#searchUsersInModalBtn');
 const sortBtns = document.querySelectorAll('.cm-o-sortButton');
 
 //forms and form buttons
@@ -47,7 +49,7 @@ const playerDetailsFormDeleteBtn = $('#playerDetailsFormDeleteBtn');
 
 //searchForm Fields
 const searchUser = $('#searchUser');
-const searchUserInModal = $('#searchUserInModal');
+const searchUserInModalInput = $('#searchUserInModalInput');
 const searchPlayer = $('#searchPlayer');
 
 //userDetails Fields

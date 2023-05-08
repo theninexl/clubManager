@@ -30,7 +30,7 @@
             <div class="modal-body">
                 <form class="cm-c-form-simple-hrz" id="searchUsersInModalForm">
                     <div class="cm-c-field-icon cm-u-spacer-mb-bigger">
-                        <input class="cm-c-field-icon__input" id="searchUserInModal" name="searchUser" placeholder="Search users">
+                        <input class="cm-c-field-icon__input" id="searchUserInModalInput" name="" placeholder="Search users">
                         <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchUsersInModalBtn"><span class="material-symbols-outlined">search</span></button>
                     </div>                    
                 </form>
@@ -38,12 +38,15 @@
                     <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
                         <p class="cm-u-text-black-cat">Search results</p>
                     </header>
-                    <div class="cm-l-tabledata cm-u-spacer-mb-huge" id="searchResultsListContainer">
-                        <div class="cm-l-tabledata__row">
-                            <div class="tablecell-long">Name</div>
-                            <div class="tablecell-auto"><button  class="cm-o-button-cat-small--primary">Choose</button>
+                    <div class="cm-l-tabledata cm-u-spacer-mb-huge">
+                        <div class="cm-l-tabledata__header">
+                            <div class="tablecell-long"><button data-field="userName" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-long"><button data-field="userLastname" class="cm-o-sortButton">LastName <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"></div>
                         </div>
-                    </div>                    
+                        <div id="searchResultsListContainer">results</div>
+                        <div id="tablePaginationSearchResults"></div> 
+                    </div>                   
                 </section>
             </div>
         </div>
@@ -243,13 +246,13 @@
                     </header>
                     <div class="cm-l-tabledata cm-u-spacer-mb-huge">
                         <div class="cm-l-tabledata__header">
-                            <div class="tablecell-medium">Name </div>
-                            <div class="tablecell-medium">Lastname</div>
-                            <div class="tablecell-medium">Alias</div>
-                            <div class="tablecell-medium">Country</div>
-                            <div class="tablecell-short cm-u-centerText">Dorsal</div>
-                            <div class="tablecell-medium">Position</div>
-                            <div class="tablecell-short cm-u-centerText">Active</div>
+                            <div class="tablecell-medium"><button data-field="userName" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="userLastname" class="cm-o-sortButton">LastName <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="alias" class="cm-o-sortButton">Alias <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="country" class="cm-o-sortButton">Country <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText"><button data-field="dorsal" class="cm-o-sortButton">Dorsal <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="position" class="cm-o-sortButton">Position <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText"><button data-field="position" class="cm-o-sortButton">active <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
                             <div class="tablecell-short cm-u-centerText">Edit</div>
                         </div>
                         <div id="playersListContainer">

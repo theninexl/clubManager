@@ -997,9 +997,8 @@ strong {
   display: flex;
   align-items: center;
   padding: 0;
-}
-
-/** Components **/
+  min-height: 24px;
+} /** Components **/
 .cm-c-navbar {
   border-bottom: 1px solid getColot(scarpaFlowLight);
   display: flex;
@@ -1359,8 +1358,8 @@ strong {
   margin: 0 auto;
   padding: 24px;
   position: relative;
-  top: 25%;
-  width: 1120px;
+  top: 15%;
+  width: 928px;
 }
 .cm-c-modal__bigContent .modal-footer {
   display: flex;

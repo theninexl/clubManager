@@ -14,14 +14,21 @@ const api = axios.create({
 
 //pagination and sorting parameters
 let currentListPage = 1;
-const listLimit = 10;
+let listLimit = 10;
 let listSortBy = 'id';
 let listOrder = 'desc';
+let searchTerm = '';
 
 //añadir la paginación a las tablas con listados
 const paginateList = (users, container) =>{
     const count = users.count;
     const maxPages = Math.ceil(count/listLimit);
+    container.innerHTML = '';
+    // console.log('<------- paginateList');
+    // console.log('añadir paginacion para: '+count);
+    // console.log('limite listado: '+listLimit);
+    // console.log('paginas: '+maxPages);
+    //construir la tabla de paginación
     const paginationContainer = document.createElement('div');
     paginationContainer.classList.add('cm-l-tabledata__footer');
     paginationContainer.classList.add('cm-u-spacer-mt-medium');
@@ -46,33 +53,33 @@ const paginateList = (users, container) =>{
     paginationCellForward.appendChild(paginationButtonForward);
     paginationContainer.appendChild(paginationCellBack);
     paginationContainer.appendChild(paginationCellInfo);
-    paginationContainer.appendChild(paginationCellForward);
-    if (location.hash.startsWith('#manageUsers')){ 
-        tablePaginationUsers.innerHTML = '';
-        tablePaginationUsers.appendChild(paginationContainer);}
-    else if (location.hash.startsWith('#manageTeam')){ 
-        tablePaginationPlayers.innerHTML = '';
-        tablePaginationPlayers.appendChild(paginationContainer);}
+    paginationContainer.appendChild(paginationCellForward);    
+    container.appendChild(paginationContainer);
 
+    //botones de paginacion
     const activatePagination = () => {
-        const goNextBtn = document.querySelector('#goNextPage');
-        const goPrevBtn = document.querySelector('#goPrevPage');
+        const goNextBtn = container.querySelector('#goNextPage');
+        const goPrevBtn = container.querySelector('#goPrevPage');
         const goNextBtnActive = goNextBtn.classList.contains('cm-o-icon-button-small--primary');
         const goPrevBtnActive = goPrevBtn.classList.contains('cm-o-icon-button-small--primary');
 
         if (goNextBtnActive) {
             goNextBtn.addEventListener('click',()=>{
+                console.log('searchTerm: '+searchTerm);
                 currentListPage++;
                 if (location.hash.startsWith('#manageUsers')){ getUsers({page:currentListPage});}
                 else if (location.hash.startsWith('#manageTeam')){ getPlayers({page:currentListPage})}
+                else if (location.search.startsWith('?searchUser=')){ filterUsers(searchTerm, {page:currentListPage, limit:5})}
             })
         }
     
         if (goPrevBtnActive) {
+            console.log('searchTerm: '+searchTerm);
             goPrevBtn.addEventListener('click',()=>{
                 currentListPage--;
                 if (location.hash.startsWith('#manageUsers')){ getUsers({page:currentListPage});}
                 else if (location.hash.startsWith('#manageTeam')){ getPlayers({page:currentListPage})}
+                else if (location.search.startsWith('?searchUser=')){ filterUsers(searchTerm, {page:currentListPage, limit:5})}
             })
         }
     }
@@ -132,17 +139,17 @@ sortBtns.forEach(btn => {
         if (location.hash.startsWith('#manageUsers')){ 
             getUsers({page:currentListPage, sortBy:sortField, order:listOrder});
         } else if (location.hash.startsWith('#manageTeam')){ 
+            console.log('llamo a getPlayers');
             getPlayers({page:currentListPage, sortBy:sortField, order:listOrder});
         }        
     })
 })
 //listar usuarios
 const listUsers = (users,container,{clean = true} = {}) => {
-    console.log('list users');
+    //console.log('list users');
     if(clean) {
         container.innerHTML = '';
     }
-
     users.items.forEach(user => {
         const personContainer = document.createElement('div');
         personContainer.classList.add('cm-l-tabledata__row');
@@ -213,24 +220,27 @@ const cleanUserDetails = () => {
 }
 //listar resultados de busqueda
 const listSearchResults = (results,container,searchTerm,{clean = true} = {}) => {
-    console.log(results);
+    searchTerm = searchTerm;
     if(clean) {
         container.innerHTML = '';
     }
 
-    if (results.length === 0) {
+    if (results.count === 0) {
         container.innerHTML = 'No results. Try again.';
-    }    
-
-    results.forEach(result => {
-        console.log('name'+result.userName);
+    }
+    
+    results.items.forEach(result => {
         const resultRow = document.createElement('div');
         resultRow.classList.add('cm-l-tabledata__row');
         const cellName = document.createElement('div');
         cellName.classList.add('tablecell-long');
-        cellName.textContent = result.userName + ' ' + result.userLastname;
+        cellName.textContent = result.userName;
+        const cellLastname = document.createElement('div');
+        cellLastname.classList.add('tablecell-long');
+        cellLastname.textContent = result.userLastname;
         const btnCell = document.createElement('div');
-        btnCell.classList.add('tablecell-auto');
+        btnCell.classList.add('tablecell-medium');
+        btnCell.classList.add('cm-u-textRight');
         const editUserBtn = document.createElement('button');
         editUserBtn.classList.add('cm-o-button-cat-small--primary');
         editUserBtn.setAttribute('id','editUserDetailsBtn');
@@ -239,14 +249,14 @@ const listSearchResults = (results,container,searchTerm,{clean = true} = {}) => 
         btnCell.appendChild(editUserBtn);
 
         resultRow.appendChild(cellName);
+        resultRow.appendChild(cellLastname);
         resultRow.appendChild(btnCell);
         container.appendChild(resultRow);
         
     });
     modalBig.classList.remove('cm-u-inactive');
     modalContainer.classList.remove('cm-u-inactive');
-    console.log(searchUserInModal);
-    searchUserInModal.value = searchTerm;
+    searchUserInModalInput.value = searchTerm;
 
     const editUserBtns = document.querySelectorAll('#editUserDetailsBtn');
 
@@ -270,7 +280,7 @@ const listSearchResults = (results,container,searchTerm,{clean = true} = {}) => 
                 location.hash='#editPlayer='+btn.getAttribute('data-userId');
             })
         })
-    }    
+    } 
 }
 //listar plantilla de jugadores
 const listPlayers = (players,container,{clean = true}={}) => {
@@ -407,15 +417,16 @@ const cleanPlayerDetails = () => {
 }
 
 
-
 //Api calls
 
 //obtener usuarios
-const getUsers = async ({page = currentListPage, sortBy = 'id', order = 'asc'} = {}) => {
+const getUsers = async ({page = currentListPage, limit = listLimit, sortBy = 'id', order = 'asc'} = {}) => {
     //console.log('getUsers: page:'+page+' limit:'+listLimit+' sortBy:'+sortBy+' order:'+order);
-    const { data } = await api('/users',{ params: { page: page, limit:listLimit, sortBy:sortBy, order:order } });
+    const { data } = await api('/users',{ params: { page: page, limit: listLimit, sortBy:sortBy, order:order } });
     const users = data;
-    //console.log(data);
+    listLimit = limit;
+    // console.log('get users');
+    // console.log(data);
     listUsers(users,usersListContainer);
     paginateList(users, tablePaginationUsers);
 }
@@ -488,14 +499,18 @@ const deleteUser = async(userID) => {
     
 }
 //filtrar usuarios por busqueda
-const filterUsers = async (searchTerm) => {
-    const { data } = await api.get('/users?search='+searchTerm);
-    const results = data;    
+const filterUsers = async (searchTerm, {page = 1, limit = listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+    listLimit = limit;
+    const { data } = await api.get('/users?search='+searchTerm,{ params: { page: currentListPage, limit: listLimit, sortBy:sortBy, order:order } });
+    const results = data;        
     listSearchResults(results,searchResultsListContainer,searchTerm);
+    if (results.count > 0) {
+        paginateList(results, tablePaginationSearchResults);
+    }    
 }
 //obtener jugadores
 const getPlayers = async ({page = currentListPage, sortBy = 'id', order = 'asc'} = {}) => {
-    const { data } = await api('/players',{ params: { page: page, limit:listLimit } });
+    const { data } = await api('/players',{ params: { page: page, limit:listLimit, sortBy:sortBy, order:order } });
     const players = data;
     listPlayers(players,playersListContainer);
     paginateList(players, tablePaginationPlayers);

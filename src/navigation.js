@@ -8,13 +8,6 @@ notifsBtn.addEventListener('click',()=>{
     notifsContainer.classList.toggle('cm-u-inactive')
     notifsBtn.classList.toggle('active');
 });
-//cerrar modal cuando pulsas fuera del contenido
-modalContainerBg.addEventListener('click',()=>{
-    let uri = window.location.toString();
-    let clean_uri = uri.substring(0,uri.indexOf("?")); 
-    window.history.replaceState({},document.title,clean_uri);
-    modalContainer.classList.add('cm-u-inactive');
-});
 //boton de abrir listado de usuarios
 manageUsersBtn.addEventListener('click',()=>{
     if (location.hash.startsWith('#manageUsers')){
@@ -23,13 +16,13 @@ manageUsersBtn.addEventListener('click',()=>{
         let uri = window.location.toString();
         let clean_uri = uri.substring(0,uri.indexOf("#"));
         window.history.replaceState({},document.title,clean_uri);
-    // } else if ( manageUsersBtn.classList.contains('active')) {
-    //     manageUsersBtn.classList.remove('active');
-    //     navigator();
+        currentHash = location.hash;
     } else {
         manageUsersBtn.classList.add('active');
         manageTeamBtn.classList.remove('active');
-        location.hash='#manageUsers';}
+        currentListPage = 1;
+        location.hash='#manageUsers';
+    }
 });
 //boton añadir usuario dentro de listado de usuarios
 addUsersBtn.addEventListener('click',()=>{
@@ -61,6 +54,7 @@ manageTeamBtn.addEventListener('click',()=>{
     } else {
         manageTeamBtn.classList.add('active');
         manageUsersBtn.classList.remove('active');
+        currentListPage = 1;
         location.hash='#manageTeam';}
 });
 //boton añadir jugador dentro de listado de jugadores
@@ -85,6 +79,30 @@ playerDetailsFormUpdateBtn.addEventListener('click',()=>{
 //boton borrar dentro de detalles de jugadores
 playerDetailsFormDeleteBtn.addEventListener('click',()=>{
     confirmDeletePlayerModal();    
+})
+//cerrar modal cuando pulsas fuera del contenido
+modalContainerBg.addEventListener('click',()=>{
+    let uri = window.location.toString();
+    let clean_uri = uri.substring(0,uri.indexOf("?")); 
+    window.history.replaceState({},document.title,clean_uri);
+    modalContainer.classList.add('cm-u-inactive');
+    //ver sobre qué seccion se ha pintado el modal para volver a añadir el hash correspondiente
+    if (manageUsersBtn.classList.contains('active') === true) {
+        console.log('estoy en manage users');
+        location.hash='#manageUsers';
+    } else if (manageTeamBtn.classList.contains('active') === true) {
+        console.log('estoy en plantilla');
+        location.hash='#manageTeam';
+    }
+});
+//boton buscar dentro modal
+searchUsersInModalBtn.addEventListener('click',()=>{
+    //asignamos el name al input correcto para que busque en la seccion que procede
+    if (location.search.startsWith('?searchUser=')){
+        searchUserInModalInput.setAttribute('name','searchUser');
+    } else if (location.search.startsWith('?searchPlayer=')) {
+        searchUserInModalInput.setAttribute('name','searchPlayer');
+    }
 })
 
 
@@ -159,7 +177,6 @@ const editUserPage = () => {
 //modal buscar usuarios
 const searchUsers = () => {
     // console.log('SEARCH');
-    // console.log(location.search);
     let uri = window.location.toString();
     let clean_uri = uri.substring(0,uri.indexOf("#")); 
     window.history.replaceState({},document.title,clean_uri);
@@ -167,11 +184,11 @@ const searchUsers = () => {
     usersListSection.classList.remove('cm-u-inactive');
     userDetailsSection.classList.add('cm-u-inactive');
     playersListSection.classList.add('cm-u-inactive');
-    const [_,searchTerm] = location.search.split('='); 
-    // console.log('search:'+searchTerm);
-    cleanUserDetails();
+    const [_,searchTermObtained] = location.search.split('='); 
+    searchTerm = searchTermObtained;
+    //cleanUserDetails();
     getUsers();
-    filterUsers(searchTerm);
+    filterUsers(searchTermObtained, {limit:5});
 }
 //modal confirmar borrar 
 const confirmDeleteModal = ()=>{
