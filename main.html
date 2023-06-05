@@ -30,20 +30,16 @@
             <div class="modal-body">
                 <form class="cm-c-form-simple-hrz" id="searchUsersInModalForm">
                     <div class="cm-c-field-icon cm-u-spacer-mb-bigger">
-                        <input class="cm-c-field-icon__input" id="searchUserInModalInput" name="" placeholder="Search users">
-                        <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchUsersInModalBtn"><span class="material-symbols-outlined">search</span></button>
+                        <input class="cm-c-field-icon__input" id="searchInModalInput" name="" placeholder="Search users" type="search" value="">
+                        <button type="submit" class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchInModalBtn"><span class="material-symbols-outlined">search</span></button>
                     </div>                    
                 </form>
                 <section class="cm-l-body">
                     <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
-                        <p class="cm-u-text-black-cat">Search results</p>
+                        <p class="cm-u-text-black-cat" id="modalBigListTitle">Search results</p>
                     </header>
                     <div class="cm-l-tabledata cm-u-spacer-mb-huge">
-                        <div class="cm-l-tabledata__header">
-                            <div class="tablecell-long"><button data-field="userName" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-long"><button data-field="userLastname" class="cm-o-sortButton">LastName <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-medium"></div>
-                        </div>
+                        <div id="searchResultsListHeaderContainer"></div>
                         <div id="searchResultsListContainer">results</div>
                         <div id="tablePaginationSearchResults"></div> 
                     </div>                   
@@ -91,7 +87,7 @@
                     <li><button id="manageTeamBtn" class="cm-o-button-cat--ghost">Plantilla</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Contratos</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
-                    <li><button class="cm-o-button-cat--ghost-inactive">Maestros</button></li>
+                    <li><button class="cm-o-button-cat--ghost">Maestros</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Reporting</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Más opciones</button></li>
                 </ul>
@@ -113,7 +109,7 @@
                 </header>
                 <section class="cm-l-body">
                     <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
-                        <p class="cm-u-text-black-cat">List of players</p>
+                        <p class="cm-u-text-black-cat">List of Users</p>
                     </header>
                     <div class="cm-l-tabledata cm-u-spacer-mb-huge">
                         <div class="cm-l-tabledata__header">
@@ -283,10 +279,13 @@
                 <section class="cm-l-body">
                     <div class="cm-c-accordion cm-u-spacer-mb-huge">
                         <form class="cm-l-form-panel cm-c-form-simple" id="playerDetailsForm">
-                            <div class="cm-c-accordion__button active">
+                            <!-- <div class="cm-c-accordion__button active">
                                 <div class="accordion-button__text"><p class="cm-u-text-black-cat">General data</p></div>
                                 <div class="accordion-button__icon"><span class="material-symbols-outlined">expand_more</span></div>
-                            </div>
+                            </div> -->
+                            <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                                <p class="cm-u-text-black-cat">General data</p>
+                            </header>
                             <div class="cm-c-accordion__panel">
                                 <div class="cm-l-form-panel__row">
                                     <label for="playerActive" class="panel-field-short">
@@ -330,21 +329,6 @@
                                         <span class="assistance" aria-live="polite">Country of origin</span>
                                     </label>
                                 </div>
-                                <!-- <div class="cm-l-form-panel__row">
-                                    <label for="playerNaturalPosition" class="panel-field-long">
-                                        <span>Country</span>
-                                        <div class="cm-c-select-icon">
-                                            <select class="cm-c-select-icon__select" type="search" placeholder="Search league" name="playerNaturalPosition" id="playerNaturalPosition">
-                                                <option value="">Choose</option>
-                                                <option value="1">Position 1</option>
-                                                <option value="2">Position 2</option>
-                                                <option value="3">Position 3</option>
-                                                <option value="4">Position 4</option>
-                                                <option value="5">Position 5</option>
-                                                </select>
-                                        </div> 
-                                    </label>
-                                </div> -->
                                 <div class="cm-l-form-panel__row">
                                     <label for="playerPassportNumber" class="panel-field-short">
                                         <span>Passport number</span>
@@ -369,12 +353,19 @@
                                         <span>Valid until</span>
                                         <input type="date" id="playerIdDate" name="playerIdDate" placeholder="dd/mm/yyyy">
                                     </label>
-                                    <!-- <div class="panel-field-short">
-                                        <div class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">add_a_photo</span></div>
-                                        <a href="#" class="cm-u-text-black-mouse">1 attachment</a>
-                                        <div class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">delete</span></div>
-                                    </div> -->
                                 </div>
+                                <!-- subir fotos, para cuando sea posible -->
+                                <!-- <div class="cm-l-form-panel__row">
+                                    <label for="idPIcture" class="panel-field-long">
+                                        <span>ID photo</span>
+                                        <div class="cm-c-field-icon fileUpload">
+                                            <input class="cm-c-field-icon__input pictureInput" id="idPIcture" type="file" placeholder="Upload ID picture" name="idPIcture" style="display:none;">
+                                            <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="idPIctureAdd"><span class="material-symbols-outlined">add_a_photo</span></button>
+                                            <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="idPIctureDelete"><span class="material-symbols-outlined">delete</span></button>
+                                            <span class="pictureInputName"></span>
+                                        </div>                                        
+                                    </label>
+                                </div> -->
                                 <div class="cm-l-form-panel__row">
                                     <label for="playerSocialSecurityNumber" class="panel-field-short">
                                         <span>Social security number</span>
@@ -388,27 +379,30 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="cm-c-accordion__button active">
+                            <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                                <p class="cm-u-text-black-cat">Sport details</p>
+                            </header>
+                            <!-- <div class="cm-c-accordion__button active">
                                 <div class="accordion-button__text"><p class="cm-u-text-black-cat">Sport details</p></div>
                                 <div class="accordion-button__icon"><span class="material-symbols-outlined">expand_more</span></div>
-                            </div>
+                            </div> -->
                             <div class="cm-c-accordion__panel">
-                                <div class="cm-l-form-panel__row">
-                                    <label for="playerOriginClub" class="panel-field-long">
-                                        <span>Club of origin</span>
-                                        <div class="cm-c-field-icon">
-                                            <input class="cm-c-field-icon__input" id="playerOriginClub" type="search" placeholder="Search club" name="clubOfOrigin">
-                                            <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="playerOriginClubSearchBtn"><span class="material-symbols-outlined">search</span></button>
-                                        </div>                    
-                                    </label>
-                                </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="playerLeagueOrigin" class="panel-field-long">
                                         <span>League of origin</span>
                                         <div class="cm-c-field-icon">
                                             <input class="cm-c-field-icon__input" id="playerLeagueOrigin" type="search" placeholder="Search league" name="leagueOfOrigin">
                                             <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="playerLeagueOriginSearchBtn"><span class="material-symbols-outlined">search</span></button>
-                                        </div>                    
+                                        </div>                
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerOriginClub" class="panel-field-long">
+                                        <span>Club of origin</span>
+                                        <div class="cm-c-field-icon">
+                                            <input class="cm-c-field-icon__input" id="playerOriginClub" type="search" placeholder="Search club" name="clubOfOrigin">
+                                            <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="playerOriginClubSearchBtn"><span class="material-symbols-outlined">search</span></button>
+                                        </div>              
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
@@ -423,7 +417,7 @@
                                                 <option value="4">Position 4</option>
                                                 <option value="5">Position 5</option>
                                                 </select>
-                                        </div>                    
+                                        </div>           
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
@@ -435,6 +429,8 @@
                                         <span>Weight(kg)</span>
                                         <input type="text" id="playerWeight" name="playerWeight" placeholder="Add weight">
                                     </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
                                     <label for="playerWinspan" class="panel-field-short">
                                         <span>Arms wingspan</span>
                                         <input type="text" id="playerWinspan" name="playerWinspan" placeholder="Add wingspan">
@@ -461,10 +457,13 @@
                                     <a href="#" class="cm-u-text-black-cat">Add intermediary</a>
                                 </div> -->
                             </div>
-                            <div class="cm-c-accordion__button active">
+                            <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                                <p class="cm-u-text-black-cat">Contract details</p>
+                            </header>
+                            <!-- <div class="cm-c-accordion__button active">
                                 <div class="accordion-button__text"><p class="cm-u-text-black-cat">Contract</p></div>
                                 <div class="accordion-button__icon"><span class="material-symbols-outlined">expand_more</span></div>
-                            </div>
+                            </div> -->
                             <div class="cm-c-accordion__panel">
                                 <div class="cm-l-form-panel__row">
                                     <label for="playerStartContractDate" class="panel-field-short">

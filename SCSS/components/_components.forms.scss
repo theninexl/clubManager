@@ -111,13 +111,7 @@
             
         }
 
-    }
-
-
-    .error {
-        color: getColor(danger);
-        @include cm-qs-bold;
-    }    
+    }  
 }
 
 .cm-c-field-icon {
@@ -127,6 +121,7 @@
     height:getSize($huge);
     display: flex;
     overflow: hidden;
+    
     &__input {
         $block:&;
         border:0;
@@ -136,6 +131,44 @@
         @include font-size($defFontSizeDT, $lineHeightDT);
         @include cm-qs-normal;
     }
+
+    &--focus {
+        border-color:getColor(sandyBrown);
+        border-width:2px;
+        outline:none;
+    }
+
+    &.error {
+        border:1px solid getColor(danger);
+
+        .cm-c-field-icon__input {
+            color: getColor(danger);
+            @include cm-qs-bold;
+        }
+        
+    
+        .cm-c-field-icon__input::placeholder {
+            color: getColor(danger);
+        }
+    }
+    /*hides input file and restyles input */
+    input[type=file] {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    &.fileUpload {
+        cursor: pointer;
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    
+
     /* clears the ‘X’ from Internet Explorer */
     input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
     input[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
@@ -144,6 +177,8 @@
     input[type="search"]::-webkit-search-cancel-button,
     input[type="search"]::-webkit-search-results-button,
     input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+
 }
 
 .cm-c-select-icon {
@@ -165,10 +200,18 @@
         color:getColor(scarpaFlow);
         outline: none;
         padding: 0 getSize($medium);
-        flex-grow:1;
+        width: 100%;
+        
         @include font-size($defFontSizeDT, $lineHeightDT);
         @include cm-qs-normal;
     }
+
+    &--focus {
+        border-color:getColor(sandyBrown);
+        border-width:2px;
+        outline:none;
+    }
+
     &::after {
         content:"expand_more";
         border-radius:50%;

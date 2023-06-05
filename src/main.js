@@ -16,8 +16,50 @@ const api = axios.create({
 let currentListPage = 1;
 let listLimit = 10;
 let listSortBy = 'id';
-let listOrder = 'desc';
+let listOrder = 'asc';
 let searchTerm = '';
+
+//temporary store of data
+//let tempData;
+
+//faking focus state for search and select fields w/ icon
+const searchWithIconFields = document.querySelectorAll('.cm-c-field-icon__input');
+const selectWithIconFields = document.querySelectorAll('.cm-c-select-icon__select');
+searchWithIconFields.forEach(field => {
+    field.addEventListener('focus', event => {
+        const fieldContainer = field.closest('.cm-c-field-icon');
+        fieldContainer.classList.add('cm-c-field-icon--focus');
+        playerLeagueOriginContainer.classList.remove('error');
+    });
+    field.addEventListener('focusout', event => {
+        const fieldContainer = field.closest('.cm-c-field-icon');
+        fieldContainer.classList.remove('cm-c-field-icon--focus');
+
+    });
+});
+selectWithIconFields.forEach(field => {
+    field.addEventListener('focus', event => {
+        const fieldContainer = field.closest('.cm-c-select-icon');
+        fieldContainer.classList.add('cm-c-select-icon--focus');
+
+    });
+    field.addEventListener('focusout', event => {
+        const fieldContainer = field.closest('.cm-c-select-icon');
+        fieldContainer.classList.remove('cm-c-select-icon--focus');
+
+    });
+});
+//restylizing file inputs (lo dejamos para cuando se pueda)
+// const inputUpload = document.querySelector('.pictureInput');
+// const inputUploadName = document.querySelector('.pictureInputName');
+
+// inputUpload.addEventListener("change", ()=>{
+//     const inputImage = inputUpload.files[0]; 
+   
+//     inputUploadName.innerText = inputImage.name;
+// });
+
+
 
 //añadir la paginación a las tablas con listados
 const paginateList = (users, container) =>{
@@ -27,7 +69,7 @@ const paginateList = (users, container) =>{
     // console.log('<------- paginateList');
     // console.log('añadir paginacion para: '+count);
     // console.log('limite listado: '+listLimit);
-    // console.log('paginas: '+maxPages);
+    // console.log('paginas maximas: '+maxPages);
     //construir la tabla de paginación
     const paginationContainer = document.createElement('div');
     paginationContainer.classList.add('cm-l-tabledata__footer');
@@ -65,21 +107,54 @@ const paginateList = (users, container) =>{
 
         if (goNextBtnActive) {
             goNextBtn.addEventListener('click',()=>{
-                console.log('searchTerm: '+searchTerm);
                 currentListPage++;
+                const params = new URLSearchParams(document.location.search);
+                console.log('currentListPage: '+currentListPage);
                 if (location.hash.startsWith('#manageUsers')){ getUsers({page:currentListPage});}
                 else if (location.hash.startsWith('#manageTeam')){ getPlayers({page:currentListPage})}
-                else if (location.search.startsWith('?searchUser=')){ filterUsers(searchTerm, {page:currentListPage, limit:5})}
+                else if (location.search.startsWith('?searchAction=searchUser')){ 
+                    searchTerm = searchInModalInput.value;
+                    filterUsers(searchTerm, {page:currentListPage, limit:5})
+                } else if (location.search.startsWith('?searchAction=searchPlayer')){ 
+                    searchTerm = searchInModalInput.value;
+                    filterPlayers(searchTerm, {page:currentListPage, limit:5});
+                } else if (location.search.startsWith('?searchAction=searchLeague')){ 
+                    console.log("click filtrando ligas adelante");
+                    searchTerm = searchInModalInput.value;
+                    filterLeagues(searchTerm, {page:currentListPage, limit:5});
+                } else if (location.search.startsWith('?searchAction=searchTeam')){ 
+                    const leagueOrigin = params.get('leagueOrigin');
+                    console.log('league of origin: '+leagueOrigin);
+                    searchTerm = searchInModalInput.value;
+                    filterTeams(leagueOrigin, searchTerm, {page:currentListPage, limit:5});
+                }
+                
             })
         }
     
         if (goPrevBtnActive) {
-            console.log('searchTerm: '+searchTerm);
             goPrevBtn.addEventListener('click',()=>{
                 currentListPage--;
+                const params = new URLSearchParams(document.location.search);
+                console.log('currentListPage: '+currentListPage);
                 if (location.hash.startsWith('#manageUsers')){ getUsers({page:currentListPage});}
                 else if (location.hash.startsWith('#manageTeam')){ getPlayers({page:currentListPage})}
-                else if (location.search.startsWith('?searchUser=')){ filterUsers(searchTerm, {page:currentListPage, limit:5})}
+                else if (location.search.startsWith('?searchAction=searchUser')){ 
+                    searchTerm = searchInModalInput.value;
+                    filterUsers(searchTerm, {page:currentListPage, limit:5});
+                } else if (location.search.startsWith('?searchAction=searchPlayer')){ 
+                    searchTerm = searchInModalInput.value;
+                    filterPlayers(searchTerm, {page:currentListPage, limit:5});
+                } else if (location.search.startsWith('?searchAction=searchLeague')){ 
+                    console.log("click filtrando ligas atrás");
+                    searchTerm = searchInModalInput.value;
+                    filterLeagues(searchTerm, {page:currentListPage, limit:5});
+                } else if (location.search.startsWith('?searchAction=searchTeam')){ 
+                    const leagueOrigin = params.get('leagueOrigin');
+                    searchTerm = searchInModalInput.value;
+                    filterTeams(leagueOrigin, searchTerm, {page:currentListPage, limit:5});
+                }
+                
             })
         }
     }
@@ -103,26 +178,50 @@ const paginateList = (users, container) =>{
         paginationButtonBack.classList.remove('cm-o-icon-button-small--disabled');
         paginationButtonBack.classList.add('cm-o-icon-button-small--primary');
         activatePagination();
-    } else {
+    } else if (maxPages === 1 && currentListPage === 1 ) {
         // console.log('solo hay una página');
         if (location.hash.startsWith('#manageUsers')){tablePaginationUsers.innerHTML = '';}
         else if (location.hash.startsWith('#manageTeam')){tablePaginationPlayers.innerHTML = '';}
+        else if (location.hash.startsWith('#search')) {
+            tablePaginationSearchResults.innerHTML = '';
+        }
     }
 }
-//funcionalidad de reordenar los elementos de un listado por campo
-sortBtns.forEach(btn => {
+//funcion botones reordenar listados de resultados
+const sortButton = (element, elements) => {
     //span que cuelgan del botón y que muestran los iconos descendentes o ascendentes
-    const descIcon = btn.querySelector(':scope > span.sortIcon--desc');
-    const ascIcon = btn.querySelector(':scope > span.sortIcon--asc');  
+    const descIcon = element.querySelector(':scope > span.sortIcon--desc');
+    const ascIcon = element.querySelector(':scope > span.sortIcon--asc'); 
 
-    btn.addEventListener('click', event => {
-        //oculto todos los iconos de todos los botones en cada click
-        sortBtns.forEach(btn =>{ 
-            const descIcon = btn.querySelector(':scope > span.sortIcon--desc');
-            const ascIcon = btn.querySelector(':scope > span.sortIcon--asc');  
+    element.addEventListener('click', event => {
+        //oculto todos los iconos de todos los botones en cada click        
+        elements.forEach(element =>{ 
+            const descIcon = element.querySelector(':scope > span.sortIcon--desc');
+            const ascIcon = element.querySelector(':scope > span.sortIcon--asc');  
             ascIcon.classList.add('cm-u-inactive');
             descIcon.classList.add('cm-u-inactive'); 
         });        
+        //recojo el nombre del campo
+        const sortField = element.getAttribute('data-field');
+
+        //llamo a la api para que filtre por ese campo
+        if (location.hash.startsWith('#manageUsers')){ 
+            getUsers({page:currentListPage, sortBy:sortField, order:listOrder});
+        } else if (location.hash.startsWith('#manageTeam')){ 
+            console.log('llamo a getPlayers');
+            getPlayers({page:currentListPage, sortBy:sortField, order:listOrder});
+        } else if (location.search.startsWith('?searchAction=searchUser')) {
+            const [_,searchTermObtained] = location.search.split('=');
+            filterUsers(searchTermObtained, {page:1, limit:5, sortBy:sortField, order:listOrder});
+        } else if (location.search.startsWith('?searchAction=searchPlayer')) {
+            const [_,searchTermObtained] = location.search.split('=');
+            filterPlayers(searchTermObtained, {page:1, limit:5, sortBy:sortField, order:listOrder});
+        } else if (location.hash.startsWith('#searchClub')) {
+            getTeams({page:1, limit:5, sortBy:sortField, order:listOrder});
+        } else if (location.hash.startsWith('#searchLeague')) {
+            getLeagues({page:1, limit:5, sortBy:sortField, order:listOrder});
+        }
+        
         //muestro el icono correspondiente para el botón que se pulsa
         if (listOrder === 'desc'){ 
             listOrder = 'asc';
@@ -133,20 +232,10 @@ sortBtns.forEach(btn => {
             ascIcon.classList.remove('cm-u-inactive');
             descIcon.classList.add('cm-u-inactive');            
         };
-        //recojo el nombre del campo
-        const sortField = btn.getAttribute('data-field');
-        //llamo a la api para que filtre por ese campo
-        if (location.hash.startsWith('#manageUsers')){ 
-            getUsers({page:currentListPage, sortBy:sortField, order:listOrder});
-        } else if (location.hash.startsWith('#manageTeam')){ 
-            console.log('llamo a getPlayers');
-            getPlayers({page:currentListPage, sortBy:sortField, order:listOrder});
-        }        
     })
-})
+}
 //listar usuarios
 const listUsers = (users,container,{clean = true} = {}) => {
-    //console.log('list users');
     if(clean) {
         container.innerHTML = '';
     }
@@ -218,7 +307,7 @@ const cleanUserDetails = () => {
     userDetailsFieldForm2read.checked = false;
     userDetailsFieldForm2write.checked = false;
 }
-//listar resultados de busqueda
+//listar resultados de busqueda en modal
 const listSearchResults = (results,container,searchTerm,{clean = true} = {}) => {
     searchTerm = searchTerm;
     if(clean) {
@@ -228,6 +317,61 @@ const listSearchResults = (results,container,searchTerm,{clean = true} = {}) => 
     if (results.count === 0) {
         container.innerHTML = 'No results. Try again.';
     }
+
+    if (searchResultsListHeaderContainer.childNodes.length === 0){
+        //create Header
+        const headerContainer = document.createElement('div');
+        headerContainer.classList.add('cm-l-tabledata__header');
+        const firstCell = document.createElement('div');
+        firstCell.classList.add('tablecell-long');    
+        const firstBtn = document.createElement('button');
+        firstBtn.classList.add('cm-o-sortButton');
+        firstBtn.setAttribute('data-field','userName');
+        firstBtn.textContent = 'Name ';
+        const firstCellBtnDescIcon = document.createElement('span');
+        firstCellBtnDescIcon.classList.add('material-symbols-outlined');
+        firstCellBtnDescIcon.classList.add('sortIcon--desc');
+        firstCellBtnDescIcon.classList.add('cm-u-inactive');
+        firstCellBtnDescIcon.textContent = 'expand_more';
+        const firstCellBtnAscIcon = document.createElement('span');
+        firstCellBtnAscIcon.classList.add('material-symbols-outlined');
+        firstCellBtnAscIcon.classList.add('sortIcon--asc');
+        firstCellBtnAscIcon.classList.add('cm-u-inactive');
+        firstCellBtnAscIcon.textContent = 'expand_less';
+        firstBtn.appendChild(firstCellBtnDescIcon);
+        firstBtn.appendChild(firstCellBtnAscIcon);
+        firstCell.appendChild(firstBtn);
+        const secondCell = document.createElement('div');
+        secondCell.classList.add('tablecell-long');
+        const secondBtn = document.createElement('button');
+        secondBtn.classList.add('cm-o-sortButton');
+        secondBtn.setAttribute('data-field','userLastname');
+        secondBtn.textContent = 'Lastname ';
+        const secondCellBtnDescIcon = document.createElement('span');
+        secondCellBtnDescIcon.classList.add('material-symbols-outlined');
+        secondCellBtnDescIcon.classList.add('sortIcon--desc');
+        secondCellBtnDescIcon.classList.add('cm-u-inactive');
+        secondCellBtnDescIcon.textContent = 'expand_more';
+        const secondCellBtnAscIcon = document.createElement('span');
+        secondCellBtnAscIcon.classList.add('material-symbols-outlined');
+        secondCellBtnAscIcon.classList.add('sortIcon--asc');
+        secondCellBtnAscIcon.classList.add('cm-u-inactive');
+        secondCellBtnAscIcon.textContent = 'expand_less';
+        secondBtn.appendChild(secondCellBtnDescIcon);
+        secondBtn.appendChild(secondCellBtnAscIcon);
+        secondCell.appendChild(secondBtn);
+        const thirdCell = document.createElement('div');
+        thirdCell.classList.add('tablecell-medium');
+        headerContainer.appendChild(firstCell);
+        headerContainer.appendChild(secondCell);
+        headerContainer.appendChild(thirdCell);
+        searchResultsListHeaderContainer.appendChild(headerContainer);
+        //llamar a la función de reordenar listado para los botones del header
+        const searchResultsSortBtns = searchResultsListHeaderContainer.querySelectorAll('.cm-o-sortButton');
+        searchResultsSortBtns.forEach(searchResultsSortBtn => {
+            sortButton(searchResultsSortBtn, searchResultsSortBtns);
+        })
+    } 
     
     results.items.forEach(result => {
         const resultRow = document.createElement('div');
@@ -256,11 +400,16 @@ const listSearchResults = (results,container,searchTerm,{clean = true} = {}) => 
     });
     modalBig.classList.remove('cm-u-inactive');
     modalContainer.classList.remove('cm-u-inactive');
-    searchUserInModalInput.value = searchTerm;
+    searchInModalInput.value = searchTerm;
 
     const editUserBtns = document.querySelectorAll('#editUserDetailsBtn');
 
-    if (location.search.startsWith('?searchUser=')){
+    //ver los parametros de la URL
+   const params = new URLSearchParams(document.location.search);
+   const action = params.get('searchAction');
+   console.log('action: '+action);
+
+    if (action === 'searchUser'){
         editUserBtns.forEach(btn => {
             btn.addEventListener('click', event => {
                 let uri = window.location.toString();
@@ -270,7 +419,7 @@ const listSearchResults = (results,container,searchTerm,{clean = true} = {}) => 
                 location.hash='#editUser='+btn.getAttribute('data-userId');
             })
         })
-    } else if (location.search.startsWith('?searchPlayer=')) {
+    } else if (action === 'searchPlayer') {
         editUserBtns.forEach(btn => {
             btn.addEventListener('click', event => {
                 let uri = window.location.toString();
@@ -316,7 +465,7 @@ const listPlayers = (players,container,{clean = true}={}) => {
         const playerActiveIconContainer = document.createElement('div');
         const playerActiveIconState = document.createElement('span');
         playerActiveIconState.classList.add('material-symbols-outlined');
-        if(player.active) {
+        if(player.active === 'on') {
             playerActiveIconState.textContent = 'check';
             playerActiveIconContainer.classList.add('cm-o-icon-button-small--success');
         } else {
@@ -361,7 +510,7 @@ const listPlayers = (players,container,{clean = true}={}) => {
 }
 //listar detalles de jugador
 const listPlayerDetails = (player) => {
-    if (player.active === 'on'){playerActive.checked = true;}
+    if (player.active === 'on'){playerActive.checked = true;} else if (player.active === false){playerActive.checked = false;}
     playerDetailsTitle.textContent = 'Edit player';
     playerName.setAttribute('value',player.userName);
     playerLastname.setAttribute('value',player.userLastname);
@@ -373,9 +522,10 @@ const listPlayerDetails = (player) => {
     playerIdNumber.setAttribute('value',player.dni);
     playerIdDate.setAttribute('value',player.dniDate);
     playerSocialSecurityNumber.setAttribute('value',player.socialSecurityNr);
-    if (player.sixMonthsResidency === 'on'){playerResidencyToggle.checked = true;}
+    if (player.sixMonthsResidency === 'on'){playerResidencyToggle.checked = true;}else if (player.sixMonthsResidency === false){playerResidencyToggle.checked = false;}
     playerOriginClub.setAttribute('value',player.clubFrom);
     playerLeagueOrigin.setAttribute('value',player.leagueFrom);
+    playerLeagueOrigin.setAttribute('data-id',player.leagueFromID);
     playerNaturalPosition.value = player.position;
     playerHeight.setAttribute('value',player.height);
     playerWeight.setAttribute('value',player.weight);
@@ -415,26 +565,373 @@ const cleanPlayerDetails = () => {
     playerTransferCost.removeAttribute('value');
     playerSalary.removeAttribute('value');
 }
+//llamar a sortButton desde los botones que ya estaban precreados en el html
+sortBtns.forEach(btn => {
+    sortButton(btn, sortBtns);
+})
+//listar ligas/equipos en modal
+const listOptionsSelector = (results,container,origin,resourceExtraID, {clean = true} = {}) => {
+    console.log('ListOptionsSelector origin:'+origin);
+    searchResultsListHeaderContainer.innerHTML = '';
+    if(clean) { container.innerHTML = '';}
+    if (results.count === 0) {container.innerHTML = 'No results. Try again.';}    
+    const isHeaderEmpty = searchResultsListHeaderContainer.hasChildNodes();
+    
+    if (origin === 'getTeams'){  
+        console.log("entro en getTeams");
+        console.log("la cabecera está vacía: "+isHeaderEmpty);      
+        modalBigListTitle.textContent = 'Choose Team';
+
+        //create Header
+        if (!isHeaderEmpty) {           
+            const headerContainer = document.createElement('div');
+            headerContainer.classList.add('cm-l-tabledata__header');
+            const firstCell = document.createElement('div');
+            firstCell.classList.add('tablecell-long');    
+            const firstBtn = document.createElement('button');
+            firstBtn.classList.add('cm-o-sortButton');
+            firstBtn.setAttribute('data-field','teamName');
+            firstBtn.textContent = 'Name';
+            const firstCellBtnDescIcon = document.createElement('span');
+            firstCellBtnDescIcon.classList.add('material-symbols-outlined');
+            firstCellBtnDescIcon.classList.add('sortIcon--desc');
+            firstCellBtnDescIcon.classList.add('cm-u-inactive');
+            firstCellBtnDescIcon.textContent = 'expand_more';
+            const firstCellBtnAscIcon = document.createElement('span');
+            firstCellBtnAscIcon.classList.add('material-symbols-outlined');
+            firstCellBtnAscIcon.classList.add('sortIcon--asc');
+            firstCellBtnAscIcon.classList.add('cm-u-inactive');
+            firstCellBtnAscIcon.textContent = 'expand_less';
+            firstBtn.appendChild(firstCellBtnDescIcon);
+            firstBtn.appendChild(firstCellBtnAscIcon);
+            firstCell.appendChild(firstBtn);
+            const secondCell = document.createElement('div');
+            secondCell.classList.add('tablecell-long');
+            const secondBtn = document.createElement('button');
+            secondBtn.classList.add('cm-o-sortButton');
+            secondBtn.setAttribute('data-field','teamLeague');
+            secondBtn.textContent = 'League ';
+            const secondCellBtnDescIcon = document.createElement('span');
+            secondCellBtnDescIcon.classList.add('material-symbols-outlined');
+            secondCellBtnDescIcon.classList.add('sortIcon--desc');
+            secondCellBtnDescIcon.classList.add('cm-u-inactive');
+            secondCellBtnDescIcon.textContent = 'expand_more';
+            const secondCellBtnAscIcon = document.createElement('span');
+            secondCellBtnAscIcon.classList.add('material-symbols-outlined');
+            secondCellBtnAscIcon.classList.add('sortIcon--asc');
+            secondCellBtnAscIcon.classList.add('cm-u-inactive');
+            secondCellBtnAscIcon.textContent = 'expand_less';
+            secondBtn.appendChild(secondCellBtnDescIcon);
+            secondBtn.appendChild(secondCellBtnAscIcon);
+            secondCell.appendChild(secondBtn);
+            const thirdCell = document.createElement('div');
+            thirdCell.classList.add('tablecell-long');       
+            const thirdBtn = document.createElement('button');
+            thirdBtn.classList.add('cm-o-sortButton');
+            thirdBtn.setAttribute('data-field','teamCountry');
+            thirdBtn.textContent = 'Country ';
+            const thirdCellBtnDescIcon = document.createElement('span');
+            thirdCellBtnDescIcon.classList.add('material-symbols-outlined');
+            thirdCellBtnDescIcon.classList.add('sortIcon--desc');
+            thirdCellBtnDescIcon.classList.add('cm-u-inactive');
+            thirdCellBtnDescIcon.textContent = 'expand_more';
+            const thirdCellBtnAscIcon = document.createElement('span');
+            thirdCellBtnAscIcon.classList.add('material-symbols-outlined');
+            thirdCellBtnAscIcon.classList.add('sortIcon--asc');
+            thirdCellBtnAscIcon.classList.add('cm-u-inactive');
+            thirdCellBtnAscIcon.textContent = 'expand_less';
+            thirdBtn.appendChild(thirdCellBtnDescIcon);
+            thirdBtn.appendChild(thirdCellBtnAscIcon);
+            thirdCell.appendChild(thirdBtn);
+            const fourthCell = document.createElement('div');
+            fourthCell.classList.add('tablecell-medium');
+            headerContainer.appendChild(firstCell);
+            headerContainer.appendChild(secondCell);
+            headerContainer.appendChild(thirdCell);
+            headerContainer.appendChild(fourthCell);
+            searchResultsListHeaderContainer.appendChild(headerContainer);
+            // llamar a la función de reordenar listado para los botones del header
+            const searchResultsSortBtns = searchResultsListHeaderContainer.querySelectorAll('.cm-o-sortButton');
+            searchResultsSortBtns.forEach(searchResultsSortBtn => {
+                sortButton(searchResultsSortBtn, searchResultsSortBtns);
+            })
+        } 
+
+        results.items.forEach(result => {
+            const resultRow = document.createElement('div');
+            resultRow.classList.add('cm-l-tabledata__row');
+            
+            const cellName = document.createElement('div');
+            cellName.classList.add('tablecell-long');
+            cellName.textContent = result.teamName;
+
+            const cellTeamLeague = document.createElement('div');
+            cellTeamLeague.classList.add('tablecell-long');
+            cellTeamLeague.textContent = result.teamLeague.leagueName;
+
+            const cellTeamCountry = document.createElement('div');
+            cellTeamCountry.classList.add('tablecell-long');
+            cellTeamCountry.textContent = result.teamLeague.leagueCountry;
+
+            const btnCell = document.createElement('div');
+            btnCell.classList.add('tablecell-medium');
+            btnCell.classList.add('cm-u-textRight');
+
+            const editUserBtn = document.createElement('button');
+            editUserBtn.classList.add('cm-o-button-cat-small--primary');
+            editUserBtn.classList.add('chooseOptionBtn');
+            editUserBtn.setAttribute('data-teamId',result.id);
+            editUserBtn.textContent = "Choose";
+            btnCell.appendChild(editUserBtn);
+    
+            resultRow.appendChild(cellName);
+            resultRow.appendChild(cellTeamLeague);
+            resultRow.appendChild(cellTeamCountry);
+            resultRow.appendChild(btnCell);
+            container.appendChild(resultRow);
+            
+        });
+    } else if (origin === 'getLeagues') {
+        modalBigListTitle.textContent = 'Choose League of origin';
+
+         //create Header
+         if (!isHeaderEmpty) {
+            //console.log('header empty, hay que crearlo');
+            const headerContainer = document.createElement('div');
+            headerContainer.classList.add('cm-l-tabledata__header');
+
+            const firstCell = document.createElement('div');
+            firstCell.classList.add('tablecell-long');    
+            const firstBtn = document.createElement('button');
+            firstBtn.classList.add('cm-o-sortButton');
+            firstBtn.setAttribute('data-field','leagueName');
+            firstBtn.textContent = 'Name of League ';
+
+            const firstCellBtnDescIcon = document.createElement('span');
+            firstCellBtnDescIcon.classList.add('material-symbols-outlined');
+            firstCellBtnDescIcon.classList.add('sortIcon--desc');
+            firstCellBtnDescIcon.classList.add('cm-u-inactive');
+            firstCellBtnDescIcon.textContent = 'expand_more';
+            const firstCellBtnAscIcon = document.createElement('span');
+            firstCellBtnAscIcon.classList.add('material-symbols-outlined');
+            firstCellBtnAscIcon.classList.add('sortIcon--asc');
+            firstCellBtnAscIcon.classList.add('cm-u-inactive');
+            firstCellBtnAscIcon.textContent = 'expand_less';
+            firstBtn.appendChild(firstCellBtnDescIcon);
+            firstBtn.appendChild(firstCellBtnAscIcon);
+            firstCell.appendChild(firstBtn);
+
+            const secondCell = document.createElement('div');
+            secondCell.classList.add('tablecell-long');
+            const secondBtn = document.createElement('button');
+            secondBtn.classList.add('cm-o-sortButton');
+            secondBtn.setAttribute('data-field','leagueCountry');
+            secondBtn.textContent = 'Country ';
+            const secondCellBtnDescIcon = document.createElement('span');
+            secondCellBtnDescIcon.classList.add('material-symbols-outlined');
+            secondCellBtnDescIcon.classList.add('sortIcon--desc');
+            secondCellBtnDescIcon.classList.add('cm-u-inactive');
+            secondCellBtnDescIcon.textContent = 'expand_more';
+            const secondCellBtnAscIcon = document.createElement('span');
+            secondCellBtnAscIcon.classList.add('material-symbols-outlined');
+            secondCellBtnAscIcon.classList.add('sortIcon--asc');
+            secondCellBtnAscIcon.classList.add('cm-u-inactive');
+            secondCellBtnAscIcon.textContent = 'expand_less';
+            secondBtn.appendChild(secondCellBtnDescIcon);
+            secondBtn.appendChild(secondCellBtnAscIcon);
+            secondCell.appendChild(secondBtn);
+
+            const thirdCell = document.createElement('div');
+            thirdCell.classList.add('tablecell-medium');
+
+            headerContainer.appendChild(firstCell);
+            headerContainer.appendChild(secondCell);
+            headerContainer.appendChild(thirdCell);
+            searchResultsListHeaderContainer.appendChild(headerContainer);
+            // llamar a la función de reordenar listado para los botones del header
+            const searchResultsSortBtns = searchResultsListHeaderContainer.querySelectorAll('.cm-o-sortButton');
+            searchResultsSortBtns.forEach(searchResultsSortBtn => {
+                sortButton(searchResultsSortBtn, searchResultsSortBtns);
+            })
+         }
+         results.items.forEach(result => {
+            const resultRow = document.createElement('div');
+            resultRow.classList.add('cm-l-tabledata__row');
+            
+            const cellName = document.createElement('div');
+            cellName.classList.add('tablecell-long');
+            cellName.textContent = result.leagueName;
+
+            const cellTeamLeague = document.createElement('div');
+            cellTeamLeague.classList.add('tablecell-long');
+            cellTeamLeague.textContent = result.leagueCountry;
+
+            const btnCell = document.createElement('div');
+            btnCell.classList.add('tablecell-medium');
+            btnCell.classList.add('cm-u-textRight');
+
+            const editUserBtn = document.createElement('button');
+            editUserBtn.classList.add('cm-o-button-cat-small--primary');
+            editUserBtn.classList.add('chooseOptionBtn');
+            editUserBtn.setAttribute('data-leagueID',result.id);
+            editUserBtn.textContent = "Choose";
+            btnCell.appendChild(editUserBtn);
+    
+            resultRow.appendChild(cellName);
+            resultRow.appendChild(cellTeamLeague);
+            resultRow.appendChild(btnCell);
+            container.appendChild(resultRow);            
+        });
+    }
+    
+    modalBig.classList.remove('cm-u-inactive');
+    modalContainer.classList.remove('cm-u-inactive');
+
+    const chooseOptionBtns = document.querySelectorAll('.chooseOptionBtn');
+
+    if (location.search.startsWith('?searchAction=searchTeam')){
+        chooseOptionBtns.forEach(btn => {
+            btn.addEventListener('click', event => {
+                const teamID = btn.getAttribute('data-teamID');
+                let params = new URLSearchParams(document.location.search);
+                let searchOrigin = params.get('searchOrigin');
+                let uri = window.location.toString();
+                let clean_uri = uri.substring(0,uri.indexOf("?")); 
+                //asignamos el la liga escogida al input del listado
+                inputSetValue(playerOriginClub,'/leagues/'+resourceExtraID+'/teams/',teamID,'teamName');
+
+                window.history.replaceState({},document.title,clean_uri);
+                //colocamos el hash adecuado para volver de la modal si es un jugador nuevo o estamos editando uno existente
+                if (searchOrigin === 'newPlayer') {
+                    //location.hash='#addPlayer';
+                    history.pushState('', '', '#addPlayer');
+                } else {
+                    //location.hash='#editPlayer='+searchOrigin;
+                    history.pushState('', '', '#editPlayer='+searchOrigin);
+                }
+                //ocultamos el modal
+                modalContainer.classList.add('cm-u-inactive');
+            });
+        })
+    } else if (location.search.startsWith('?searchAction=searchLeague')) {
+        chooseOptionBtns.forEach(btn => {
+            btn.addEventListener('click', event => {
+                const leagueID = btn.getAttribute('data-leagueID');
+                let params = new URLSearchParams(document.location.search);
+                let searchOrigin = params.get('searchOrigin');
+                let uri = window.location.toString();
+                let clean_uri = uri.substring(0,uri.indexOf("?")); 
+                window.history.replaceState({},document.title,clean_uri);
+                //colocamos el hash adecuado para volver de la modal si es un jugador nuevo o estamos editando uno existente
+                if (searchOrigin === 'newPlayer') {
+                    //location.hash='#addPlayer';
+                    history.pushState('', '', '#addPlayer');
+                } else {
+                    //location.hash='#editPlayer='+searchOrigin;
+                    history.pushState('', '', '#editPlayer='+searchOrigin);
+                }
+                //asignamos el la liga escogida al input del listado
+                inputSetValue(playerLeagueOrigin,'/leagues/',leagueID,'leagueName');
+                //ocultamos el modal
+                modalContainer.classList.add('cm-u-inactive');
+            });
+        })
+    }
+    
+}
+//asignar un valor concreto a un input desde un dato especifico de un get
+const inputSetValue = async (element, resource, id, field) => {    
+    const value = await getSpecificValueData(resource,id,field)
+    .then(function (response) {
+        console.log(response);
+        console.log("response ID: "+response.id);
+        element.value = response[field];
+        element.setAttribute('data-id',response.id);
+    })
+    .catch(function (error) {
+        console.warn(error);
+    });
+}
 
 
 //Api calls
 
+//get generico
+const getData = async(resource, page, limit, sortBy, order) => {
+    const { data } = await api(resource,{params: { page: page, limit: listLimit, sortBy:sortBy, order:order } });
+    return results = data;
+}
+//filtrar genérico
+const filterData = async(resource, page, limit, sortBy, order) => {
+    const { data } = await api(resource,{params: { page: page, limit: listLimit, sortBy:sortBy, order:order } });
+    return results = data;
+}
 //obtener usuarios
 const getUsers = async ({page = currentListPage, limit = listLimit, sortBy = 'id', order = 'asc'} = {}) => {
-    //console.log('getUsers: page:'+page+' limit:'+listLimit+' sortBy:'+sortBy+' order:'+order);
-    const { data } = await api('/users',{ params: { page: page, limit: listLimit, sortBy:sortBy, order:order } });
-    const users = data;
-    listLimit = limit;
-    // console.log('get users');
-    // console.log(data);
-    listUsers(users,usersListContainer);
-    paginateList(users, tablePaginationUsers);
+    resource = '/users';
+    const results = await getData(resource, page, limit, sortBy, order)
+    .then(function (response) {
+        listUsers(response,usersListContainer);
+        paginateList(response, tablePaginationUsers);
+    })
+    .catch(function (error) {
+        console.warn(error);
+    });
 }
 //obtener detalles usuario
 const getUser = async (userID) => {
-    const { data } = await api('/users/'+userID);
-    const player = data;
-    listUserDetails(player);
+    resource = '/users/'+userID;
+    const results = await getData(resource)
+    .then(function (response) {
+        //console.log(response);
+        listUserDetails(response);
+    })
+    .catch(function (error) {
+        console.warn(error);
+    });
+}
+//obtener ligas
+const getLeagues = async ({page = currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
+    listLimit = limit;
+    resource = '/leagues';
+    origin = 'getLeagues';
+    const results = await getData(resource, page, limit, sortBy, order)
+    .then(function (response) {
+        listOptionsSelector(response,searchResultsListContainer,origin);
+        if (response.count > 0) {
+            //console.log('teams:'+response.count);
+            paginateList(response, tablePaginationSearchResults);
+        }  
+    })
+    .catch(function (error) {
+        console.warn(error);
+    });
+}
+//obtener dato especifico
+const getSpecificValueData = async (resource, id, field) => {
+    resource = resource+id;
+    field = field;
+    const results = await getData(resource);
+    return results;
+}
+
+//obtener equipos
+const getTeams = async (leagueOfOrigin, {page = currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
+    listLimit = limit;
+    resource = '/leagues/'+leagueOfOrigin+'/teams';
+    origin = 'getTeams';
+    const results = await getData(resource, page, limit, sortBy, order)
+    .then(function (response) {
+        listOptionsSelector(response,searchResultsListContainer,origin,leagueOfOrigin);
+        if (response.count > 0) {
+            // console.log('teams:'+response.count);
+            // console.log(response);
+            paginateList(response, tablePaginationSearchResults);
+        }  
+    })
+    .catch(function (error) {
+        console.warn(error);
+    });
 }
 //añadir nuevo usuario
 const addNewUser = async () => {
@@ -498,22 +995,34 @@ const deleteUser = async(userID) => {
     });
     
 }
+
 //filtrar usuarios por busqueda
-const filterUsers = async (searchTerm, {page = 1, limit = listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+const filterUsers = async (searchTerm, {page = currentListPage, limit = listLimit, sortBy = 'id', order = 'asc'} = {}) => {
     listLimit = limit;
-    const { data } = await api.get('/users?search='+searchTerm,{ params: { page: currentListPage, limit: listLimit, sortBy:sortBy, order:order } });
-    const results = data;        
-    listSearchResults(results,searchResultsListContainer,searchTerm);
-    if (results.count > 0) {
-        paginateList(results, tablePaginationSearchResults);
-    }    
+    resource = '/users?search='+searchTerm;
+    const results = await filterData(resource, page, limit, sortBy, order)
+    .then(function (response) {
+        listSearchResults(response,searchResultsListContainer,searchTerm);
+        if (response.count > 0) {
+            paginateList(response, tablePaginationSearchResults);
+        }  
+    })
+    .catch(function (error) {
+        console.warn(error);
+    });
 }
 //obtener jugadores
-const getPlayers = async ({page = currentListPage, sortBy = 'id', order = 'asc'} = {}) => {
-    const { data } = await api('/players',{ params: { page: page, limit:listLimit, sortBy:sortBy, order:order } });
-    const players = data;
-    listPlayers(players,playersListContainer);
-    paginateList(players, tablePaginationPlayers);
+const getPlayers = async ({page = currentListPage, limit = listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+    resource = '/players';
+    const results = await getData(resource, page, limit, sortBy, order)
+    .then(function (response) {
+        //console.log(response);
+        listPlayers(response,playersListContainer);
+        paginateList(response, tablePaginationPlayers);
+    })
+    .catch(function (error) {
+        console.warn(error);
+    });
 }
 //obtener detalles jugador
 const getPlayer = async (playerID) => {
@@ -573,7 +1082,10 @@ const addNewPlayer = async () => {
 const updatePlayer = async (playerID) => {
     const updatedPlayerData = new FormData(playerDetailsForm);
     const data = {};
+    console.log(data);
     updatedPlayerData.forEach((value, key) => data[key] = value);
+    if (data.playerActive === undefined) { data.playerActive = 'false'};
+    if (data.playerResidencyToggle === undefined){data.playerResidencyToggle = 'false'};
 
     const updatePlayerrData = await api.put('/players/'+playerID, {
         active:data.playerActive,
@@ -588,8 +1100,8 @@ const updatePlayer = async (playerID) => {
         dniDate:data.playerIdDate,
         socialSecurityNr:data.playerSocialSecurityNumber,
         sixMonthsResidency:data.playerResidencyToggle,
-        clubFrom:data.playerOriginClub,
-        leagueFrom:data.playerLeagueOrigin,
+        clubFrom:data.clubOfOrigin,
+        leagueFrom:data.leagueOfOrigin,
         position:data.playerNaturalPosition,
         height:data.playerHeight,
         weight:data.playerWeight,
@@ -623,8 +1135,56 @@ const deletePlayer = async(playerID) => {
     
 }
 //filtrar jugadores por busqueda
-const filterPlayers = async (searchTerm) => {
-    const { data } = await api.get('/players?search='+searchTerm);
-    const results = data;    
-    listSearchResults(results,searchResultsListContainer,searchTerm);
+const filterPlayers = async (searchTerm, leagueID, {page = 1, limit = listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+    listLimit = limit;
+    resource = '/players?search='+searchTerm;
+    const results = await getData(resource, page, limit, sortBy, order)
+    .then(function (response) {
+        //console.log(response);
+        listSearchResults(response,searchResultsListContainer,searchTerm);
+        if (response.count > 0) {
+            paginateList(response, tablePaginationSearchResults);
+        }  
+    })
+    .catch(function (error) {
+        console.warn(error);
+    });
 }
+//filtrar ligas por busqueda
+const filterLeagues = async (searchTerm, {page = currentListPage, limit = listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+    listLimit = limit;
+    resource = '/leagues?search='+searchTerm;
+    origin = 'getLeagues';
+    const results = await filterData(resource, page, limit, sortBy, order)
+    .then(function (response) {
+        listOptionsSelector(response,searchResultsListContainer,origin);
+        if (response.count > 0) {
+            console.log('teams:'+response.count);
+            paginateList(response, tablePaginationSearchResults);
+        }
+    })
+    .catch(function (error) {
+        console.warn(error);
+    });
+}
+
+//filtrar equipos por busqueda
+const filterTeams = async (leagueOfOrigin,searchTerm, {page = currentListPage, limit = listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+    listLimit = limit;
+    resource = '/leagues/'+leagueOfOrigin+'/teams?search='+searchTerm;
+    origin = 'getTeams';
+    const results = await filterData(resource, page, limit, sortBy, order)
+    .then(function (response) {
+        console.log('resultado filtrar equipos:');
+        console.log(response);
+        listOptionsSelector(response,searchResultsListContainer,origin,leagueOfOrigin);
+        if (response.count > 0) {
+            console.log('teams:'+response.count);
+            paginateList(response, tablePaginationSearchResults);
+        }
+    })
+    .catch(function (error) {
+        console.warn(error);
+    });
+}
+

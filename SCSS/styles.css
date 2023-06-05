@@ -75,7 +75,7 @@ body {
   color: #454548;
 }
 
-.cm-u-text-mouse, .cm-o-notification-bubble, .cm-l-table-players__body tr, .cm-l-tabledata__row, .cm-l-tabledata__footer, .cm-l-form-panel__row .panel-field-long .assistance, .cm-u-text-black-mouse, .navbar-links__textbutt, .cm-o-icon-button-enormous--deco, .cm-o-icon-button--error, .cm-o-icon-button--success, .cm-o-icon-button--pressed, .cm-o-icon-button--secondary, .cm-o-icon-button--primary, .cm-o-button-mouse--inactive, .cm-o-button-mouse--ghost, .cm-o-button-mouse--transparent, .cm-o-button-mouse--secondary, .cm-o-button-mouse--primary, .cm-l-table-players__header tr, .cm-l-tabledata__header {
+.cm-u-text-mouse, .cm-o-notification-bubble, .cm-l-table-players__body tr, .cm-l-tabledata__row, .cm-l-tabledata__footer, .cm-l-form-panel__row .panel-field-short span.assistance, .cm-l-form-panel__row .panel-field-short span.error, .cm-l-form-panel__row .panel-field-long span.assistance, .cm-l-form-panel__row .panel-field-long span.error, .cm-u-text-black-mouse, .navbar-links__textbutt, .cm-o-icon-button-enormous--deco, .cm-o-icon-button--error, .cm-o-icon-button--success, .cm-o-icon-button--pressed, .cm-o-icon-button--secondary, .cm-o-icon-button--primary, .cm-o-button-mouse--inactive, .cm-o-button-mouse--ghost, .cm-o-button-mouse--transparent, .cm-o-button-mouse--secondary, .cm-o-button-mouse--primary, .cm-l-table-players__header tr, .cm-l-tabledata__header {
   font-size: 14px;
   font-size: 1.4rem;
   line-height: 24px;
@@ -267,36 +267,67 @@ strong {
   padding: 8px 0;
   gap: 8px;
 }
+.cm-l-form-panel__row span.error {
+  color: #F93A3A;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 .cm-l-form-panel__row .panel-field-long {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
+  width: 928px;
 }
 .cm-l-form-panel__row .panel-field-long span:not(.material-symbols-outlined) {
+  text-align: right;
   width: 160px;
 }
-.cm-l-form-panel__row .panel-field-long input[type=text], .cm-l-form-panel__row .panel-field-long input[type=email], .cm-l-form-panel__row .panel-field-long input[type=password], .cm-l-form-panel__row .panel-field-long .cm-c-field-icon, .cm-l-form-panel__row .panel-field-long .cm-c-select-icon {
-  width: 352px;
+.cm-l-form-panel__row .panel-field-long input[type=text], .cm-l-form-panel__row .panel-field-long input[type=email], .cm-l-form-panel__row .panel-field-long input[type=password], .cm-l-form-panel__row .panel-field-long input[type=date], .cm-l-form-panel__row .panel-field-long .cm-c-field-icon, .cm-l-form-panel__row .panel-field-long .cm-c-select-icon {
+  width: 448px;
+  max-width: 448px;
 }
-.cm-l-form-panel__row .panel-field-long .assistance {
-  width: unset;
+.cm-l-form-panel__row .panel-field-long span.assistance, .cm-l-form-panel__row .panel-field-long span.error {
+  flex-grow: 1;
+  text-align: left;
+}
+.cm-l-form-panel__row .panel-field-long span.pictureInputName {
+  display: flex;
+  align-self: center;
+  padding-left: 16px;
+  text-align: left;
+  width: 100%;
 }
 .cm-l-form-panel__row .panel-field-short {
   display: flex;
-  display: flex;
   flex-direction: row;
+  flex-grow: 1;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
 }
 .cm-l-form-panel__row .panel-field-short span:not(.material-symbols-outlined) {
+  text-align: right;
   width: 160px;
 }
-.cm-l-form-panel__row .panel-field-short input[type=text], .cm-l-form-panel__row .panel-field-short input[type=email], .cm-l-form-panel__row .panel-field-short input[type=password], .cm-l-form-panel__row .panel-field-short .cm-c-field-icon, .cm-l-form-panel__row .panel-field-short .cm-c-select-icon {
-  width: 160px;
+.cm-l-form-panel__row .panel-field-short input[type=text], .cm-l-form-panel__row .panel-field-short input[type=email], .cm-l-form-panel__row .panel-field-short input[type=password], .cm-l-form-panel__row .panel-field-short input[type=date], .cm-l-form-panel__row .panel-field-short .cm-c-field-icon, .cm-l-form-panel__row .panel-field-short .cm-c-select-icon {
+  flex-grow: 1;
+  max-width: 256px;
 }
-
+.cm-l-form-panel__row .panel-field-short span.assistance, .cm-l-form-panel__row .panel-field-short span.error {
+  margin-left: 168px;
+  text-align: left;
+  width: 352px;
+}
+.cm-l-form-panel__row .panel-field-short__container {
+  display: flex;
+  flex-direction: column;
+}
 .cm-l-headtool {
   display: flex;
   flex-flow: row nowrap;
@@ -1183,14 +1214,6 @@ strong {
   transform: translateX(-48px);
   position: absolute;
 }
-.cm-c-form-simple .error {
-  color: #F93A3A;
-  font-family: "Quicksand", sans-serif;
-  font-weight: 700;
-  font-stretch: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 
 .cm-c-field-icon {
   border: 1px solid #E1E1E1;
@@ -1198,6 +1221,7 @@ strong {
   height: 48px;
   display: flex;
   overflow: hidden;
+  /*hides input file and restyles input */
   /* clears the ‘X’ from Internet Explorer */
   /* clears the ‘X’ from Chrome */
 }
@@ -1215,6 +1239,41 @@ strong {
   font-stretch: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.cm-c-field-icon--focus {
+  border-color: #F79E78;
+  border-width: 2px;
+  outline: none;
+}
+.cm-c-field-icon.error {
+  border: 1px solid #F93A3A;
+}
+.cm-c-field-icon.error .cm-c-field-icon__input {
+  color: #F93A3A;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.cm-c-field-icon.error .cm-c-field-icon__input::-moz-placeholder {
+  color: #F93A3A;
+}
+.cm-c-field-icon.error .cm-c-field-icon__input::placeholder {
+  color: #F93A3A;
+}
+.cm-c-field-icon input[type=file] {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.cm-c-field-icon.fileUpload {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row-reverse;
 }
 .cm-c-field-icon input[type=search]::-ms-clear {
   display: none;
@@ -1251,7 +1310,7 @@ strong {
   color: #454548;
   outline: none;
   padding: 0 12px;
-  flex-grow: 1;
+  width: 100%;
   font-size: 18px;
   font-size: 1.8rem;
   line-height: 24px;
@@ -1261,6 +1320,11 @@ strong {
   font-stretch: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.cm-c-select-icon--focus {
+  border-color: #F79E78;
+  border-width: 2px;
+  outline: none;
 }
 .cm-c-select-icon::after {
   content: "expand_more";

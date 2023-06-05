@@ -12,6 +12,7 @@ const notifsContainer = $('#notifsList');
 const usersListContainer = $('#usersListContainer');
 const playersListContainer = $('#playersListContainer');
 const modalContainer = $('.cm-c-modal');
+const searchResultsListHeaderContainer = $('#searchResultsListHeaderContainer');
 const searchResultsListContainer = $('#searchResultsListContainer');
 const tablePaginationUsers = $('#tablePaginationUsers');
 const tablePaginationPlayers = $('#tablePaginationPlayers');
@@ -28,10 +29,11 @@ const addPlayersBtn = $('#addPlayersBtn');
 const manageTeamBtn = $('#manageTeamBtn');
 const modalSmall = $('#modalSmall');
 const modalBig = $('#modalBig');
+const modalBigListTitle = $('#modalBigListTitle')
 const modalContainerBg = $('.cm-c-modal-background');
 const searchUsersBtn = $('#searchUsersBtn');
 const searchPlayersBtn = $('#searchPlayersBtn');
-const searchUsersInModalBtn = $('#searchUsersInModalBtn');
+const searchInModalBtn = $('#searchInModalBtn');
 const sortBtns = document.querySelectorAll('.cm-o-sortButton');
 
 //forms and form buttons
@@ -49,7 +51,7 @@ const playerDetailsFormDeleteBtn = $('#playerDetailsFormDeleteBtn');
 
 //searchForm Fields
 const searchUser = $('#searchUser');
-const searchUserInModalInput = $('#searchUserInModalInput');
+const searchInModalInput = $('#searchInModalInput');
 const searchPlayer = $('#searchPlayer');
 
 //userDetails Fields
@@ -78,7 +80,9 @@ const playerIdDate = $('#playerIdDate');
 const playerSocialSecurityNumber = $('#playerSocialSecurityNumber');
 const playerResidencyToggle = $('#playerResidencyToggle');
 const playerOriginClub = $('#playerOriginClub');
+const playerOriginClubContainer = playerOriginClub.closest('.cm-c-field-icon');
 const playerLeagueOrigin = $('#playerLeagueOrigin');
+const playerLeagueOriginContainer = playerLeagueOrigin.closest('.cm-c-field-icon');
 const playerNaturalPosition = $('#playerNaturalPosition');
 const playerHeight = $('#playerHeight');
 const playerWeight = $('#playerWeight');

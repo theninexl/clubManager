@@ -28,40 +28,79 @@
             padding:getSize($small) 0;
             gap:getSize($small);
 
+            span.error {
+                color: getColor(danger);
+                @include cm-qs-bold;
+            }
+
             .panel-field-long {
                 display:flex;
                 flex-direction:row;
+                flex-wrap: wrap;
                 align-items: center;
                 gap:8px;
+                width:getCols(10);
 
                 span:not(.material-symbols-outlined) {
+                    text-align: right;
                     width:getCols(2);
                 }
 
-                input[type=text], input[type=email], input[type=password], .cm-c-field-icon, .cm-c-select-icon {
-                    width:getCols(4);
+                input[type=text], input[type=email], input[type=password], input[type=date], .cm-c-field-icon, .cm-c-select-icon {
+                    width:getCols(5);
+                    max-width:getCols(5);
                 }
 
-                .assistance {
-                    width: unset;
+                span.assistance, span.error  {
+                    flex-grow:1;
+                    text-align: left;
                     @extend .cm-u-text-mouse;
+                }
+
+                span.pictureInputName {
+                    display: flex;
+                    align-self: center;
+                    padding-left: getSize($big);
+                    text-align: left;
+                    width: 100%;
                 }
             }
 
             .panel-field-short {
+                $block: &;
                 display: flex;
-                display:flex;
                 flex-direction:row;
+                flex-grow: 1;
+                flex-wrap: wrap;
                 align-items: center;
                 gap:getSize($small);
                 margin-bottom:getSize($small);
 
                 span:not(.material-symbols-outlined) {
+                    text-align: right;
                     width:getCols(2);
+                    
                 }
 
-                input[type=text], input[type=email], input[type=password], .cm-c-field-icon, .cm-c-select-icon {
-                    width:getCols(2);
+                input[type=text], input[type=email], input[type=password], input[type=date], .cm-c-field-icon, .cm-c-select-icon {
+                    flex-grow: 1;
+                    max-width:getCols(3);
+                }
+
+                span.assistance, span.error {
+                    margin-left:getCols(2)+getSize($small);
+                    text-align: left;
+                    width:getCols(4);
+                    @extend .cm-u-text-mouse;
+                }
+
+                &__container {
+                    $block: &;
+                    display: flex;
+                    flex-direction: column;
+
+                    &.assistance {
+                    }
                 }
             }
         }
