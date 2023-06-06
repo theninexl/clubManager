@@ -43,13 +43,11 @@ const searchUsersForm = $('#searchUsersForm');
 const searchPlayersForm = $('#searchPlayersForm');
 const userDetailsFormUpdateBtn = $('#userDetailsFormUpdateBtn');
 const userDetailsFormDeleteBtn = $('#userDetailsFormDeleteBtn');
-const userDetailsCancelBtn = $('#userDetailsCancelBtn');
 const playerOriginClubSearchBtn = $('#playerOriginClubSearchBtn');
 const playerLeagueOriginSearchBtn = $('#playerLeagueOriginSearchBtn');
 const playerDetailsFormAddBtn = $('#playerDetailsFormAddBtn');
 const playerDetailsFormUpdateBtn = $('#playerDetailsFormUpdateBtn');
 const playerDetailsFormDeleteBtn = $('#playerDetailsFormDeleteBtn');
-const playerDetailsCancelBtn = $('#playerDetailsCancelBtn');
 
 //searchForm Fields
 const searchUser = $('#searchUser');
@@ -82,9 +80,9 @@ const playerIdDate = $('#playerIdDate');
 const playerSocialSecurityNumber = $('#playerSocialSecurityNumber');
 const playerResidencyToggle = $('#playerResidencyToggle');
 const playerOriginClub = $('#playerOriginClub');
-// const playerOriginClubContainer = playerOriginClub.closest('.cm-c-field-icon');
+const playerOriginClubContainer = playerOriginClub.closest('.cm-c-field-icon');
 const playerLeagueOrigin = $('#playerLeagueOrigin');
-// const playerLeagueOriginContainer = playerLeagueOrigin.closest('.cm-c-field-icon');
+const playerLeagueOriginContainer = playerLeagueOrigin.closest('.cm-c-field-icon');
 const playerNaturalPosition = $('#playerNaturalPosition');
 const playerHeight = $('#playerHeight');
 const playerWeight = $('#playerWeight');

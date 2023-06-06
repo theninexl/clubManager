@@ -15,18 +15,50 @@
     <!--<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet" />-->
                 
 </head>
-<body>
+<body id="manageTeam">
+    <div class="cm-c-modal cm-u-inactive">
+        <div class="cm-c-modal__smallContent cm-u-inactive" id="modalSmall">
+            <div class="modal-body cm-u-spacer-mb-bigger">
+                <h3 class="cm-u-text-black-cat">Are you sure?</h3>
+            </div>
+            <div class="modal-footer">
+                <a href="edit-user.html" class="cm-o-button-cat--transparent">Cancel</a> 
+                <a href="manage-users.html" class="cm-o-button-cat--primary">Continue</a>
+            </div>
+        </div>
+        <div class="cm-c-modal__bigContent cm-u-inactive" id="modalBig">
+            <div class="modal-body">
+                <form class="cm-c-form-simple-hrz" id="searchUsersInModalForm">
+                    <div class="cm-c-field-icon cm-u-spacer-mb-bigger">
+                        <input class="cm-c-field-icon__input" id="searchInModalInput" name="" placeholder="Search users" type="search" value="">
+                        <button type="submit" class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchInModalBtn"><span class="material-symbols-outlined">search</span></button>
+                    </div>                    
+                </form>
+                <section class="cm-l-body">
+                    <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                        <p class="cm-u-text-black-cat" id="modalBigListTitle">Search results</p>
+                    </header>
+                    <div class="cm-l-tabledata cm-u-spacer-mb-huge">
+                        <div id="searchResultsListHeaderContainer"></div>
+                        <div id="searchResultsListContainer">results</div>
+                        <div id="tablePaginationSearchResults"></div> 
+                    </div>                   
+                </section>
+            </div>
+        </div>
+        <div class="cm-c-modal-background"></div>
+    </div>
     <header class="cm-l-header">
         <div class="cm-l-container">
             <nav class="cm-c-navbar">
                 <div class="cm-c-navbar__left">
-                    <a href="./" class="cm-o-logo"><span class="material-symbols-outlined">shield</span> Club Manager</a>
+                    <a href="main.html" class="cm-o-logo"><span class="material-symbols-outlined">shield</span> Club Manager</a>
                 </div>
                 <div class="cm-c-navbar__right">
                     <ul class="navbar-links-hrz">
                         <li><a class="navbar-links__textbutt">Username</a></li>
-                        <li><a href="manage-users.html" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">group</span></a></li>
-                        <li><a href="structure-notifications.html" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble">3</span></a></li>
+                        <li><button id="manageUsersBtn" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">group</span></a></button></li>
+                        <li><button id="notifsBtn" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble">99</span></button></li>
                      </ul>
                 </div>
             </nav>
@@ -37,135 +69,52 @@
         <aside class="cm-l-container-2col__aside">
             <nav class="cm-c-navbar cm-u-spacer-mt-bigger">
                 <ul class="navbar-links-vert">
-                    <li><a href="manage-team.html" class="navbar-links__link active">Plantilla</a></li>
-                    <li><a class="navbar-links__link inactive">Contratos</a></li>
-                    <li><a class="navbar-links__link inactive">Tesorería</a></li>
-                    <li><a class="navbar-links__link inactive">Maestros</a></li>
-                    <li><a class="navbar-links__link inactive">Reporting</a></li>
-                    <li><a class="navbar-links__link inactive">Más opciones</a></li>
+                    <li><button id="manageTeamBtn" class="cm-o-button-cat--ghost">Plantilla</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Contratos</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
+                    <li><button class="cm-o-button-cat--ghost">Maestros</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Reporting</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Más opciones</button></li>
                 </ul>
             </nav>
         </aside>
         <section class="cm-l-container-2col__body cm-u-spacer-mt-huge">
-            <header class="cm-l-headtool cm-u-spacer-mb-bigger">
-                <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear">Manage Team</h1></div>
-                <div class="cm-l-headtool__toolbar">
-                    <form class="cm-c-form-simple-hrz">
-                        <div class="cm-c-field-icon">
-                            <input class="cm-c-field-icon__input" type="search" placeholder="Search players">
-                            <button class="cm-o-icon-button--secondary cm-c-field-icon__button" type="submit"><span class="material-symbols-outlined">search</span></button>
-                        </div>                    
-                    </form>
-                    <a href="add-player.html" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">group_add</span></a>
-                </div>
-            </header>
-            <section class="cm-l-body">
-                <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
-                    <p class="cm-u-text-black-cat">List of players</p>
+            <section id="playersList" class="">
+                <header class="cm-l-headtool cm-u-spacer-mb-bigger">
+                    <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear">Manage Team</h1></div>
+                    <div class="cm-l-headtool__toolbar">
+                        <form class="cm-c-form-simple-hrz" id="searchPlayersForm">
+                            <div class="cm-c-field-icon">
+                                <input class="cm-c-field-icon__input" id="searchPlayer" name="searchPlayer" placeholder="Search players">
+                                <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchPlayersBtn"><span class="material-symbols-outlined">search</span></button>
+                            </div>                    
+                        </form>
+                        <button class="cm-o-icon-button--primary" id="addPlayersBtn"><span class="material-symbols-outlined">group_add</span></button>
+                    </div>
                 </header>
-                <table class="cm-l-table-players cm-u-spacer-mb-huge">
-                    <thead class="cm-l-table-players__header">
-                        <tr>
-                            <td class="table-players-td-long">Name</td>
-                            <td class="table-players-td-long">Lastname</td>
-                            <td class="table-players-td-long">Section</td>
-                            <td class="table-players-td-long">State</td>
-                            <td class="table-players-td-long">Position</td>
-                            <td class="table-players-td-short">Number</td>
-                            <td class="table-players-td-short cm-u-centerText">Active</td>
-                            <td class="table-players-td-short cm-u-centerText">Edit</td>
-                        </tr>
-                    </thead>
-                    <tbody class="cm-l-table-players__body">
-                        <tr>
-                            <td class="table-players-td-long">Username</td>
-                            <td class="table-players-td-long">Lastname</td>
-                            <td class="table-players-td-long">Section</td>
-                            <td class="table-players-td-long">State</td>
-                            <td class="table-players-td-long">Defense</td>
-                            <td class="table-players-td-short">99</td>
-                            <td class="table-players-td-short cm-u-centerText">
-                                <div class="cm-o-icon-button-small--success"><span class="material-symbols-outlined">check</span></div>
-                            </td>
-                            <td class="table-players-td-short cm-u-centerText">
-                                <a href="edit-user.html" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">border_color</span></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="table-players-td-long">Username</td>
-                            <td class="table-players-td-long">Lastname</td>
-                            <td class="table-players-td-long">Section</td>
-                            <td class="table-players-td-long">State</td>
-                            <td class="table-players-td-long">Striker</td>
-                            <td class="table-players-td-short">07</td>
-                            <td class="table-players-td-short cm-u-centerText">
-                                <div class="cm-o-icon-button-small--error"><span class="material-symbols-outlined">block</span></div>
-                            </td>
-                            <td class="table-players-td-short cm-u-centerText">
-                                <div class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">border_color</span></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="table-players-td-long">Username</td>
-                            <td class="table-players-td-long">Lastname</td>
-                            <td class="table-players-td-long">Section</td>
-                            <td class="table-players-td-long">State</td>
-                            <td class="table-players-td-long">Goalkeeper</td>
-                            <td class="table-players-td-short">01</td>
-                            <td class="table-players-td-short cm-u-centerText">
-                                <div class="cm-o-icon-button-small--error"><span class="material-symbols-outlined">block</span></div>
-                            </td>
-                            <td class="table-players-td-short cm-u-centerText">
-                                <div class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">border_color</span></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="table-players-td-long">Username</td>
-                            <td class="table-players-td-long">Lastname</td>
-                            <td class="table-players-td-long">Section</td>
-                            <td class="table-players-td-long">State</td>
-                            <td class="table-players-td-long">Defense</td>
-                            <td class="table-players-td-short">99</td>
-                            <td class="table-players-td-short cm-u-centerText">
-                                <div class="cm-o-icon-button-small--success"><span class="material-symbols-outlined">check</span></div>
-                            </td>
-                            <td class="table-players-td-short cm-u-centerText">
-                                <a href="edit-user.html" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">border_color</span></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="table-players-td-long">Username</td>
-                            <td class="table-players-td-long">Lastname</td>
-                            <td class="table-players-td-long">Section</td>
-                            <td class="table-players-td-long">State</td>
-                            <td class="table-players-td-long">Striker</td>
-                            <td class="table-players-td-short">07</td>
-                            <td class="table-players-td-short cm-u-centerText">
-                                <div class="cm-o-icon-button-small--error"><span class="material-symbols-outlined">block</span></div>
-                            </td>
-                            <td class="table-players-td-short cm-u-centerText">
-                                <div class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">border_color</span></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="table-players-td-long">Username</td>
-                            <td class="table-players-td-long">Lastname</td>
-                            <td class="table-players-td-long">Section</td>
-                            <td class="table-players-td-long">State</td>
-                            <td class="table-players-td-long">Goalkeeper</td>
-                            <td class="table-players-td-short">01</td>
-                            <td class="table-players-td-short cm-u-centerText">
-                                <div class="cm-o-icon-button-small--error"><span class="material-symbols-outlined">block</span></div>
-                            </td>
-                            <td class="table-players-td-short cm-u-centerText">
-                                <div class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">border_color</span></div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <section class="cm-l-body">
+                    <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                        <p class="cm-u-text-black-cat">List of players</p>
+                    </header>
+                    <div class="cm-l-tabledata cm-u-spacer-mb-huge">
+                        <div class="cm-l-tabledata__header">
+                            <div class="tablecell-medium"><button data-field="userName" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="userLastname" class="cm-o-sortButton">LastName <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="alias" class="cm-o-sortButton">Alias <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="country" class="cm-o-sortButton">Country <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText"><button data-field="dorsal" class="cm-o-sortButton">Dorsal <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="position" class="cm-o-sortButton">Position <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText"><button data-field="position" class="cm-o-sortButton">active <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText">Edit</div>
+                        </div>
+                        <div id="playersListContainer"></div>
+                        <div id="tablePaginationPlayers"></div> 
+                    </div>
+                </section>
             </section>
         </section>
     </main>
+    
     <footer class="cm-l-footer">
         <div class="cm-l-container">
             <nav class="cm-c-navbar">
@@ -177,6 +126,10 @@
                 </div>
             </nav>
         </div>
-    </footer>    
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./src/nodes.js"></script>
+    <script src="./src/main.js"></script>   
+    <script src="./src/navigation.js"></script>     
 </body>
 </html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <link rel="stylesheet" href="./SCSS/styles.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    <!--<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet" />-->
+                
+</head>
+<body>
+    <div class="cm-c-modal cm-u-inactive">
+        <div class="cm-c-modal__smallContent cm-u-inactive" id="modalSmall">
+            <div class="modal-body cm-u-spacer-mb-bigger">
+                <h3 class="cm-u-text-black-cat">Are you sure?</h3>
+            </div>
+            <div class="modal-footer">
+                <a href="edit-user.html" class="cm-o-button-cat--transparent">Cancel</a> 
+                <a href="manage-users.html" class="cm-o-button-cat--primary">Continue</a>
+            </div>
+        </div>
+        <div class="cm-c-modal__bigContent cm-u-inactive" id="modalBig">
+            <div class="modal-body">
+                <form class="cm-c-form-simple-hrz" id="searchUsersInModalForm">
+                    <div class="cm-c-field-icon cm-u-spacer-mb-bigger">
+                        <input class="cm-c-field-icon__input" id="searchInModalInput" name="" placeholder="Search users" type="search" value="">
+                        <button type="submit" class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchInModalBtn"><span class="material-symbols-outlined">search</span></button>
+                    </div>                    
+                </form>
+                <section class="cm-l-body">
+                    <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                        <p class="cm-u-text-black-cat" id="modalBigListTitle">Search results</p>
+                    </header>
+                    <div class="cm-l-tabledata cm-u-spacer-mb-huge">
+                        <div id="searchResultsListHeaderContainer"></div>
+                        <div id="searchResultsListContainer">results</div>
+                        <div id="tablePaginationSearchResults"></div> 
+                    </div>                   
+                </section>
+            </div>
+        </div>
+        <div class="cm-c-modal-background"></div>
+    </div>
+    <header class="cm-l-header">
+        <div class="cm-l-container">
+            <nav class="cm-c-navbar">
+                <div class="cm-c-navbar__left">
+                    <a href="" class="cm-o-logo"><span class="material-symbols-outlined">shield</span> Club Manager</a>
+                </div>
+                <div class="cm-c-navbar__right">
+                    <ul class="navbar-links-hrz">
+                        <li><a class="navbar-links__textbutt">Username</a></li>
+                        <li><button id="manageUsersBtn" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">group</span></a></button></li>
+                        <li><button id="notifsBtn" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble">99</span></button></li>
+                     </ul>
+                </div>
+            </nav>
+
+            <div id="notifsList" class="cm-c-overlay-notifications cm-u-inactive">
+                <a href="#" class="cm-o-overlay__notification">
+                    <div class="notification--text">Manage users</div>
+                    <div class="notification--date">01/03/2023</div>
+                </a>
+                <a href="#" class="cm-o-overlay__notification">
+                    <div class="notification--text">Manage users</div>
+                    <div class="notification--date">01/03/2023</div>
+                </a>
+                <a href="#" class="cm-o-overlay__notification">
+                    <div class="notification--text">Manage users</div>
+                    <div class="notification--date">01/03/2023</div>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="cm-l-container-2col">
+        <aside class="cm-l-container-2col__aside">
+            <nav class="cm-c-navbar cm-u-spacer-mt-bigger">
+                <ul class="navbar-links-vert">
+                    <li><button id="manageTeamBtn" class="cm-o-button-cat--ghost">Plantilla</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Contratos</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
+                    <li><button class="cm-o-button-cat--ghost">Maestros</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Reporting</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Más opciones</button></li>
+                </ul>
+            </nav>
+        </aside>
+        <section class="cm-l-container-2col__body cm-u-spacer-mt-huge">
+            <section id="usersList" class="cm-u-inactive">
+                <header class="cm-l-headtool cm-u-spacer-mb-bigger">
+                    <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear">Manage Users</h1></div>
+                    <div class="cm-l-headtool__toolbar">
+                        <form class="cm-c-form-simple-hrz" id="searchUsersForm">
+                            <div class="cm-c-field-icon">
+                                <input class="cm-c-field-icon__input" id="searchUser" name="searchUser" placeholder="Search users">
+                                <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchUsersBtn"><span class="material-symbols-outlined">search</span></button>
+                            </div>                    
+                        </form>
+                        <button class="cm-o-icon-button--primary" id="addUsersBtn"><span class="material-symbols-outlined">group_add</span></button>
+                    </div>
+                </header>
+                <section class="cm-l-body">
+                    <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                        <p class="cm-u-text-black-cat">List of Users</p>
+                    </header>
+                    <div class="cm-l-tabledata cm-u-spacer-mb-huge">
+                        <div class="cm-l-tabledata__header">
+                            <div class="tablecell-medium"><button data-field="userName" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="userLastname" class="cm-o-sortButton">Lastname <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-long"><button data-field="userEmail" class="cm-o-sortButton">Email <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="userLastTime" class="cm-o-sortButton">Last time <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText">Edit</div>
+                        </div>
+                        <div id="usersListContainer">
+                            <div class="cm-l-tabledata__row">
+                                <div class="tablecell-medium">Name</div>
+                                <div class="tablecell-medium">Lastname</div>
+                                <div class="tablecell-long">Email</div>
+                                <div class="tablecell-medium">Last time</div>
+                                <div class="tablecell-short cm-u-centerText">Edit</div>
+                            </div>
+                        </div>
+                        <div id="tablePaginationUsers"></div>
+                    </div>                                      
+                </section>
+            </section>
+            <section id="userDetails" class="cm-u-inactive">
+                <header class="cm-l-headtool cm-u-spacer-mb-bigger">
+                    <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear" id="userDetailsTitle">Add user</h1></div>
+                    <div class="cm-l-headtool__toolbar"></div>
+                </header>
+                <section class="cm-l-body">
+                    <div class="cm-c-accordion cm-u-spacer-mb-huge">
+                        <form class="cm-l-form-panel cm-c-form-simple" id="userDetailsForm">
+                            <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                                <p class="cm-u-text-black-cat">Basic data</p>
+                            </header>
+                            <!-- <div class="cm-c-accordion__button active">
+                                <div class="accordion-button__text"><p class="cm-u-text-black-cat">Basic data</p></div>
+                                <div class="accordion-button__icon"><span class="material-symbols-outlined">expand_more</span></div>
+                            </div> -->
+                            <div class="cm-c-accordion__panel">
+                                <div class="cm-l-form-panel__row">
+                                    <label for="userName" class="panel-field-long">
+                                        <span>Name</span>
+                                        <input type="text" id="userName" name="userName" placeholder="Name">
+                                        <span class="assistance" aria-live="polite">Write your name</span>
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="userLastname" class="panel-field-long">
+                                        <span>Lastname</span>
+                                        <input type="text" id="userLastname" name="userLastname" placeholder="Lastname">
+                                        <span class="assistance" aria-live="polite">Write your lastname</span>
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="userEmail" class="panel-field-long">
+                                        <span>Email</span>
+                                        <input type="email" id="userEmail" name="userEmail" placeholder="Email">
+                                        <span class="assistance" aria-live="polite">Write a valid email</span>
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="userPwd" class="panel-field-long">
+                                        <span>Password</span>
+                                        <input type="password" id="userPwd" name="userPwd" placeholder="New password">
+                                        <span class="assistance" aria-live="polite">8 characters min.</span>
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="userPwd2" class="panel-field-long">
+                                        <span>Repeat password</span>
+                                        <input type="password" id="userPwd2" name="userPwd2" placeholder="Repeat password">
+                                        <span class="assistance" aria-live="polite">repeat same password</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                                <p class="cm-u-text-black-cat">User permissions</p>
+                            </header>
+                            <!-- <div class="cm-c-accordion__button active">
+                                <div class="accordion-button__text"><p class="cm-u-text-black-cat">User permissions</p></div>
+                                <div class="accordion-button__icon"><span class="material-symbols-outlined">expand_more</span></div>
+                            </div> -->
+                            <div class="cm-l-accordion__panel">
+                                <table class="cm-l-table-players cm-u-spacer-mb-huge">
+                                    <thead class="cm-l-table-players__header">
+                                        <tr>
+                                            <td class="table-players-td-long">Form name</td>
+                                            <td class="table-players-td-long">Reading</td>
+                                            <td class="table-players-td-long">Writing</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cm-l-table-players__body">
+                                        <tr>
+                                            <td class="table-players-td-long">Form name</td>
+                                            <td class="table-players-td-long"><input type="checkbox" id="userForm1read" name="userForm1read"></td>
+                                            <td class="table-players-td-long"><input type="checkbox" id="userForm1write" name="userForm1write"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="table-players-td-long">Form name</td>
+                                            <td class="table-players-td-long"><input type="checkbox" id="userForm2read" name="userForm2read"></td>
+                                            <td class="table-players-td-long"><input type="checkbox" id="userForm2write" name="userForm2write"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="cm-l-form__row cm-u-centerText">
+                                <button type="button" class="cm-o-button-cat--primary" onclick="addNewUser()" id="userDetailsFormAddBtn">Add user</button>
+                                <button type="button" class="cm-o-button-cat--primary" id="userDetailsFormUpdateBtn">Update details</button>
+                                <button type="button" class="cm-o-button-cat--transparent" id="userDetailsFormDeleteBtn">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </section>
+            <section id="playersList" class="cm-u-inactive">
+                <header class="cm-l-headtool cm-u-spacer-mb-bigger">
+                    <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear">Manage Team</h1></div>
+                    <div class="cm-l-headtool__toolbar">
+                        <form class="cm-c-form-simple-hrz" id="searchPlayersForm">
+                            <div class="cm-c-field-icon">
+                                <input class="cm-c-field-icon__input" id="searchPlayer" name="searchPlayer" placeholder="Search players">
+                                <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchPlayersBtn"><span class="material-symbols-outlined">search</span></button>
+                            </div>                    
+                        </form>
+                        <button class="cm-o-icon-button--primary" id="addPlayersBtn"><span class="material-symbols-outlined">group_add</span></button>
+                    </div>
+                </header>
+                <section class="cm-l-body">
+                    <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                        <p class="cm-u-text-black-cat">List of players</p>
+                    </header>
+                    <div class="cm-l-tabledata cm-u-spacer-mb-huge">
+                        <div class="cm-l-tabledata__header">
+                            <div class="tablecell-medium"><button data-field="userName" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="userLastname" class="cm-o-sortButton">LastName <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="alias" class="cm-o-sortButton">Alias <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="country" class="cm-o-sortButton">Country <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText"><button data-field="dorsal" class="cm-o-sortButton">Dorsal <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="position" class="cm-o-sortButton">Position <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText"><button data-field="position" class="cm-o-sortButton">active <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText">Edit</div>
+                        </div>
+                        <div id="playersListContainer">
+                            <div class="cm-l-tabledata__row">
+                                <div class="tablecell-medium">Name</div>
+                                <div class="tablecell-medium">Lastname</div>
+                                <div class="tablecell-medium">Alias</div>
+                                <div class="tablecell-medium">Country</div>
+                                <div class="tablecell-short cm-u-centerText">Dorsal</div>
+                                <div class="tablecell-medium">Position</div>
+                                <div class="tablecell-short cm-u-centerText">
+                                    <div class="cm-o-icon-button-small--success"><span class="material-symbols-outlined">check</span></div>
+                                </div>
+                                <div class="tablecell-short cm-u-centerText">
+                                    <button class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">border_color</span></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tablePaginationPlayers"></div> 
+                    </div>
+                </section>
+            </section>
+            <section id="playerDetails" class="cm-u-inactive">
+                <header class="cm-l-headtool cm-u-spacer-mb-bigger">
+                    <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear" id="playerDetailsTitle">New player</h1></div>
+                    <div class="cm-l-headtool__toolbar"></div>
+                </header>
+                <section class="cm-l-body">
+                    <div class="cm-c-accordion cm-u-spacer-mb-huge">
+                        <form class="cm-l-form-panel cm-c-form-simple" id="playerDetailsForm">
+                            <!-- <div class="cm-c-accordion__button active">
+                                <div class="accordion-button__text"><p class="cm-u-text-black-cat">General data</p></div>
+                                <div class="accordion-button__icon"><span class="material-symbols-outlined">expand_more</span></div>
+                            </div> -->
+                            <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                                <p class="cm-u-text-black-cat">General data</p>
+                            </header>
+                            <div class="cm-c-accordion__panel">
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerActive" class="panel-field-short">
+                                        <span>Is player active?</span>
+                                        <div class="cm-c-form-simple__radio-toggle">
+                                            <input type="checkbox" id="playerActive" name="playerActive">
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerName" class="panel-field-long">
+                                        <span>Name</span>
+                                        <input type="text" id="playerName" name="playerName" placeholder="Name">
+                                        <span class="assistance" aria-live="polite">Write player name</span>
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerLastname" class="panel-field-long">
+                                        <span>Lastname</span>
+                                        <input type="text" id="playerLastname" name="playerLastname" placeholder="Lastname">
+                                        <span class="assistance" aria-live="polite">Write player lastname</span>
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerLastname2" class="panel-field-long">
+                                        <span>Second Lastname</span>
+                                        <input type="text" id="playerLastname2" name="playerLastname2" placeholder="second lastname">
+                                        <span class="assistance" aria-live="polite">Write player second lastname (if applicable)</span>
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerAlias" class="panel-field-long">
+                                        <span>Alias</span>
+                                        <input type="text" id="playerAlias" name="playerAlias" placeholder="Alias">
+                                        <span class="assistance" aria-live="polite">Write player alias</span>
+                                    </label>
+                                </div><div class="cm-l-form-panel__row">
+                                    <label for="playerCountry" class="panel-field-long">
+                                        <span>Country</span>
+                                        <input type="text" id="playerCountry" name="playerCountry" placeholder="Country">
+                                        <span class="assistance" aria-live="polite">Country of origin</span>
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerPassportNumber" class="panel-field-short">
+                                        <span>Passport number</span>
+                                        <input type="text" id="playerPassportNumber" name="playerPassportNumber" placeholder="Passport number">
+                                    </label>
+                                    <label for="playerPassportDate" class="panel-field-short">
+                                        <span>Valid until</span>
+                                        <input type="date" id="playerPassportDate" name="playerPassportDate" placeholder="dd/mm/yyyy">
+                                    </label>
+                                    <!-- <div class="panel-field-short">
+                                        <div class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">add_a_photo</span></div>
+                                        <a href="#" class="cm-u-text-black-mouse">1 attachment</a>
+                                        <div class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">delete</span></div>
+                                    </div> -->
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerIdNumber" class="panel-field-short">
+                                        <span>ID number</span>
+                                        <input type="text" id="playerIdNumber" name="playerIdNumber" placeholder="ID number">
+                                    </label>
+                                    <label for="playerIdDate" class="panel-field-short">
+                                        <span>Valid until</span>
+                                        <input type="date" id="playerIdDate" name="playerIdDate" placeholder="dd/mm/yyyy">
+                                    </label>
+                                </div>
+                                <!-- subir fotos, para cuando sea posible -->
+                                <!-- <div class="cm-l-form-panel__row">
+                                    <label for="idPIcture" class="panel-field-long">
+                                        <span>ID photo</span>
+                                        <div class="cm-c-field-icon fileUpload">
+                                            <input class="cm-c-field-icon__input pictureInput" id="idPIcture" type="file" placeholder="Upload ID picture" name="idPIcture" style="display:none;">
+                                            <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="idPIctureAdd"><span class="material-symbols-outlined">add_a_photo</span></button>
+                                            <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="idPIctureDelete"><span class="material-symbols-outlined">delete</span></button>
+                                            <span class="pictureInputName"></span>
+                                        </div>                                        
+                                    </label>
+                                </div> -->
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerSocialSecurityNumber" class="panel-field-short">
+                                        <span>Social security number</span>
+                                        <input type="text" id="playerSocialSecurityNumber" name="playerSocialSecurityNumber" placeholder="S.S. Number">
+                                    </label>
+                                    <label for="playerResidencyToggle" class="panel-field-short">
+                                        <span>6 months min. residency</span>
+                                        <div class="cm-c-form-simple__radio-toggle">
+                                            <input type="checkbox" id="playerResidencyToggle" name="playerResidencyToggle">
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                                <p class="cm-u-text-black-cat">Sport details</p>
+                            </header>
+                            <!-- <div class="cm-c-accordion__button active">
+                                <div class="accordion-button__text"><p class="cm-u-text-black-cat">Sport details</p></div>
+                                <div class="accordion-button__icon"><span class="material-symbols-outlined">expand_more</span></div>
+                            </div> -->
+                            <div class="cm-c-accordion__panel">
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerLeagueOrigin" class="panel-field-long">
+                                        <span>League of origin</span>
+                                        <div class="cm-c-field-icon">
+                                            <input class="cm-c-field-icon__input" id="playerLeagueOrigin" type="search" placeholder="Search league" name="leagueOfOrigin">
+                                            <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="playerLeagueOriginSearchBtn"><span class="material-symbols-outlined">search</span></button>
+                                        </div>                
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerOriginClub" class="panel-field-long">
+                                        <span>Club of origin</span>
+                                        <div class="cm-c-field-icon">
+                                            <input class="cm-c-field-icon__input" id="playerOriginClub" type="search" placeholder="Search club" name="clubOfOrigin">
+                                            <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="playerOriginClubSearchBtn"><span class="material-symbols-outlined">search</span></button>
+                                        </div>              
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerNaturalPosition" class="panel-field-long">
+                                        <span>Natural position</span>
+                                        <div class="cm-c-select-icon">
+                                            <select class="cm-c-select-icon__select" id="playerNaturalPosition" placeholder="Search league" name="playerNaturalPosition">
+                                                <option value="">Select position</option>
+                                                <option value="1">Position 1</option>
+                                                <option value="2">Position 2</option>
+                                                <option value="3">Position 3</option>
+                                                <option value="4">Position 4</option>
+                                                <option value="5">Position 5</option>
+                                                </select>
+                                        </div>           
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerHeight" class="panel-field-short">
+                                        <span>Height(cm)</span>
+                                        <input type="text" id="playerHeight" name="playerHeight" placeholder="Add height">
+                                    </label>
+                                    <label for="playerWeight" class="panel-field-short">
+                                        <span>Weight(kg)</span>
+                                        <input type="text" id="playerWeight" name="playerWeight" placeholder="Add weight">
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerWinspan" class="panel-field-short">
+                                        <span>Arms wingspan</span>
+                                        <input type="text" id="playerWinspan" name="playerWinspan" placeholder="Add wingspan">
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerStandingJump" class="panel-field-short">
+                                        <span>Standing jump</span>
+                                        <input type="text" id="playerStandingJump" name="playerStandingJump" placeholder="jump in cm">
+                                    </label>
+                                    <label for="playerRunningJump" class="panel-field-short">
+                                        <span>Running jump</span>
+                                        <input type="text" id="playerRunningJump" name="playerRunningJump" placeholder="jump in cm">
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerIntermediary1" class="panel-field-long">
+                                        <span>Intermediary 1</span>
+                                        <input type="text" id="playerIntermediary1" name="playerIntermediary1" placeholder="Add intermediary name">
+                                        <!-- <div class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">delete</span></div> -->
+                                    </label>
+                                </div>
+                                <!-- <div class="cm-l-form-panel__row">
+                                    <a href="#" class="cm-u-text-black-cat">Add intermediary</a>
+                                </div> -->
+                            </div>
+                            <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                                <p class="cm-u-text-black-cat">Contract details</p>
+                            </header>
+                            <!-- <div class="cm-c-accordion__button active">
+                                <div class="accordion-button__text"><p class="cm-u-text-black-cat">Contract</p></div>
+                                <div class="accordion-button__icon"><span class="material-symbols-outlined">expand_more</span></div>
+                            </div> -->
+                            <div class="cm-c-accordion__panel">
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerStartContractDate" class="panel-field-short">
+                                        <span>Start date</span>
+                                        <input type="date" id="playerStartContractDate" name="playerStartContractDate" placeholder="dd/mm/yyyy">
+                                    </label>
+                                    <label for="playerEndContractDate" class="panel-field-short">
+                                        <span>End date</span>
+                                        <input type="date" id="playerEndContractDate" name="playerEndContractDate" placeholder="dd/mm/yyyy">
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerContractType" class="panel-field-long">
+                                        <span>Contract type</span>
+                                        <div class="cm-c-select-icon">
+                                            <select class="cm-c-select-icon__select" id="playerContractType" placeholder="Contract type" name="playerContractType">
+                                                <option value="">Select contract</option>
+                                                <option value="1">Contract 1</option>
+                                                <option value="2">Contract 2</option>
+                                                <option value="3">Contract 3</option>
+                                                <option value="4">Contract 4</option>
+                                                <option value="5">Contract 5</option>
+                                                </select>
+                                        </div>                    
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerTransferCost" class="panel-field-long">
+                                        <span>Transfer cost (€)</span>
+                                        <input type="number" id="playerTransferCost" name="playerTransferCost" placeholder="Transfer cost in €">
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="playerSalary" class="panel-field-long">
+                                        <span>Total Salary (€)</span>
+                                        <input type="number" id="playerSalary" name="playerSalary" placeholder="Salary in €">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="cm-l-form__row cm-u-centerText">
+                                <button type="button" class="cm-o-button-cat--primary" id="playerDetailsFormAddBtn">Add player</button>
+                                <button type="button" class="cm-o-button-cat--primary" id="playerDetailsFormUpdateBtn">Update details</button>
+                                <button type="button" class="cm-o-button-cat--transparent" id="playerDetailsFormDeleteBtn">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </section>
+        </section>
+    </main>
+    
+    <footer class="cm-l-footer">
+        <div class="cm-l-container">
+            <nav class="cm-c-navbar">
+                <div class="cm-c-navbar__left">
+                    <ul class="navbar-links-hrz">
+                       <li><a class="navbar-links__link">Política de privacidad</a></li>
+                       <li><a class="navbar-links__link">Términos y condiciones</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </footer>
+    <!-- <script src="./node_modules/axios/dist/axios.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- <script src="./src/secrets.js"></script> -->
+    <script src="./src/nodes.js"></script>
+    <script src="./src/main.js"></script>   
+    <script src="./src/navigation.js"></script>     
+</body>
+</html>
