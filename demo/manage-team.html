@@ -15,7 +15,7 @@
     <!--<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet" />-->
                 
 </head>
-<body id="main">
+<body id="manageTeam">
     <div class="cm-c-modal cm-u-inactive">
         <div class="cm-c-modal__smallContent cm-u-inactive" id="modalSmall">
             <div class="modal-body cm-u-spacer-mb-bigger">
@@ -52,7 +52,7 @@
         <div class="cm-l-container">
             <nav class="cm-c-navbar">
                 <div class="cm-c-navbar__left">
-                    <a href="" class="cm-o-logo"><span class="material-symbols-outlined">shield</span> Club Manager</a>
+                    <a href="main.html" class="cm-o-logo"><span class="material-symbols-outlined">shield</span> Club Manager</a>
                 </div>
                 <div class="cm-c-navbar__right">
                     <ul class="navbar-links-hrz">
@@ -62,21 +62,6 @@
                      </ul>
                 </div>
             </nav>
-
-            <div id="notifsList" class="cm-c-overlay-notifications cm-u-inactive">
-                <a href="#" class="cm-o-overlay__notification">
-                    <div class="notification--text">Manage users</div>
-                    <div class="notification--date">01/03/2023</div>
-                </a>
-                <a href="#" class="cm-o-overlay__notification">
-                    <div class="notification--text">Manage users</div>
-                    <div class="notification--date">01/03/2023</div>
-                </a>
-                <a href="#" class="cm-o-overlay__notification">
-                    <div class="notification--text">Manage users</div>
-                    <div class="notification--date">01/03/2023</div>
-                </a>
-            </div>
         </div>
     </header>
 
@@ -94,6 +79,39 @@
             </nav>
         </aside>
         <section class="cm-l-container-2col__body cm-u-spacer-mt-huge">
+            <section id="playersList" class="">
+                <header class="cm-l-headtool cm-u-spacer-mb-bigger">
+                    <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear">Manage Team</h1></div>
+                    <div class="cm-l-headtool__toolbar">
+                        <form class="cm-c-form-simple-hrz" id="searchPlayersForm">
+                            <div class="cm-c-field-icon">
+                                <input class="cm-c-field-icon__input" id="searchPlayer" name="searchPlayer" placeholder="Search players">
+                                <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchPlayersBtn"><span class="material-symbols-outlined">search</span></button>
+                            </div>                    
+                        </form>
+                        <button class="cm-o-icon-button--primary" id="addPlayersBtn"><span class="material-symbols-outlined">group_add</span></button>
+                    </div>
+                </header>
+                <section class="cm-l-body">
+                    <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                        <p class="cm-u-text-black-cat">List of players</p>
+                    </header>
+                    <div class="cm-l-tabledata cm-u-spacer-mb-huge">
+                        <div class="cm-l-tabledata__header">
+                            <div class="tablecell-medium"><button data-field="userName" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="userLastname" class="cm-o-sortButton">LastName <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="alias" class="cm-o-sortButton">Alias <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="country" class="cm-o-sortButton">Country <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText"><button data-field="dorsal" class="cm-o-sortButton">Dorsal <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="position" class="cm-o-sortButton">Position <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText"><button data-field="position" class="cm-o-sortButton">active <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText">Edit</div>
+                        </div>
+                        <div id="playersListContainer"></div>
+                        <div id="tablePaginationPlayers"></div> 
+                    </div>
+                </section>
+            </section>
         </section>
     </main>
     
