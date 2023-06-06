@@ -13,7 +13,7 @@ const app = {
     },
     navigator: () => {
         const page = document.body.id;
-        console.log('location.search: '+location.search);
+        //console.log('location.search: '+location.search);
         if (page === 'home') {
             homePage();
         } else if (page === 'manageUsers' && location.search == ''){
@@ -30,7 +30,361 @@ const app = {
             app.managePlayerPage();
         } else if (page === 'managePlayer' && location.search.startsWith('?searchAction=searchLeague')) {
             app.searchLeaguesPage();
+        } else if (page === 'managePlayer' && location.search.startsWith('?searchAction=searchTeam')) {
+            app.searchTeamsPage();
         }
+    },
+    //------------------------------------API & API FUNCTIONS ------------------------------------------
+    api: axios.create({
+        baseURL: 'https://64492e4ae7eb3378ca41f493.mockapi.io/api/v1/',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        params: {
+        }
+    }),
+    //get generico
+    getData: async(resource, page, limit, sortBy, order) => {
+        const {data} = await app.api(resource,{params: { page: page, limit: limit, sortBy:sortBy, order:order } });
+        return results = data;
+    },
+    //obtener usuarios
+    getUsers: async ({page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = 10;
+        resource = '/users';
+        const results = await app.getData(resource, page, limit, sortBy, order)
+        .then(function (response) {
+            app.listUsers(response,usersListContainer);
+            app.paginateList(response, tablePaginationUsers);
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //obtener detalles usuario
+    getUser: async (userID) => {
+        resource = '/users/'+userID;
+        const results = await app.getData(resource)
+        .then(function (response) {
+            //console.log(response);
+            app.listUserDetails(response);
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //obtener jugadores
+    getPlayers: async ({page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = 10;
+        resource = '/players';
+        const results = await app.getData(resource, page, limit, sortBy, order)
+        .then(function (response) {
+            //console.log(response);
+            app.listPlayers(response,playersListContainer);
+            app.paginateList(response, tablePaginationPlayers);
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //obtener detalles jugador
+    getPlayer: async (playerID) => {
+        const { data } = await app.api('/players/'+playerID);
+        const user = data;
+        app.listPlayerDetails(user);
+    },
+    //obtener ligas
+    getLeagues: async ({page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = limit;
+        resource = '/leagues';
+        origin = 'getLeagues';
+        const results = await app.getData(resource, page, limit, sortBy, order)
+        .then(function (response) {
+            app.listOptionsSelector(response,searchResultsListContainer,origin);
+            if (response.count > 0) {
+                //console.log('teams:'+response.count);
+                app.paginateList(response, tablePaginationSearchResults);
+            }  
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //obtener dato especifico
+    getSpecificValueData: async (resource, id, field) => {
+        resource = resource+id;
+        field = field;
+        const results = await app.getData(resource);
+        return results;
+    },
+    //obtener equipos
+    getTeams: async (leagueOfOrigin, {page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = limit;
+        resource = '/leagues/'+leagueOfOrigin+'/teams';
+        origin = 'getTeams';
+        const results = await app.getData(resource, page, app.listLimit, sortBy, order)
+        .then(function (response) {
+            app.listOptionsSelector(response,searchResultsListContainer,origin,leagueOfOrigin);
+            if (response.count > 0) {
+                // console.log('teams:'+response.count);
+                // console.log(response);
+                app.paginateList(response, tablePaginationSearchResults);
+            }  
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //añadir nuevo usuario
+    addNewUser: async () => {
+        const newUserData = new FormData(userDetailsForm);
+        const data = {};
+        newUserData.forEach((value, key) => data[key] = value);
+        const postNewUser = await app.api.post('/users', {
+            userName:data.userName,
+            userLastname:data.userLastname,
+            userEmail:data.userEmail,
+            userPwd:data.userPwd,
+            userForm1read:data.userForm1read,
+            userForm1write:data.userForm1write,
+            userForm2read:data.userForm2read,
+            userForm2write:data.userForm2write,
+        })
+        .then(function (response) {
+            location.href = "manage-users.html";
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //añadir nuevo jugador
+    addNewPlayer: async () => {
+        const newPlayerData = new FormData(playerDetailsForm);
+        const data = {};
+        newPlayerData.forEach((value, key) => data[key] = value);
+        // console.log(data);        
+        const postNewPlayer = await app.api.post('/players', {
+            active:data.playerActive,
+            userName:data.playerName,
+            userLastname:data.playerLastname,
+            userLastname2:data.playerLastname2,
+            alias:data.playerAlias,
+            country:data.playerCountry,
+            passport:data.playerPassportNumber,
+            dni:data.playerIdNumber,
+            passportDate:data.playerPassportDate,
+            dniDate:data.playerIdDate,
+            socialSecurityNr:data.playerSocialSecurityNumber,
+            sixMonthsResidency:data.playerResidencyToggle,
+            clubFrom:data.playerOriginClub,
+            leagueFrom:data.playerLeagueOrigin,
+            position:data.playerNaturalPosition,
+            height:data.playerHeight,
+            weight:data.playerWeight,
+            armsWingspan:data.playerWinspan,
+            standingJump:data.playerStandingJump,
+            runningJump:data.playerRunningJump,
+            intermediary1Name:data.playerIntermediary1,
+            contractStartDate:data.playerStartContractDate,
+            contractEndDate:data.playerEndContractDate,
+            contractType:data.playerContractType,
+            transferCost:data.playerTransferCost,
+            netSalary:data.playerSalary,
+        })
+        .then(function (response) {
+            let uri = window.location.toString();
+            let clean_uri = uri.substring(0,uri.indexOf("?")); 
+            window.history.replaceState({},document.title,clean_uri);
+            location.href = "manage-team.html";
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //actualizar usuario existente
+    updateUser: async (userID) => {
+        const updatedUserData = new FormData(userDetailsForm);
+        const data = {};
+        updatedUserData.forEach((value, key) => data[key] = value);
+        const updateUserData = await api.put('/users/'+userID, {
+            userName:data.userName,
+            userLastname:data.userLastname,
+            userEmail:data.userEmail,
+            userPwd:data.userPwd,
+            userForm1read:data.userForm1read,
+            userForm1write:data.userForm1write,
+            userForm2read:data.userForm2read,
+            userForm2write:data.userForm2write,
+        })
+        .then(function (response) {
+            //console.log(response);
+            location.href = "manage-users.html";
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //actualizar jugador existente
+    updatePlayer: async (playerID) => {
+        const updatedPlayerData = new FormData(playerDetailsForm);
+        const data = {};
+        // console.log(data);
+        updatedPlayerData.forEach((value, key) => data[key] = value);
+        if (data.playerActive === undefined) { data.playerActive = 'false'};
+        if (data.playerResidencyToggle === undefined){data.playerResidencyToggle = 'false'};
+        const updatePlayerrData = await app.api.put('/players/'+playerID, {
+            active:data.playerActive,
+            userName:data.playerName,
+            userLastname:data.playerLastname,
+            userLastname2:data.playerLastname2,
+            alias:data.playerAlias,
+            country:data.playerCountry,
+            passport:data.playerPassportNumber,
+            dni:data.playerIdNumber,
+            passportDate:data.playerPassportDate,
+            dniDate:data.playerIdDate,
+            socialSecurityNr:data.playerSocialSecurityNumber,
+            sixMonthsResidency:data.playerResidencyToggle,
+            clubFrom:data.clubOfOrigin,
+            leagueFrom:data.leagueOfOrigin,
+            position:data.playerNaturalPosition,
+            height:data.playerHeight,
+            weight:data.playerWeight,
+            armsWingspan:data.playerWinspan,
+            standingJump:data.playerStandingJump,
+            runningJump:data.playerRunningJump,
+            intermediary1Name:data.playerIntermediary1,
+            contractStartDate:data.playerStartContractDate,
+            contractEndDate:data.playerEndContractDate,
+            contractType:data.playerContractType,
+            transferCost:data.playerTransferCost,
+            netSalary:data.playerSalary,
+        })
+        .then(function (response) {
+            //console.log(response);
+            location.href="manage-team.html";
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //borrar usuario
+    deleteUser: async(userID) => {    
+        const deleteUser = await api.delete('/users/'+userID)
+        .then(response => {
+            location.href = "manage-users.html";
+        }).catch(e => {
+            console.log(e);
+        });
+        
+    },
+    //borrar usuario
+    deleteUser: async(userID) => {    
+        const deleteUser = await app.api.delete('/users/'+userID)
+        .then(response => {
+            location.href = "manage-users.html";
+        }).catch(e => {
+            console.log(e);
+        });        
+    },
+    //borrar jugador
+    deletePlayer: async(playerID) => {    
+        const deleteUser = await app.api.delete('/players/'+playerID)
+        .then(response => {
+            location.href="manage-team.html";
+        }).catch(e => {
+            console.log(e);
+        });        
+    },
+    //filtrar genérico
+    filterData: async(resource, page, limit, sortBy, order) => {
+        const { data } = await app.api(resource,{params: { page: page, limit: limit, sortBy:sortBy, order:order } });
+        return results = data;
+    },
+    //filtrar usuarios por busqueda
+    filterUsers: async (searchTerm, {page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = 5;
+        // console.log('filterUsers Term:'+searchTerm);
+        // console.log('listLimit:'+limit);
+        resource = '/users?search='+searchTerm;
+        const results = await app.filterData(resource, page, limit, sortBy, order)
+        .then(function (response) {
+            app.listSearchResults(response,searchResultsListContainer,searchTerm);
+            if (response.count > 0) {
+                app.paginateList(response, tablePaginationSearchResults);
+            }  
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //filtrar jugadores por busqueda
+    filterPlayers: async (searchTerm, {page = 1, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = 5;
+        resource = '/players?search='+searchTerm;
+        const results = await app.getData(resource, page, limit, sortBy, order)
+        .then(function (response) {
+            //console.log(response);
+            app.listSearchResults(response,searchResultsListContainer,searchTerm);
+            if (response.count > 0) {
+                app.paginateList(response, tablePaginationSearchResults);
+            }  
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //filtrar jugadores por busqueda
+    filterPlayers: async (searchTerm, {page = 1, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = 5;
+        resource = '/players?search='+searchTerm;
+        const results = await app.getData(resource, page, limit, sortBy, order)
+        .then(function (response) {
+            //console.log(response);
+            app.listSearchResults(response,searchResultsListContainer,searchTerm);
+            if (response.count > 0) {
+                app.paginateList(response, tablePaginationSearchResults);
+            }  
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //filtrar ligas por busqueda
+    filterLeagues: async (searchTerm, {page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+        listLimit = limit;
+        resource = '/leagues?search='+searchTerm;
+        origin = 'getLeagues';
+        const results = await app.filterData(resource, page, limit, sortBy, order)
+        .then(function (response) {
+            app.listOptionsSelector(response,searchResultsListContainer,origin);
+            if (response.count > 0) {
+                console.log('teams:'+response.count);
+                app.paginateList(response, tablePaginationSearchResults);
+            }
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //filtrar equipos por busqueda
+    filterTeams: async (leagueOfOrigin,searchTerm, {page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+        listLimit = limit;
+        resource = '/leagues/'+leagueOfOrigin+'/teams?search='+searchTerm;
+        origin = 'getTeams';
+        const results = await app.filterData(resource, page, limit, sortBy, order)
+        .then(function (response) {
+            console.log('resultado filtrar equipos:');
+            console.log(response);
+            app.listOptionsSelector(response,searchResultsListContainer,origin,leagueOfOrigin);
+            if (response.count > 0) {
+                console.log('teams:'+response.count);
+                app.paginateList(response, tablePaginationSearchResults);
+            }
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
     },
     //------------------------------------------PAGES------------------------------------------
     homePage: () => {
@@ -46,7 +400,7 @@ const app = {
         // userDetailsSection.classList.add('cm-u-inactive');
         // playersListSection.classList.add('cm-u-inactive');
         // playerDetailsSection.classList.add('cm-u-inactive');
-        getUsers();
+        app.getUsers();
         //app.cleanUserDetails();
 
         //boton buscar dentro de listado de usuarios
@@ -73,13 +427,13 @@ const app = {
             userDetailsFormDeleteBtn.classList.add('cm-u-inactive');
             //pulsar el boton de añadir
             userDetailsFormAddBtn.addEventListener('click',()=>{
-                addNewUser();
+                app.addNewUser();
             });
         } else {
             app.cleanUserDetails();
             const params = new URLSearchParams(document.location.search);
             const userID = params.get('user');
-            getUser(userID);
+            app.getUser(userID);
             userDetailsFormAddBtn.classList.add('cm-u-inactive');
             userDetailsCancelBtn.classList.add('cm-u-inactive');
         }
@@ -91,7 +445,7 @@ const app = {
         userDetailsFormUpdateBtn.addEventListener('click',()=>{
             const params = new URLSearchParams(document.location.search);
             const userID = params.get('user');
-            updateUser(userID);
+            app.updateUser(userID);
         })
         //boton borrar dentro de detalles de usuario
         userDetailsFormDeleteBtn.addEventListener('click',()=>{
@@ -103,7 +457,7 @@ const app = {
     searchUsersModal: () => {
         const params = new URLSearchParams(document.location.search);
         const searchTerm = params.get('searchTerm');
-        filterUsers(searchTerm, {limit:5});
+        app.filterUsers(searchTerm, {limit:5});
     },
     //modal confirmar borrar
     confirmDeleteModal: ()=>{
@@ -140,7 +494,7 @@ const app = {
         })
     
         deleteBtn.addEventListener('click',()=>{
-            deleteUser(userID);
+            app.deleteUser(userID);
             modalContainer.classList.add('cm-u-inactive');
         })
     },
@@ -152,7 +506,7 @@ const app = {
         // userDetailsSection.classList.add('cm-u-inactive');
         // playersListSection.classList.remove('cm-u-inactive');
         // playerDetailsSection.classList.add('cm-u-inactive');
-        getPlayers();
+        app.getPlayers();
         // cleanPlayerDetails();
 
         //boton buscar dentro de listado de jugadores
@@ -182,7 +536,7 @@ const app = {
             playerDetailsCancelBtn.classList.remove('cm-u-inactive');
             //pulsar el boton de añadir
             playerDetailsFormAddBtn.addEventListener('click',()=>{
-                addNewPlayer();
+                app.addNewPlayer();
             })
         } else {
             console.log('estoy editando un jugador que ya existe');
@@ -195,14 +549,14 @@ const app = {
             playerDetailsCancelBtn.classList.add('cm-u-inactive');
             const params = new URLSearchParams(document.location.search);
             const playerID = params.get('player');
-            getPlayer(playerID);
+            app.getPlayer(playerID);
             //boton borrar jugador
             playerDetailsFormDeleteBtn.addEventListener('click',()=>{
                 app.confirmDeletePlayerModal();    
             })
             //boton actualizar dentro de detalles de jugadores
             playerDetailsFormUpdateBtn.addEventListener('click',()=>{
-                updatePlayer(playerID);
+                app.updatePlayer(playerID);
             })
         }
         //boton cancelar
@@ -261,8 +615,8 @@ const app = {
         // usersListSection.classList.add('cm-u-inactive');
         // userDetailsSection.classList.add('cm-u-inactive');
         // playersListSection.classList.remove('cm-u-inactive');
-        getPlayers();
-        filterPlayers(searchTerm, {limit:5});
+        app.getPlayers();
+        app.filterPlayers(searchTerm, {limit:5});
     },
     //modal buscar ligas jugadores
     searchLeaguesPage: () => {
@@ -288,10 +642,10 @@ const app = {
         if (searchTerm === null || searchTerm.length === 0) {
             searchInModalInput.value = '';
             searchInModalInput.setAttribute('placeholder','Search Leagues');
-            getLeagues();
+            app.getLeagues();
         } else {
             //filtrar la busqueda por el value del input de la ficha del jugador
-            filterLeagues(searchTerm);
+            app.filterLeagues(searchTerm);
             searchInModalInput.value = searchTerm;
         }
     },
@@ -301,7 +655,7 @@ const app = {
         const playerOriginClubContainer = playerOriginClub.closest('.cm-c-field-icon');
         const playerLeagueOriginContainer = playerLeagueOrigin.closest('.cm-c-field-icon');
         //seteamos el listLimit en 5 para que no muestre más de 5 resultados
-        listLimit = 5;
+        app.listLimit = 5;
         //cogemos los parametros de la URL
         const params = new URLSearchParams(document.location.search);
         const searchOrigin = params.get('searchOrigin');
@@ -316,14 +670,10 @@ const app = {
                 console.log("busco ligas que contengan: "+league);
                 resource = '/leagues?search='+league;
                 origin = 'getTeams';
-                const results = await filterData(resource, app.currentListPage, app.listLimit, 'id', 'asc')
+                const results = await app.filterData(resource, app.currentListPage, app.listLimit, 'id', 'asc')
                 .then(function (response) {             
                     if (response.count > 0) {
-                        //si existe y es valida, entonces buscar los equipos que esta en esa liga 
-                        //mostramos el modal
-                        // usersListSection.classList.add('cm-u-inactive');
-                        // userDetailsSection.classList.add('cm-u-inactive');
-                        // playersListSection.classList.add('cm-u-inactive'); 
+                        console.log(response);
                         const nameLiga = response.items[0].leagueName;
                         const idLiga = response.items[0].id;
                         console.log('la liga '+nameLiga+' con id '+idLiga+' es valida');
@@ -332,12 +682,12 @@ const app = {
                         //si esta relleno filtramos la busqueda de equipo
                         if (inputTeam.length > 0) {
                             searchInModalInput.value = searchTerm;
-                            filterTeams(idLiga, searchTerm);
+                            app.filterTeams(idLiga, searchTerm);
                         // si está vacío lanzamos un listado generico de todos los equipos dentro de la liga seleccionada
                         } else {
                             searchInModalInput.value = '';
                             searchInModalInput.setAttribute('placeholder','Search Teams');
-                            getTeams(idLiga);
+                            app.getTeams(idLiga);
                         }
                     } else {
                         //si existe y no es valida, hay que devolver un error para escoger una liga 
@@ -456,7 +806,7 @@ const app = {
         })
     
         deleteBtn.addEventListener('click',()=>{
-            deletePlayer(playerID);
+            app.deletePlayer(playerID);
             modalContainer.classList.add('cm-u-inactive');
         })
     },
@@ -1148,7 +1498,7 @@ const app = {
                         history.pushState('', '', '?player='+searchOrigin);
                     }
                     //asignamos el la liga escogida al input del listado
-                    inputSetValue(playerLeagueOrigin,'/leagues/',leagueID,'leagueName');
+                    app.inputSetValue(playerLeagueOrigin,'/leagues/',leagueID,'leagueName');
                     //ocultamos el modal
                     modalContainer.classList.add('cm-u-inactive');
                 });
@@ -1160,10 +1510,10 @@ const app = {
         const count = users.count;
         const maxPages = Math.ceil(count/app.listLimit);
         container.innerHTML = '';
-        // console.log('<------- paginateList');
-        // console.log('añadir paginacion para: '+count);
-        // console.log('limite listado: '+app.listLimit);
-        // console.log('paginas maximas: '+maxPages);
+        console.log('<------- paginateList');
+        console.log('añadir paginacion para: '+count);
+        console.log('limite listado: '+app.listLimit);
+        console.log('paginas maximas: '+maxPages);
         // construir la tabla de paginación
         const paginationContainer = document.createElement('div');
         paginationContainer.classList.add('cm-l-tabledata__footer');
@@ -1194,7 +1544,7 @@ const app = {
     
         //botones de paginacion
         const activatePagination = () => {
-            console.log('estoy en la pagina: '+app.currentListPage);
+            //console.log('estoy en la pagina: '+app.currentListPage);
             // console.log('location.search: '+location.search);
             const page = document.body.id;
             const goNextBtn = container.querySelector('#goNextPage');
@@ -1206,23 +1556,23 @@ const app = {
                 goNextBtn.addEventListener('click',()=>{
                     app.currentListPage++;
                     const params = new URLSearchParams(document.location.search);
-                    if (page === 'manageUsers' && location.search === ''){ getUsers({page:app.currentListPage});}
-                    else if (page === 'manageTeam' && location.search === ''){ getPlayers({page:app.currentListPage})}
+                    if (page === 'manageUsers' && location.search === ''){ app.getUsers({page:app.currentListPage});}
+                    else if (page === 'manageTeam' && location.search === ''){ app.getPlayers({page:app.currentListPage})}
                     else if (page === 'manageUsers' && location.search.startsWith('?searchAction=searchUser')){ 
                         searchTerm = searchInModalInput.value;
-                        filterUsers(searchTerm, {page:app.currentListPage, limit:5});
+                        app.filterUsers(searchTerm, {page:app.currentListPage, limit:5});
                     } else if (page === 'manageTeam' && location.search.startsWith('?searchAction=searchPlayer')){ 
                         searchTerm = searchInModalInput.value;
-                        filterPlayers(searchTerm, {page:app.currentListPage, limit:5});
-                    // } else if (location.search.startsWith('?searchAction=searchLeague')){ 
-                    //     console.log("click filtrando ligas adelante");
-                    //     searchTerm = searchInModalInput.value;
-                    //     filterLeagues(searchTerm, {page:currentListPage, limit:5});
-                    // } else if (location.search.startsWith('?searchAction=searchTeam')){ 
-                    //     const leagueOrigin = params.get('leagueOrigin');
-                    //     console.log('league of origin: '+leagueOrigin);
-                    //     searchTerm = searchInModalInput.value;
-                    //     filterTeams(leagueOrigin, searchTerm, {page:currentListPage, limit:5});
+                        app.filterPlayers(searchTerm, {page:app.currentListPage, limit:5});
+                    } else if (location.search.startsWith('?searchAction=searchLeague')){ 
+                        console.log("click filtrando ligas adelante");
+                        searchTerm = searchInModalInput.value;
+                        app.filterLeagues(searchTerm, {page:app.currentListPage, limit:5});
+                    } else if (location.search.startsWith('?searchAction=searchTeam')){ 
+                        const leagueOrigin = params.get('leagueOrigin');
+                        console.log('league of origin: '+leagueOrigin);
+                        searchTerm = searchInModalInput.value;
+                        app.filterTeams(leagueOrigin, searchTerm, {page:app.currentListPage, limit:5});
                     }
                     console.log('voy a la pagina: '+app.currentListPage);                    
                 })
@@ -1232,24 +1582,24 @@ const app = {
                 goPrevBtn.addEventListener('click',()=>{
                     app.currentListPage--;
                     const params = new URLSearchParams(document.location.search);
-                    if (page === 'manageUsers' && location.search === ''){ getUsers({page:app.currentListPage});}
-                    else if (page === 'manageTeam' && location.search === ''){ getPlayers({page:app.currentListPage})}
+                    if (page === 'manageUsers' && location.search === ''){ app.getUsers({page:app.currentListPage});}
+                    else if (page === 'manageTeam' && location.search === ''){ app.getPlayers({page:app.currentListPage})}
                     else if (page === 'manageUsers' && location.search.startsWith('?searchAction=searchUser')){ 
                         searchTerm = searchInModalInput.value;
-                        filterUsers(searchTerm, {page:app.currentListPage, limit:5});
+                        app.filterUsers(searchTerm, {page:app.currentListPage, limit:5});
                     } else if (page === 'manageTeam' && location.search.startsWith('?searchAction=searchPlayer')){ 
                         searchTerm = searchInModalInput.value;
-                        filterPlayers(searchTerm, {page:app.currentListPage, limit:5});
-                    // } else if (location.search.startsWith('?searchAction=searchLeague')){ 
-                    //     console.log("click filtrando ligas atrás");
-                    //     searchTerm = searchInModalInput.value;
-                    //     filterLeagues(searchTerm, {page:currentListPage, limit:5});
-                    // } else if (location.search.startsWith('?searchAction=searchTeam')){ 
-                    //     const leagueOrigin = params.get('leagueOrigin');
-                    //     searchTerm = searchInModalInput.value;
-                    //     filterTeams(leagueOrigin, searchTerm, {page:currentListPage, limit:5});
+                        app.filterPlayers(searchTerm, {page:app.currentListPage, limit:5});
+                    } else if (location.search.startsWith('?searchAction=searchLeague')){ 
+                        console.log("click filtrando ligas atrás");
+                        searchTerm = searchInModalInput.value;
+                        app.filterLeagues(searchTerm, {page:app.currentListPage, limit:5});
+                    } else if (location.search.startsWith('?searchAction=searchTeam')){ 
+                        const leagueOrigin = params.get('leagueOrigin');
+                        searchTerm = searchInModalInput.value;
+                        filterTeams(leagueOrigin, searchTerm, {page:app.currentListPage, limit:5});
                     }
-                    console.log('voy a la pagina: '+app.currentListPage);  
+                    //console.log('voy a la pagina: '+app.currentListPage);  
                 })
             }
         }
@@ -1300,20 +1650,20 @@ const app = {
     
             //llamo a la api para que filtre por ese campo
             if (page === 'manageUsers' && location.search === ''){ 
-                getUsers({page:app.currentListPage, sortBy:sortField, order:app.listOrder});
+                app.getUsers({page:app.currentListPage, sortBy:sortField, order:app.listOrder});
             } else if (page === 'manageTeam' && location.search === ''){ 
-                getPlayers({page:app.currentListPage, sortBy:sortField, order:app.listOrder});
+                app.getPlayers({page:app.currentListPage, sortBy:sortField, order:app.listOrder});
             } else if (page === 'manageUsers' && location.search.startsWith('?searchAction=searchUser')) {
                 const params = new URLSearchParams(document.location.search);
                 const searchTermObtained = params.get('searchTerm');
-                filterUsers(searchTermObtained, {page:1, limit:5, sortBy:sortField, order:app.listOrder});
+                app.filterUsers(searchTermObtained, {page:1, limit:5, sortBy:sortField, order:app.listOrder});
             } else if (location.search.startsWith('?searchAction=searchPlayer')) {
                 const [_,searchTermObtained] = location.search.split('=');
-                filterPlayers(searchTermObtained, {page:1, limit:5, sortBy:sortField, order:listOrder});
+                app.filterPlayers(searchTermObtained, {page:1, limit:5, sortBy:sortField, order:listOrder});
             } else if (location.hash.startsWith('#searchClub')) {
-                getTeams({page:1, limit:5, sortBy:sortField, order:listOrder});
+                app.getTeams({page:1, limit:5, sortBy:sortField, order:listOrder});
             } else if (location.hash.startsWith('#searchLeague')) {
-                getLeagues({page:1, limit:5, sortBy:sortField, order:listOrder});
+                app.getLeagues({page:1, limit:5, sortBy:sortField, order:listOrder});
             }
             
             //muestro el icono correspondiente para el botón que se pulsa
@@ -1369,7 +1719,7 @@ const app = {
     },
     //asignar un valor concreto a un input desde un dato especifico de un get
     inputSetValue: async (element, resource, id, field) => {    
-        const value = await getSpecificValueData(resource,id,field)
+        const value = await app.getSpecificValueData(resource,id,field)
         .then(function (response) {
             console.log(response);
             console.log("response ID: "+response.id);
@@ -1415,15 +1765,15 @@ app.init();
 
 
 
-//Data
-const api = axios.create({
-    baseURL: 'https://64492e4ae7eb3378ca41f493.mockapi.io/api/v1/',
-    headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-    },
-    params: {
-    }
-});
+// //Data
+// const api = axios.create({
+//     baseURL: 'https://64492e4ae7eb3378ca41f493.mockapi.io/api/v1/',
+//     headers: {
+//         'Content-Type': 'application/json;charset=utf-8'
+//     },
+//     params: {
+//     }
+// });
 
 //Utils
 //restylizing file inputs (lo dejamos para cuando se pueda)
@@ -1432,349 +1782,6 @@ const api = axios.create({
 
 // inputUpload.addEventListener("change", ()=>{
 //     const inputImage = inputUpload.files[0]; 
-   
 //     inputUploadName.innerText = inputImage.name;
 // });
-
-
-
-
-
-
-
-//Api calls
-
-//get generico
-const getData = async(resource, page, limit, sortBy, order) => {
-    const { data } = await api(resource,{params: { page: page, limit: limit, sortBy:sortBy, order:order } });
-    return results = data;
-}
-//obtener usuarios
-const getUsers = async ({page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
-    app.listLimit = 10;
-    resource = '/users';
-    const results = await getData(resource, page, limit, sortBy, order)
-    .then(function (response) {
-        app.listUsers(response,usersListContainer);
-        app.paginateList(response, tablePaginationUsers);
-    })
-    .catch(function (error) {
-        console.warn(error);
-    });
-}
-//obtener detalles usuario
-const getUser = async (userID) => {
-    resource = '/users/'+userID;
-    const results = await getData(resource)
-    .then(function (response) {
-        //console.log(response);
-        app.listUserDetails(response);
-    })
-    .catch(function (error) {
-        console.warn(error);
-    });
-}
-//obtener ligas
-const getLeagues = async ({page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
-    listLimit = limit;
-    resource = '/leagues';
-    origin = 'getLeagues';
-    const results = await getData(resource, page, limit, sortBy, order)
-    .then(function (response) {
-        app.listOptionsSelector(response,searchResultsListContainer,origin);
-        if (response.count > 0) {
-            //console.log('teams:'+response.count);
-            app.paginateList(response, tablePaginationSearchResults);
-        }  
-    })
-    .catch(function (error) {
-        console.warn(error);
-    });
-}
-//obtener dato especifico
-const getSpecificValueData = async (resource, id, field) => {
-    resource = resource+id;
-    field = field;
-    const results = await getData(resource);
-    return results;
-}
-//obtener equipos
-const getTeams = async (leagueOfOrigin, {page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
-    listLimit = limit;
-    resource = '/leagues/'+leagueOfOrigin+'/teams';
-    origin = 'getTeams';
-    const results = await getData(resource, page, limit, sortBy, order)
-    .then(function (response) {
-        app.listOptionsSelector(response,searchResultsListContainer,origin,leagueOfOrigin);
-        if (response.count > 0) {
-            // console.log('teams:'+response.count);
-            // console.log(response);
-            app.paginateList(response, tablePaginationSearchResults);
-        }  
-    })
-    .catch(function (error) {
-        console.warn(error);
-    });
-}
-//obtener jugadores
-const getPlayers = async ({page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
-    app.listLimit = 10;
-    resource = '/players';
-    const results = await getData(resource, page, limit, sortBy, order)
-    .then(function (response) {
-        //console.log(response);
-        app.listPlayers(response,playersListContainer);
-        app.paginateList(response, tablePaginationPlayers);
-    })
-    .catch(function (error) {
-        console.warn(error);
-    });
-}
-//obtener detalles jugador
-const getPlayer = async (playerID) => {
-    const { data } = await api('/players/'+playerID);
-    const user = data;
-    app.listPlayerDetails(user);
-}
-//añadir nuevo usuario
-const addNewUser = async () => {
-    const newUserData = new FormData(userDetailsForm);
-    const data = {};
-    newUserData.forEach((value, key) => data[key] = value);
-    const postNewUser = await api.post('/users', {
-        userName:data.userName,
-        userLastname:data.userLastname,
-        userEmail:data.userEmail,
-        userPwd:data.userPwd,
-        userForm1read:data.userForm1read,
-        userForm1write:data.userForm1write,
-        userForm2read:data.userForm2read,
-        userForm2write:data.userForm2write,
-      })
-      .then(function (response) {
-        //console.log(response);
-        // let uri = window.location.toString();
-        // let clean_uri = uri.substring(0,uri.indexOf("?")); 
-        // window.history.replaceState({},document.title,clean_uri);
-        location.href = "manage-users.html";
-      })
-      .catch(function (error) {
-        console.warn(error);
-      });
-
-}
-//añadir nuevo jugador
-const addNewPlayer = async () => {
-    console.log('hit add new player');
-    const newPlayerData = new FormData(playerDetailsForm);
-    const data = {};
-    newPlayerData.forEach((value, key) => data[key] = value);
-    console.log(data);
-    
-    const postNewPlayer = await api.post('/players', {
-        active:data.playerActive,
-        userName:data.playerName,
-        userLastname:data.playerLastname,
-        userLastname2:data.playerLastname2,
-        alias:data.playerAlias,
-        country:data.playerCountry,
-        passport:data.playerPassportNumber,
-        dni:data.playerIdNumber,
-        passportDate:data.playerPassportDate,
-        dniDate:data.playerIdDate,
-        socialSecurityNr:data.playerSocialSecurityNumber,
-        sixMonthsResidency:data.playerResidencyToggle,
-        clubFrom:data.playerOriginClub,
-        leagueFrom:data.playerLeagueOrigin,
-        position:data.playerNaturalPosition,
-        height:data.playerHeight,
-        weight:data.playerWeight,
-        armsWingspan:data.playerWinspan,
-        standingJump:data.playerStandingJump,
-        runningJump:data.playerRunningJump,
-        intermediary1Name:data.playerIntermediary1,
-        contractStartDate:data.playerStartContractDate,
-        contractEndDate:data.playerEndContractDate,
-        contractType:data.playerContractType,
-        transferCost:data.playerTransferCost,
-        netSalary:data.playerSalary,
-      })
-      .then(function (response) {
-        //console.log(response);
-        let uri = window.location.toString();
-        let clean_uri = uri.substring(0,uri.indexOf("?")); 
-        window.history.replaceState({},document.title,clean_uri);
-        location.href = "manage-team.html";
-      })
-      .catch(function (error) {
-        console.warn(error);
-      });
-
-}
-//actualizar usuario existente
-const updateUser = async (userID) => {
-    const updatedUserData = new FormData(userDetailsForm);
-    const data = {};
-    updatedUserData.forEach((value, key) => data[key] = value);
-
-    const updateUserData = await api.put('/users/'+userID, {
-        userName:data.userName,
-        userLastname:data.userLastname,
-        userEmail:data.userEmail,
-        userPwd:data.userPwd,
-        userForm1read:data.userForm1read,
-        userForm1write:data.userForm1write,
-        userForm2read:data.userForm2read,
-        userForm2write:data.userForm2write,
-      })
-      .then(function (response) {
-        //console.log(response);
-        location.href = "manage-users.html";
-      })
-      .catch(function (error) {
-        console.warn(error);
-      });
-
-}
-//actualizar jugador existente
-const updatePlayer = async (playerID) => {
-    const updatedPlayerData = new FormData(playerDetailsForm);
-    const data = {};
-    console.log(data);
-    updatedPlayerData.forEach((value, key) => data[key] = value);
-    if (data.playerActive === undefined) { data.playerActive = 'false'};
-    if (data.playerResidencyToggle === undefined){data.playerResidencyToggle = 'false'};
-
-    const updatePlayerrData = await api.put('/players/'+playerID, {
-        active:data.playerActive,
-        userName:data.playerName,
-        userLastname:data.playerLastname,
-        userLastname2:data.playerLastname2,
-        alias:data.playerAlias,
-        country:data.playerCountry,
-        passport:data.playerPassportNumber,
-        dni:data.playerIdNumber,
-        passportDate:data.playerPassportDate,
-        dniDate:data.playerIdDate,
-        socialSecurityNr:data.playerSocialSecurityNumber,
-        sixMonthsResidency:data.playerResidencyToggle,
-        clubFrom:data.clubOfOrigin,
-        leagueFrom:data.leagueOfOrigin,
-        position:data.playerNaturalPosition,
-        height:data.playerHeight,
-        weight:data.playerWeight,
-        armsWingspan:data.playerWinspan,
-        standingJump:data.playerStandingJump,
-        runningJump:data.playerRunningJump,
-        intermediary1Name:data.playerIntermediary1,
-        contractStartDate:data.playerStartContractDate,
-        contractEndDate:data.playerEndContractDate,
-        contractType:data.playerContractType,
-        transferCost:data.playerTransferCost,
-        netSalary:data.playerSalary,
-      })
-      .then(function (response) {
-        //console.log(response);
-        location.href="manage-team.html";
-      })
-      .catch(function (error) {
-        console.warn(error);
-      });
-
-}
-//borrar usuario
-const deleteUser = async(userID) => {    
-    const deleteUser = await api.delete('/users/'+userID)
-    .then(response => {
-        location.href = "manage-users.html";
-    }).catch(e => {
-        console.log(e);
-    });
-    
-}
-//borrar jugador
-const deletePlayer = async(playerID) => {    
-    const deleteUser = await api.delete('/players/'+playerID)
-    .then(response => {
-        location.href="manage-team.html";
-    }).catch(e => {
-        console.log(e);
-    });
-    
-}
-//filtrar genérico
-const filterData = async(resource, page, limit, sortBy, order) => {
-    const { data } = await api(resource,{params: { page: page, limit: limit, sortBy:sortBy, order:order } });
-    return results = data;
-}
-//filtrar usuarios por busqueda
-const filterUsers = async (searchTerm, {page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
-    app.listLimit = 5;
-    console.log('filterUsers Term:'+searchTerm);
-    console.log('listLimit:'+limit);
-    resource = '/users?search='+searchTerm;
-    const results = await filterData(resource, page, limit, sortBy, order)
-    .then(function (response) {
-        app.listSearchResults(response,searchResultsListContainer,searchTerm);
-        if (response.count > 0) {
-            app.paginateList(response, tablePaginationSearchResults);
-        }  
-    })
-    .catch(function (error) {
-        console.warn(error);
-    });
-}
-//filtrar jugadores por busqueda
-const filterPlayers = async (searchTerm, {page = 1, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
-    app.listLimit = 5;
-    console.log('filterPlayers ListLimit: '+listLimit);
-    resource = '/players?search='+searchTerm;
-    const results = await getData(resource, page, limit, sortBy, order)
-    .then(function (response) {
-        //console.log(response);
-        app.listSearchResults(response,searchResultsListContainer,searchTerm);
-        if (response.count > 0) {
-            app.paginateList(response, tablePaginationSearchResults);
-        }  
-    })
-    .catch(function (error) {
-        console.warn(error);
-    });
-}
-//filtrar ligas por busqueda
-const filterLeagues = async (searchTerm, {page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
-    listLimit = limit;
-    resource = '/leagues?search='+searchTerm;
-    origin = 'getLeagues';
-    const results = await filterData(resource, page, limit, sortBy, order)
-    .then(function (response) {
-        app.listOptionsSelector(response,searchResultsListContainer,origin);
-        if (response.count > 0) {
-            console.log('teams:'+response.count);
-            app.paginateList(response, tablePaginationSearchResults);
-        }
-    })
-    .catch(function (error) {
-        console.warn(error);
-    });
-}
-//filtrar equipos por busqueda
-const filterTeams = async (leagueOfOrigin,searchTerm, {page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
-    listLimit = limit;
-    resource = '/leagues/'+leagueOfOrigin+'/teams?search='+searchTerm;
-    origin = 'getTeams';
-    const results = await filterData(resource, page, limit, sortBy, order)
-    .then(function (response) {
-        console.log('resultado filtrar equipos:');
-        console.log(response);
-        app.listOptionsSelector(response,searchResultsListContainer,origin,leagueOfOrigin);
-        if (response.count > 0) {
-            console.log('teams:'+response.count);
-            app.paginateList(response, tablePaginationSearchResults);
-        }
-    })
-    .catch(function (error) {
-        console.warn(error);
-    });
-}
 
