@@ -89,9 +89,25 @@ const app = {
     },
     //obtener detalles jugador
     getPlayer: async (playerID) => {
-        const { data } = await app.api('/players/'+playerID);
-        const user = data;
-        app.listPlayerDetails(user);
+        resource = '/players/'+playerID;
+        const data = await app.getData(resource)
+        .then(function (response) {
+            console.log(response.id);
+            app.listPlayerDetails(response);
+            //leer la foto con el ID que corresponde al jugador
+            (async ()=>{
+                const readPlayerIdPicture = await app.getData('/players/'+response.id+'/idImages')
+                .then(function(response){
+                    app.listPlayerIdPicture(response);
+                })
+                .catch(function(error){
+                    console.warn(error);
+                });
+            })();
+        })
+        .catch(function(error){
+            console.log(error);
+        });
     },
     //obtener ligas
     getLeagues: async ({page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
@@ -159,7 +175,7 @@ const app = {
     },
     //añadir nuevo jugador
     addNewPlayer: async () => {
-        const newPlayerData = new FormData(playerDetailsForm);
+        const newPlayerData = new FormData(playerDetailsForm); 
         const data = {};
         newPlayerData.forEach((value, key) => data[key] = value);
         // console.log(data);        
@@ -192,10 +208,39 @@ const app = {
             netSalary:data.playerSalary,
         })
         .then(function (response) {
-            let uri = window.location.toString();
-            let clean_uri = uri.substring(0,uri.indexOf("?")); 
-            window.history.replaceState({},document.title,clean_uri);
-            location.href = "manage-team.html";
+            // console.log(response);
+            const uploadInputItems = document.querySelectorAll('.fileUploadRow');
+            console.log(uploadInputItems.length);
+
+            uploadInputItems.forEach(uploadInputItem =>{
+                const pictureInput = uploadInputItem.querySelector('.pictureInput');
+                const inputImage = pictureInput.files[0];
+                // console.log('input properties:')
+                // console.log('input value:'+pictureInput.value);
+                // console.log(inputImage);
+                // console.log('input filenam+inputImage.name);'
+
+                if (pictureInput.value !== ''){
+                    console.log('subo imagen');
+                    (async ()=>{
+                        const postNewPlayerId = await app.api.post('/players/'+response.data.id+'/idImages',{
+                            pictureName:inputImage.name,
+                            id:response.data.id,
+                            pictureURL:'https://loremflickr.com/640/480/'+inputImage.name,
+                        })
+                        .then(function(response){
+                            console.log(response);
+                            location.href="manage-team.html";
+                        })
+                        .catch(function(error){
+                            console.warn(error);
+                        });
+                    })();
+                } else {
+                    console.log('no subo imagen porque el value esta vacío');
+                    location.href="manage-team.html";
+                }
+            })  
         })
         .catch(function (error) {
             console.warn(error);
@@ -206,7 +251,7 @@ const app = {
         const updatedUserData = new FormData(userDetailsForm);
         const data = {};
         updatedUserData.forEach((value, key) => data[key] = value);
-        const updateUserData = await api.put('/users/'+userID, {
+        const updateUserData = await app.api.put('/users/'+userID, {
             userName:data.userName,
             userLastname:data.userLastname,
             userEmail:data.userEmail,
@@ -228,10 +273,11 @@ const app = {
     updatePlayer: async (playerID) => {
         const updatedPlayerData = new FormData(playerDetailsForm);
         const data = {};
-        // console.log(data);
+        
         updatedPlayerData.forEach((value, key) => data[key] = value);
         if (data.playerActive === undefined) { data.playerActive = 'false'};
         if (data.playerResidencyToggle === undefined){data.playerResidencyToggle = 'false'};
+        
         const updatePlayerrData = await app.api.put('/players/'+playerID, {
             active:data.playerActive,
             userName:data.playerName,
@@ -261,8 +307,56 @@ const app = {
             netSalary:data.playerSalary,
         })
         .then(function (response) {
-            //console.log(response);
-            location.href="manage-team.html";
+            console.log('id del jugador: '+response.data.id);
+
+            const uploadInputItems = document.querySelectorAll('.fileUploadRow');
+            console.log(uploadInputItems.length);
+
+            uploadInputItems.forEach(uploadInputItem =>{
+                const pictureInput = uploadInputItem.querySelector('.pictureInput');
+                const pictureInputID = pictureInput.getAttribute('data-pictureid');
+                const pictureInputName = uploadInputItem.querySelector('.pictureInputName');
+                const pictureInputNameText = pictureInputName.textContent;
+                const inputImage = pictureInput.files[0];
+                console.log('input properties:')
+                console.log('input value:'+pictureInput.value);
+                console.log('pictureName:'+pictureInputNameText);
+
+                if (pictureInput.value !== ''){
+                    console.log('actualizo imagen');
+                    (async ()=>{
+                        const postNewPlayerId = await app.api.put('/players/'+response.data.id+'/idImages/'+pictureInputID,{
+                            pictureName:inputImage.name,
+                            id:response.data.id,
+                            pictureURL:'https://loremflickr.com/640/480/'+inputImage.name,
+                        })
+                        .then(function(response){
+                            console.log(response);
+                            //location.href="manage-team.html";
+                        })
+                        .catch(function(error){
+                            console.warn(error);
+                        });
+                    })();
+                } else {
+                    if (pictureInputNameText === 'Click to select') {
+                        console.log('aquí han borrado la imagen y debería borrarla de la bbdd');
+                        //borrar imagen jugador
+                        (async () => {    
+                            const deleteImage = await app.api.delete('/players/'+response.data.id+'/idImages/'+pictureInputID)
+                            .then(response => {
+                                location.href="manage-team.html";
+                            }).catch(e => {
+                                console.log(e);
+                            });        
+                        })();
+                    } else {
+                        console.log('no subo imagen porque el value esta vacío y eso es que no ha cambiado desde que lo pinté');
+                    }
+                    
+                }
+            })
+            location.href="manage-team.html"; 
         })
         .catch(function (error) {
             console.warn(error);
@@ -530,6 +624,8 @@ const app = {
         if (location.search.startsWith('?player=new')) {
             console.log('estoy añadiendo un jugador nuevo');
             playerDetailsTitle.innerHTML = 'Add new Player';
+            //añadir al menos una fila para subir imagenes de ID
+            app.addIdImageRow();
             playerDetailsFormAddBtn.classList.remove('cm-u-inactive');
             playerDetailsFormUpdateBtn.classList.add('cm-u-inactive');
             playerDetailsFormDeleteBtn.classList.add('cm-u-inactive');
@@ -537,7 +633,9 @@ const app = {
             //pulsar el boton de añadir
             playerDetailsFormAddBtn.addEventListener('click',()=>{
                 app.addNewPlayer();
-            })
+            });
+            //remake upload inputs
+            app.manageFileInputs();
         } else {
             console.log('estoy editando un jugador que ya existe');
             app.cleanPlayerDetails();
@@ -581,8 +679,7 @@ const app = {
             window.history.pushState({},'',newParams);
             app.searchLeaguesPage();
             //window.dispatchEvent(new Event('popstate'));            
-        });
-        
+        });        
         //boton buscar club origen
         playerOriginClubSearchBtn.addEventListener('click',(event)=>{
             event.preventDefault();
@@ -606,6 +703,7 @@ const app = {
             window.history.pushState({},'',newParams);
             app.searchTeamsPage();    
         });
+        
     },
     //modal buscar jugadores sobre manage team
     searchPlayersModal: () => {
@@ -1112,6 +1210,21 @@ const app = {
         playerTransferCost.setAttribute('value',player.transferCost);
         playerSalary.setAttribute('value',player.netSalary);
     },
+    //listar detalles de imagen de jugador
+    listPlayerIdPicture: (data) => {
+        for(let i=1; i <= data.length; i++) {
+            app.addIdImageRow(i);
+            const fileUploadRow = document.querySelector('#pictureInputRow'+i);
+            const pictureInput = fileUploadRow.querySelector('.pictureInput');
+            pictureInput.setAttribute('data-pictureID', data[i-1].pictureId);
+            const playerIDPictureName = fileUploadRow.querySelector('.pictureInputName');
+            playerIDPictureName.innerHTML = data[i-1].pictureName;
+            console.log('pinto una imageRow con el data-id:'+data[i-1].pictureId);
+        }
+
+        //remake upload inputs
+        app.manageFileInputs();
+    },
     //listar resultados de busqueda en modal
     listSearchResults: (results,container,searchTerm,{clean = true} = {}) => {
         searchTerm = searchTerm;
@@ -1510,10 +1623,10 @@ const app = {
         const count = users.count;
         const maxPages = Math.ceil(count/app.listLimit);
         container.innerHTML = '';
-        console.log('<------- paginateList');
-        console.log('añadir paginacion para: '+count);
-        console.log('limite listado: '+app.listLimit);
-        console.log('paginas maximas: '+maxPages);
+        // console.log('<------- paginateList');
+        // console.log('añadir paginacion para: '+count);
+        // console.log('limite listado: '+app.listLimit);
+        // console.log('paginas maximas: '+maxPages);
         // construir la tabla de paginación
         const paginationContainer = document.createElement('div');
         paginationContainer.classList.add('cm-l-tabledata__footer');
@@ -1730,6 +1843,157 @@ const app = {
             console.warn(error);
         });
     },
+    //reestilizar y añadir funcionalidad a los input files
+    manageFileInputs: () => {
+        console.log('manageFileInputs');
+        const params = new URLSearchParams(document.location.search);
+        const playerID = params.get('player');
+        const fileUploadContainer = document.querySelector('#fileUploadContainer');
+        const firstRow = document.querySelector('#pictureInputRow1');
+        let uploadInputItems = document.querySelectorAll('.fileUploadRow');
+        let nrInputFileItems;
+        const firstRowAddBtn = firstRow.querySelector('.idPIctureAdd');
+
+        //añadir un campo nuevo si pulsas el boton de añadir en el primer campo
+        firstRowAddBtn.addEventListener('click', event =>{
+            event.preventDefault();  
+            //cuento las filas que hay
+            nrInputFileItems = uploadInputItems.length;
+            //si hay menos de 5 puedes añadir, si no paras y desactivas la funcion
+            handleAddRowFunction(nrInputFileItems);
+            //añades la funcionalidad para manejar los archivos y de los botones
+            handleNewRows();   
+        })
+        //ver cuantas rows de imagen tiene y no permitir añadir más de 5
+        const handleAddRowFunction = (nrInputFileItems)=>{
+            nrInputFileItems++; 
+            if (nrInputFileItems < 5) {           
+                app.addIdImageRow(nrInputFileItems);
+            } else if (nrInputFileItems == 5) {
+                app.addIdImageRow(nrInputFileItems);
+                firstRowAddBtn.classList.add('cm-o-icon-button-small--disabled');
+                firstRowAddBtn.classList.remove('cm-o-icon-button-small--secondary');
+                firstRow.removeEventListener('click', handleAddRowFunction);
+            }    
+        }
+
+        //manejar las nuevas lineas insertadas y añadirles los eventos correspondientes
+        const handleNewRows = ()=>{
+            uploadInputItems = document.querySelectorAll('.fileUploadRow');
+
+            uploadInputItems.forEach(item => {
+                const inputUpload = item.querySelector('.pictureInput');
+                const inputUploadName = item.querySelector('.pictureInputName');
+                const inputDeleteBtn = item.querySelector('.idPIctureDelete');
+    
+                //ver si el input cambia para ponerle el nombre al span, etc
+                inputUpload.addEventListener("change", ()=>{                    
+                    const inputImage = inputUpload.files[0]; 
+                    inputUploadName.innerText = inputImage.name;
+                    inputDeleteBtn.classList.remove('cm-o-icon-button-small--disabled');
+                    inputDeleteBtn.classList.add('cm-o-icon-button-small--secondary');
+                    //inputDeleteBtn.onclick = function(){ handleUploadDeleteEvent(); };
+                });
+                //si estoy añadiendo un jugador nuevo el botón de delete aparecerá desactivado al principio
+                //si estoy editando un jugador el boton de delete aparecerá activado para posibilitar "borrar" fotos
+                if (playerID != 'new'){
+                   //miro si el campo span tiene contenido distinto al default y habilito el botón de delete
+                   if (inputUploadName.innerText !== 'Click to select') {
+                    inputDeleteBtn.classList.remove('cm-o-icon-button-small--disabled');
+                    inputDeleteBtn.classList.add('cm-o-icon-button-small--secondary');
+                    } 
+                } 
+    
+                const handleUploadDeleteEvent = ()=>{
+                    if (inputUpload.files[0] !== undefined) {
+                        let inputImage = inputUpload.files[0]; 
+                        inputUpload.files = null;
+                        inputUpload.value = ''; 
+                        inputImage.name = '';               
+                        inputUploadName.innerText = 'Click to select';
+                        inputDeleteBtn.classList.add('cm-o-icon-button-small--disabled');
+                        inputDeleteBtn.classList.remove('cm-o-icon-button-small--secondary');
+                    } else {
+                        inputUploadName.innerText = 'Click to select';
+                        inputDeleteBtn.classList.add('cm-o-icon-button-small--disabled');
+                        inputDeleteBtn.classList.remove('cm-o-icon-button-small--secondary');
+                    }
+                }
+    
+                inputDeleteBtn.addEventListener('click', event=>{
+                    event.preventDefault();
+                    console.log(inputUploadName.innerText);
+                    if (inputUploadName.innerText !== 'Click to select') {
+                        handleUploadDeleteEvent();
+                    }
+                })
+            });
+        }
+        handleNewRows(); 
+    },
+    //añadir nueva fila ID image
+    addIdImageRow: (i)=>{
+        const fileUploadContainer = document.querySelector('#fileUploadContainer');
+        let nr = i;
+        nr === undefined ? nr=1: nr = i; 
+
+        const idImageRow = document.createElement('div');
+        idImageRow.classList.add('cm-l-form-panel__row');
+        idImageRow.classList.add('fileUploadRow');
+        idImageRow.setAttribute('id','pictureInputRow'+nr);
+        const idImageLabel = document.createElement('label');
+        idImageLabel.classList.add('panel-field-long');
+        idImageLabel.setAttribute('for','idPicture'+nr);
+        const firstSpan = document.createElement('span');
+        firstSpan.innerText = 'ID image '+nr;
+        const fileUploadDiv = document.createElement('div');
+        fileUploadDiv.classList.add('cm-c-field-icon');
+        fileUploadDiv.classList.add('fileUpload');
+        const fileUploadInput = document.createElement('input');
+        fileUploadInput.classList.add('cm-c-field-icon__input');
+        fileUploadInput.classList.add('pictureInput');
+        fileUploadInput.setAttribute('id','idPicture'+nr);
+        fileUploadInput.setAttribute('name','idPicture'+nr);
+        fileUploadInput.setAttribute('type','file');
+        fileUploadInput.setAttribute('style','diplay:none;');
+        const fileUploadSpan = document.createElement('span');
+        fileUploadSpan.classList.add('pictureInputName');
+        fileUploadSpan.innerText = 'Click to select';
+        const asssistanceSpan = document.createElement('span');
+        asssistanceSpan.classList.add('assistance');
+        asssistanceSpan.setAttribute('aria-live','polite');
+        const deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('cm-o-icon-button-small--disabled');
+        deleteBtn.classList.add('cm-c-field-icon__button');
+        deleteBtn.classList.add('idPIctureDelete');
+        const deleteBtnSpan = document.createElement('span');
+        deleteBtnSpan.classList.add('material-symbols-outlined');
+        deleteBtnSpan.innerText = 'delete';
+
+        deleteBtn.appendChild(deleteBtnSpan);
+        asssistanceSpan.appendChild(deleteBtn);
+        if (nr === 1) {
+            const addBtn = document.createElement('button');
+            addBtn.classList.add('cm-o-icon-button-small--secondary');
+            addBtn.classList.add('cm-c-field-icon__button');
+            addBtn.classList.add('idPIctureAdd');
+            const addBtnSpan = document.createElement('span');
+            addBtnSpan.classList.add('material-symbols-outlined');
+            addBtnSpan.innerText = 'add_a_photo';
+
+            addBtn.appendChild(addBtnSpan);
+            asssistanceSpan.append(' ');
+            asssistanceSpan.appendChild(addBtn);
+        }    
+        fileUploadDiv.appendChild(fileUploadInput);
+        fileUploadDiv.appendChild(fileUploadSpan);
+        idImageLabel.appendChild(firstSpan);
+        idImageLabel.appendChild(fileUploadDiv);
+        idImageLabel.appendChild(asssistanceSpan);
+        idImageRow.appendChild(idImageLabel);
+        fileUploadContainer.appendChild(idImageRow);
+
+    },
     //varias
     variousUtils: ()=> {
         //faking focus state for search and select fields w/ icon
@@ -1763,25 +2027,4 @@ const app = {
 }
 app.init();
 
-
-
-// //Data
-// const api = axios.create({
-//     baseURL: 'https://64492e4ae7eb3378ca41f493.mockapi.io/api/v1/',
-//     headers: {
-//         'Content-Type': 'application/json;charset=utf-8'
-//     },
-//     params: {
-//     }
-// });
-
-//Utils
-//restylizing file inputs (lo dejamos para cuando se pueda)
-// const inputUpload = document.querySelector('.pictureInput');
-// const inputUploadName = document.querySelector('.pictureInputName');
-
-// inputUpload.addEventListener("change", ()=>{
-//     const inputImage = inputUpload.files[0]; 
-//     inputUploadName.innerText = inputImage.name;
-// });
 
