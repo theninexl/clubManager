@@ -72,7 +72,7 @@ body {
   font-stretch: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #454548;
+  color: #2C325F;
 }
 
 .cm-u-text-mouse, .cm-o-notification-bubble, .cm-l-table-players__body tr, .cm-l-tabledata__row, .cm-l-tabledata__footer, .cm-l-form-panel__row .panel-field-short span.assistance, .cm-l-form-panel__row .panel-field-short span.error, .cm-l-form-panel__row .panel-field-long span.assistance, .cm-l-form-panel__row .panel-field-long span.error, .cm-u-text-black-mouse, .navbar-links__textbutt, .cm-o-icon-button-enormous--deco, .cm-o-icon-button--error, .cm-o-icon-button--success, .cm-o-icon-button--pressed, .cm-o-icon-button--secondary, .cm-o-icon-button--primary, .cm-o-button-mouse--inactive, .cm-o-button-mouse--ghost, .cm-o-button-mouse--transparent, .cm-o-button-mouse--secondary, .cm-o-button-mouse--primary, .cm-l-table-players__header tr, .cm-l-tabledata__header {
@@ -139,7 +139,7 @@ body {
 }
 
 .cm-u-text-link, a {
-  color: #F79E78;
+  color: #2C325F;
   text-decoration: none;
 }
 .cm-u-text-link:hover, a:hover {
@@ -160,9 +160,7 @@ strong {
 
 /** Layout **/
 .cm-l-container {
-  max-width: 1120px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 100%;
   position: relative;
 }
 .cm-l-container--no-padding {
@@ -199,21 +197,19 @@ strong {
   flex-flow: row nowrap;
   min-height: calc(100vh - 192px);
   padding-top: 96px;
-  max-width: 1120px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 100%;
   position: relative;
 }
 .cm-l-container-2col__aside {
-  border-right: 1px solid #E1E1E1;
-  width: 160px;
+  border-right: 1px solid rgba(198, 53, 39, 0.5);
+  width: 208px;
 }
 .cm-l-container-2col__aside nav {
   position: fixed;
 }
 .cm-l-container-2col__body {
   flex-grow: 1;
-  padding-left: 32px;
+  padding: 0 32px;
 }
 
 .cm-l-4col {
@@ -223,7 +219,7 @@ strong {
 
 .cm-l-header {
   background-color: #FFFFFF;
-  border-bottom: 1px solid #E1E1E1;
+  border-bottom: 1px solid rgba(198, 53, 39, 0.5);
   position: fixed;
   top: 0;
   z-index: 1;
@@ -233,17 +229,17 @@ strong {
 }
 
 .cm-l-footer {
-  border-top: 1px solid #E1E1E1;
+  border-top: 1px solid rgba(198, 53, 39, 0.5);
   padding-top: 24px;
   padding-bottom: 24px;
 }
 
 .cm-l-body-static-header {
-  border-bottom: 1px solid #0FCC81;
+  border-bottom: 1px solid rgba(198, 53, 39, 0.5);
   display: flex;
   align-items: center;
   height: 48px;
-  color: #0FCC81;
+  color: #C63527;
 }
 
 .cm-l-form-simple {
@@ -411,7 +407,7 @@ strong {
 .cm-o-button-cat--primary {
   padding: 12px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-family: "Quicksand", sans-serif;
@@ -419,8 +415,8 @@ strong {
   font-stretch: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #454548;
-  background-color: #F79E78;
+  color: #FFFFFF;
+  background-color: #2C325F;
 }
 .cm-o-button-cat--primary:hover {
   text-decoration: none;
@@ -428,7 +424,7 @@ strong {
 .cm-o-button-cat--secondary {
   padding: 12px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-family: "Quicksand", sans-serif;
@@ -445,7 +441,7 @@ strong {
 .cm-o-button-cat--transparent {
   padding: 12px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-family: "Quicksand", sans-serif;
@@ -453,9 +449,9 @@ strong {
   font-stretch: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #F79E78;
+  color: #2C325F;
   background-color: #FFFFFF;
-  box-shadow: 0px 0px 0px 2px #F79E78 inset;
+  box-shadow: 0px 0px 0px 2px #2C325F inset;
 }
 .cm-o-button-cat--transparent:hover {
   text-decoration: none;
@@ -463,7 +459,7 @@ strong {
 .cm-o-button-cat--ghost {
   padding: 12px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-family: "Quicksand", sans-serif;
@@ -471,20 +467,20 @@ strong {
   font-stretch: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #F79E78;
+  color: #2C325F;
   background: transparent;
 }
 .cm-o-button-cat--ghost:hover {
   text-decoration: none;
 }
 .cm-o-button-cat--ghost.active {
-  color: #454548;
-  background-color: #F79E78;
+  color: #FFFFFF;
+  background-color: #2C325F;
 }
 .cm-o-button-cat--ghost-inactive {
   padding: 12px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-family: "Quicksand", sans-serif;
@@ -502,7 +498,7 @@ strong {
 .cm-o-button-cat--inactive {
   padding: 12px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-family: "Quicksand", sans-serif;
@@ -518,11 +514,11 @@ strong {
 }
 
 .cm-o-button-cat-small--primary {
-  color: #454548;
-  background-color: #F79E78;
+  color: #FFFFFF;
+  background-color: #2C325F;
   padding: 4px 16px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-family: "Quicksand", sans-serif;
@@ -537,7 +533,7 @@ strong {
 .cm-o-button-cat-small--secondary {
   padding: 4px 16px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-family: "Quicksand", sans-serif;
@@ -554,7 +550,7 @@ strong {
 .cm-o-button-cat-small--transparent {
   padding: 4px 16px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-family: "Quicksand", sans-serif;
@@ -562,9 +558,9 @@ strong {
   font-stretch: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #F79E78;
+  color: #2C325F;
   background-color: #FFFFFF;
-  box-shadow: 0px 0px 0px 2px #F79E78 inset;
+  box-shadow: 0px 0px 0px 2px #2C325F inset;
 }
 .cm-o-button-cat-small--transparent:hover {
   text-decoration: none;
@@ -572,7 +568,7 @@ strong {
 .cm-o-button-cat-small--ghost {
   padding: 4px 16px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-family: "Quicksand", sans-serif;
@@ -580,7 +576,7 @@ strong {
   font-stretch: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #F79E78;
+  color: #2C325F;
   background: transparent;
 }
 .cm-o-button-cat-small--ghost:hover {
@@ -589,7 +585,7 @@ strong {
 .cm-o-button-cat-small--inactive {
   padding: 4px 16px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-family: "Quicksand", sans-serif;
@@ -607,11 +603,11 @@ strong {
 .cm-o-button-mouse--primary {
   padding: 4px 16px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
-  color: #454548;
-  background-color: #F79E78;
+  color: #FFFFFF;
+  background-color: #2C325F;
 }
 .cm-o-button-mouse--primary:hover {
   text-decoration: none;
@@ -619,7 +615,7 @@ strong {
 .cm-o-button-mouse--secondary {
   padding: 4px 16px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   color: #454548;
@@ -631,12 +627,12 @@ strong {
 .cm-o-button-mouse--transparent {
   padding: 4px 16px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
-  color: #F79E78;
+  color: #2C325F;
   background-color: #FFFFFF;
-  box-shadow: 0px 0px 0px 2px #F79E78 inset;
+  box-shadow: 0px 0px 0px 2px #2C325F inset;
 }
 .cm-o-button-mouse--transparent:hover {
   text-decoration: none;
@@ -644,10 +640,10 @@ strong {
 .cm-o-button-mouse--ghost {
   padding: 4px 16px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
-  color: #F79E78;
+  color: #2C325F;
   background: transparent;
 }
 .cm-o-button-mouse--ghost:hover {
@@ -656,7 +652,7 @@ strong {
 .cm-o-button-mouse--inactive {
   padding: 4px 16px;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   color: #FFFFFF;
@@ -671,7 +667,7 @@ strong {
   height: 48px;
   padding: 0;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -694,18 +690,18 @@ strong {
   background-color: rgba(69, 69, 72, 0.05);
 }
 .cm-o-icon-button--primary.active {
-  background-color: #F79E78;
+  background-color: #2C325F;
   box-shadow: none;
 }
 .cm-o-icon-button--primary.active span {
-  color: #454548;
+  color: #FFFFFF;
 }
 .cm-o-icon-button--secondary {
   width: 48px;
   height: 48px;
   padding: 0;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -725,27 +721,27 @@ strong {
   height: 48px;
   padding: 0;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  background-color: #F79E78;
+  background-color: #2C325F;
   box-shadow: none;
 }
 .cm-o-icon-button--pressed span:not(.cm-o-notification-bubble) {
   font-size: 24px;
 }
 .cm-o-icon-button--pressed span {
-  color: #454548;
+  color: #FFFFFF;
 }
 .cm-o-icon-button--success {
   width: 48px;
   height: 48px;
   padding: 0;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -765,7 +761,7 @@ strong {
   height: 48px;
   padding: 0;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -783,7 +779,7 @@ strong {
 
 .cm-o-icon-button-small--primary {
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -809,7 +805,7 @@ strong {
 }
 .cm-o-icon-button-small--secondary {
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -828,7 +824,7 @@ strong {
 }
 .cm-o-icon-button-small--pressed {
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -836,18 +832,18 @@ strong {
   position: relative;
   width: 32px;
   height: 32px;
-  background-color: #F79E78;
+  background-color: #2C325F;
   box-shadow: none;
 }
 .cm-o-icon-button-small--pressed span {
   font-size: 16px;
 }
 .cm-o-icon-button-small--pressed span {
-  color: #454548;
+  color: #FFFFFF;
 }
 .cm-o-icon-button-small--success {
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -866,7 +862,7 @@ strong {
 }
 .cm-o-icon-button-small--error {
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -885,7 +881,7 @@ strong {
 }
 .cm-o-icon-button-small--disabled {
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -910,7 +906,7 @@ strong {
   height: 72px;
   padding: 0;
   border: 0;
-  border-radius: 99px;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -927,10 +923,10 @@ strong {
 }
 
 .cm-o-notification-bubble {
-  background-color: #F79E78;
+  background-color: #C63527;
   border: 1px solid #FFFFFF;
   border-radius: 99px;
-  color: #454548;
+  color: #FFFFFF !important;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -1002,7 +998,7 @@ strong {
 }
 
 .cm-o-logo, .cm-o-logo--centered {
-  color: #454548;
+  color: #2C325F;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -1015,6 +1011,10 @@ strong {
 }
 .cm-o-logo:hover, .cm-o-logo--centered:hover {
   text-decoration: none;
+}
+.cm-o-logo .shield, .cm-o-logo--centered .shield {
+  height: 16px;
+  width: 16px;
 }
 
 .cm-o-logo--centered {
@@ -1035,6 +1035,7 @@ strong {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  padding: 0 32px;
 }
 .cm-c-navbar__left {
   flex-grow: 1;
@@ -1064,7 +1065,7 @@ strong {
 }
 .navbar-links__link {
   border-radius: 99px;
-  color: #F79E78;
+  color: #2C325F;
   cursor: pointer;
   display: inline-block;
   line-height: 48px;
@@ -1080,7 +1081,7 @@ strong {
   background-color: rgba(69, 69, 72, 0.05);
 }
 .navbar-links__link.active {
-  background-color: #F79E78;
+  background-color: #2C325F;
   color: #454548;
 }
 .navbar-links__link.inactive {
@@ -1095,7 +1096,7 @@ strong {
 .navbar-links__textbutt {
   background-color: #FFFFFF;
   box-shadow: 0px 0px 0px 1px #E1E1E1 inset;
-  border-radius: 99px;
+  border-radius: 8px;
   color: #454548;
   cursor: pointer;
   display: block;
@@ -1107,9 +1108,27 @@ strong {
   background-color: rgba(69, 69, 72, 0.05);
 }
 
+.cm-c-form-simple label.error {
+  color: #F93A3A;
+}
+.cm-c-form-simple label.error input[type=text], .cm-c-form-simple label.error input[type=number], .cm-c-form-simple label.error input[type=email], .cm-c-form-simple label.error input[type=password], .cm-c-form-simple label.error input[type=date] {
+  border: 1px solid #F93A3A;
+  color: #F93A3A;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.cm-c-form-simple label.error input[type=text]::-moz-placeholder, .cm-c-form-simple label.error input[type=number]::-moz-placeholder, .cm-c-form-simple label.error input[type=email]::-moz-placeholder, .cm-c-form-simple label.error input[type=password]::-moz-placeholder, .cm-c-form-simple label.error input[type=date]::-moz-placeholder {
+  color: #F93A3A;
+}
+.cm-c-form-simple label.error input[type=text]::placeholder, .cm-c-form-simple label.error input[type=number]::placeholder, .cm-c-form-simple label.error input[type=email]::placeholder, .cm-c-form-simple label.error input[type=password]::placeholder, .cm-c-form-simple label.error input[type=date]::placeholder {
+  color: #F93A3A;
+}
 .cm-c-form-simple input[type=text], .cm-c-form-simple input[type=number], .cm-c-form-simple input[type=email], .cm-c-form-simple input[type=password], .cm-c-form-simple input[type=date] {
-  border: 1px solid #E1E1E1;
-  border-radius: 99px;
+  border: 1px solid rgba(44, 50, 95, 0.5);
+  border-radius: 8px;
   height: 48px;
   padding: 0 12px;
   font-size: 18px;
@@ -1123,7 +1142,7 @@ strong {
   -moz-osx-font-smoothing: grayscale;
 }
 .cm-c-form-simple input[type=text]:focus, .cm-c-form-simple input[type=text]:focus-visible, .cm-c-form-simple input[type=text]:active, .cm-c-form-simple input[type=number]:focus, .cm-c-form-simple input[type=number]:focus-visible, .cm-c-form-simple input[type=number]:active, .cm-c-form-simple input[type=email]:focus, .cm-c-form-simple input[type=email]:focus-visible, .cm-c-form-simple input[type=email]:active, .cm-c-form-simple input[type=password]:focus, .cm-c-form-simple input[type=password]:focus-visible, .cm-c-form-simple input[type=password]:active, .cm-c-form-simple input[type=date]:focus, .cm-c-form-simple input[type=date]:focus-visible, .cm-c-form-simple input[type=date]:active {
-  border-color: #F79E78;
+  border-color: #2C325F;
   border-width: 2px;
   outline: none;
 }
@@ -1141,8 +1160,8 @@ strong {
   background-color: #fff;
   /* Not removed via appearance */
   margin: 0;
-  border: 1px solid #E1E1E1;
-  border-radius: 50%;
+  border: 1px solid rgba(44, 50, 95, 0.5);
+  border-radius: 8px;
   height: 24px;
   width: 24px;
   display: grid;
@@ -1150,7 +1169,7 @@ strong {
 }
 .cm-c-form-simple input[type=radio]::before, .cm-c-form-simple input[type=checkbox]::before {
   content: "check";
-  border-radius: 50%;
+  border-radius: 8px;
   box-shadow: inset 24px 24px #0FCC81;
   display: flex;
   justify-content: center;
@@ -1177,9 +1196,9 @@ strong {
   transform: scale(1);
 }
 .cm-c-form-simple__radio-toggle {
-  border: 1px solid #E1E1E1;
+  border: 1px solid rgba(44, 50, 95, 0.5);
   background-color: #FFFFFF;
-  border-radius: 99px;
+  border-radius: 8px;
   position: relative;
   height: 48px;
   width: 96px;
@@ -1201,7 +1220,7 @@ strong {
 }
 .cm-c-form-simple__radio-toggle input[type=checkbox]:checked::before {
   content: "check";
-  border-radius: 50%;
+  border-radius: 8px;
   box-shadow: inset 0 48px #0FCC81;
   display: flex;
   justify-content: center;
@@ -1216,8 +1235,8 @@ strong {
 }
 
 .cm-c-field-icon {
-  border: 1px solid #E1E1E1;
-  border-radius: 99px;
+  border: 1px solid rgba(44, 50, 95, 0.5);
+  border-radius: 8px;
   height: 48px;
   display: flex;
   overflow: hidden;
@@ -1241,7 +1260,7 @@ strong {
   -moz-osx-font-smoothing: grayscale;
 }
 .cm-c-field-icon--focus {
-  border-color: #F79E78;
+  border-color: #2C325F;
   border-width: 2px;
   outline: none;
 }
@@ -1293,8 +1312,8 @@ strong {
 }
 
 .cm-c-select-icon {
-  border: 1px solid #E1E1E1;
-  border-radius: 99px;
+  border: 1px solid rgba(44, 50, 95, 0.5);
+  border-radius: 8px;
   height: 48px;
   display: inline-flex;
   overflow: hidden;
@@ -1322,13 +1341,13 @@ strong {
   -moz-osx-font-smoothing: grayscale;
 }
 .cm-c-select-icon--focus {
-  border-color: #F79E78;
+  border-color: #2C325F;
   border-width: 2px;
   outline: none;
 }
 .cm-c-select-icon::after {
   content: "expand_more";
-  border-radius: 50%;
+  border-radius: 8px;
   box-shadow: inset 48px 48px #E1E1E1;
   display: flex;
   justify-content: center;

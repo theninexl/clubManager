@@ -2,11 +2,15 @@ $colorPalette: (
     white:#FFFFFF,
     scarpaFlowLight:#E1E1E1,
     scarpaFlow:#454548,
+    primary: #2C325F,
+    secondary: #C63527,
     sandyBrown:#F79E78,
     straw:#CECE7E,
     success:#0FCC81,
     warning:#FECD39,
     danger:#F93A3A,
     scarpaHover: fade-out(#454548,0.95),
-    modalBg: fade-out(#454548,0.15)
+    modalBg: fade-out(#454548,0.15),
+    primaryLight: fade-out(#2C325F,0.50),
+    secondaryLight: fade-out(#C63527,0.50)
 );

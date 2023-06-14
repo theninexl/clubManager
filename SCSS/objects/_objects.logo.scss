@@ -1,6 +1,6 @@
 .cm-o-logo {
     $block:&;
-    color:getColor(scarpaFlow);
+    color:getColor(primary);
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -9,6 +9,11 @@
 
     &:hover {
         text-decoration:none;
+    }
+
+    .shield {
+        height: getSize($big);
+        width: getSize($big);
     }
 }
 

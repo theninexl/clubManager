@@ -15,7 +15,9 @@ const app = {
         const page = document.body.id;
         //console.log('location.search: '+location.search);
         if (page === 'home') {
-            homePage();
+            app.homePage();
+        } else if (page === 'login') {
+            app.loginPage();
         } else if (page === 'manageUsers' && location.search == ''){
             app.manageUsersPage();
         } else if (page === 'manageUsers' && location.search.startsWith('?searchAction=searchUser')) {
@@ -480,7 +482,34 @@ const app = {
             console.warn(error);
         });
     },
+    //funcionalidad login
+    passLogin: async () => {
+        const loginData = new FormData(loginPageForm);
+        const data = {};
+        loginData.forEach((value, key) => data[key] = value);
+        const searchTerm = data.loginEmail;
+        const resource = '/users?search='+searchTerm;
+        const filterLogin = await app.filterData(resource)
+        .then(function (response) {
+            if (response.count === 1) {
+                console.log(response);
+            }
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+
+    },
     //------------------------------------------PAGES------------------------------------------
+    loginPage: () => {
+        console.log('estoy en la pagina de login');
+
+        //boton listado de usuarios
+        loginPageSubmitBtn.addEventListener('click',(event)=>{
+            event.preventDefault();
+            app.passLogin();
+        });
+    },
     homePage: () => {
         console.log('estoy en la home');
     },
@@ -910,137 +939,141 @@ const app = {
     },
     //------------------------------------------EVENTOS NAVEGACION ESTRUCTURALES------------------------------------------
     navigationEvents:() => {
-        //boton listado de usuarios
-        manageUsersBtn.addEventListener('click',()=>{
-            const page = document.body.id;
-            if (page === 'manageUsers') {
-                window.history.back();
-            } else {
-                location.href="manage-users.html";
-                app.currentListPage = 1;
+        const page = document.body.id;
+        if (page !== 'login') {
+            //boton listado de usuarios
+            manageUsersBtn.addEventListener('click',()=>{
+                const page = document.body.id;
+                if (page === 'manageUsers') {
+                    window.history.back();
+                } else {
+                    location.href="manage-users.html";
+                    app.currentListPage = 1;
+                }
+            });
+            //boton abrir listado de jugadores
+            manageTeamBtn.addEventListener('click',()=>{
+                const page = document.body.id;
+                if (page === 'manageTeam'){
+                    window.history.back();
+                } else {
+                    manageTeamBtn.classList.add('active');
+                    manageUsersBtn.classList.remove('active');
+                    location.href="manage-team.html";
+                    app.currentListPage = 1;
             }
-        });
-        //boton abrir listado de jugadores
-        manageTeamBtn.addEventListener('click',()=>{
-            const page = document.body.id;
-            if (page === 'manageTeam'){
-                window.history.back();
-            } else {
-                manageTeamBtn.classList.add('active');
-                manageUsersBtn.classList.remove('active');
-                location.href="manage-team.html";
-                app.currentListPage = 1;
+            });
+            //llamar a sortButton desde los botones que ya estaban precreados en el html
+            sortBtns.forEach(btn => {
+                app.sortButton(btn, sortBtns);
+            })
+            //boton buscar dentro modal
+            searchInModalBtn.addEventListener('click',(event)=>{
+                event.preventDefault();
+                console.log("click in search in modal");
+                //asignamos el name al input correcto para que busque en la seccion que procede
+                if (location.search.startsWith('?searchAction=searchUser')){
+                    searchInModalInput.setAttribute('name','searchUser');
+                    const newParams ='?searchAction=searchUser&searchTerm='+searchInModalInput.value;
+                    window.history.replaceState({},document.title, newParams);
+                    // window.dispatchEvent(new Event('popstate'));
+                    app.searchUsersModal();
+                } else if (location.search.startsWith('?searchAction=searchPlayer')) {
+                    searchInModalInput.setAttribute('name','searchPlayer');
+                    const newParams ='?searchAction=searchPlayer&searchTerm='+searchInModalInput.value;
+                    window.history.replaceState({},document.title, newParams);
+                    window.dispatchEvent(new Event('popstate'));
+                } else if (location.search.startsWith('?searchAction=searchLeague')) {
+                    const searchTerm = searchInModalInput.value;
+                    const params = new URLSearchParams(document.location.search);
+                    const playerID = params.get('searchOrigin');
+                    const newParams ='?searchAction=searchLeague&searchOrigin='+playerID+'&searchTerm='+searchTerm;
+                    window.history.replaceState({},document.title,newParams);
+                    //console.log('estoy buscando un equipo:'+inputTerm);
+                    window.dispatchEvent(new Event('popstate'));
+                } else if (location.search.startsWith('?searchAction=searchTeam')) {
+                    const searchTerm = searchInModalInput.value;
+                    const params = new URLSearchParams(document.location.search);
+                    const playerID = params.get('searchOrigin');
+                    const leagueOrigin = params.get('leagueOrigin');
+                    const newParams ='?searchAction=searchTeam&searchOrigin='+playerID+'&leagueOrigin='+leagueOrigin+'&searchTerm='+searchTerm;
+                    window.history.replaceState({},document.title,newParams);
+                    //console.log('estoy buscando un equipo:'+inputTerm);
+                    window.dispatchEvent(new Event('popstate'));
+                }
+            });
+            //cerrar modal cuando pulsas fuera del contenido
+            modalContainerBg.addEventListener('click',()=>{
+            const params = new URLSearchParams(document.location.search);
+            const action = params.get('searchAction');
+
+                //ver sobre qué seccion se ha pintado el modal para volver a añadir el hash correspondiente
+                if (action === 'searchUser') {
+                    app.listLimit = 10;
+                    let uri = window.location.toString();
+                    let clean_uri = uri.substring(0,uri.indexOf("?"));
+                    window.history.replaceState({},document.title,clean_uri);
+                    window.dispatchEvent(new Event('popstate'));
+                } else if (action === 'searchLeague') {
+                    app.listLimit = 10;
+                    const searchOrigin = params.get('searchOrigin');
+                    let uri = window.location.toString();
+                    let clean_uri = uri.substring(0,uri.indexOf("?"));
+                    window.history.replaceState({},document.title,clean_uri);
+                    if (searchOrigin === 'newPlayer') {
+                        const newParams ='?player=new';
+                        window.history.replaceState({},document.title,newParams);
+                    } else {
+                        const newParams ='?player='+searchOrigin;
+                        window.history.replaceState({},document.title,newParams);
+                    }
+                } else if (action === 'searchPlayer') {
+                    app.listLimit = 10;
+                    let uri = window.location.toString();
+                    let clean_uri = uri.substring(0,uri.indexOf("?"));
+                    window.history.replaceState({},document.title,clean_uri);
+                    window.dispatchEvent(new Event('popstate'));
+                } else if (action === 'searchTeam') {
+                    app.listLimit = 10;
+                    const searchOrigin = params.get('searchOrigin');
+                    let uri = window.location.toString();
+                    let clean_uri = uri.substring(0,uri.indexOf("?"));
+                    window.history.replaceState({},document.title,clean_uri);
+                    if (searchOrigin === 'newPlayer') {
+                        const newParams ='?player=new';
+                        window.history.replaceState({},document.title,newParams);
+                    } else {
+                        const newParams ='?player='+searchOrigin;
+                        window.history.replaceState({},document.title,newParams);
+                    }
+                }
+                
+
+
+                // let params = new URLSearchParams(document.location.search);
+                // console.log(params);
+                // let searchLeagueForPlayer = params.get('searchLeagueForPlayer');
+                // console.log(searchLeagueForPlayer);
+                // let uri = window.location.toString();
+                // let clean_uri = uri.substring(0,uri.indexOf("?"));
+                
+                //ocultamos el modal
+                modalContainer.classList.add('cm-u-inactive');
+                
+
+
+                // if (manageUsersBtn.classList.contains('active') === true) {
+                //     //console.log('estoy en manage users');
+                //     listLimit = 10;
+                //     location.hash='#manageUsers';
+                // } else if (location.search.startsWith('?searchPlayer=')){ 
+                //     listLimit = 10;
+                //     location.hash='#manageTeam';
+                // } 
+                // window.history.replaceState({},document.title,clean_uri);
+            });
         }
-        });
-        //llamar a sortButton desde los botones que ya estaban precreados en el html
-        sortBtns.forEach(btn => {
-            app.sortButton(btn, sortBtns);
-        })
-        //boton buscar dentro modal
-        searchInModalBtn.addEventListener('click',(event)=>{
-            event.preventDefault();
-            console.log("click in search in modal");
-            //asignamos el name al input correcto para que busque en la seccion que procede
-            if (location.search.startsWith('?searchAction=searchUser')){
-                searchInModalInput.setAttribute('name','searchUser');
-                const newParams ='?searchAction=searchUser&searchTerm='+searchInModalInput.value;
-                window.history.replaceState({},document.title, newParams);
-                // window.dispatchEvent(new Event('popstate'));
-                app.searchUsersModal();
-            } else if (location.search.startsWith('?searchAction=searchPlayer')) {
-                searchInModalInput.setAttribute('name','searchPlayer');
-                const newParams ='?searchAction=searchPlayer&searchTerm='+searchInModalInput.value;
-                window.history.replaceState({},document.title, newParams);
-                window.dispatchEvent(new Event('popstate'));
-            } else if (location.search.startsWith('?searchAction=searchLeague')) {
-                const searchTerm = searchInModalInput.value;
-                const params = new URLSearchParams(document.location.search);
-                const playerID = params.get('searchOrigin');
-                const newParams ='?searchAction=searchLeague&searchOrigin='+playerID+'&searchTerm='+searchTerm;
-                window.history.replaceState({},document.title,newParams);
-                //console.log('estoy buscando un equipo:'+inputTerm);
-                window.dispatchEvent(new Event('popstate'));
-            } else if (location.search.startsWith('?searchAction=searchTeam')) {
-                const searchTerm = searchInModalInput.value;
-                const params = new URLSearchParams(document.location.search);
-                const playerID = params.get('searchOrigin');
-                const leagueOrigin = params.get('leagueOrigin');
-                const newParams ='?searchAction=searchTeam&searchOrigin='+playerID+'&leagueOrigin='+leagueOrigin+'&searchTerm='+searchTerm;
-                window.history.replaceState({},document.title,newParams);
-                //console.log('estoy buscando un equipo:'+inputTerm);
-                window.dispatchEvent(new Event('popstate'));
-            }
-        });
-        //cerrar modal cuando pulsas fuera del contenido
-        modalContainerBg.addEventListener('click',()=>{
-           const params = new URLSearchParams(document.location.search);
-           const action = params.get('searchAction');
-
-            //ver sobre qué seccion se ha pintado el modal para volver a añadir el hash correspondiente
-            if (action === 'searchUser') {
-                app.listLimit = 10;
-                let uri = window.location.toString();
-                let clean_uri = uri.substring(0,uri.indexOf("?"));
-                window.history.replaceState({},document.title,clean_uri);
-                window.dispatchEvent(new Event('popstate'));
-            } else if (action === 'searchLeague') {
-                app.listLimit = 10;
-                const searchOrigin = params.get('searchOrigin');
-                let uri = window.location.toString();
-                let clean_uri = uri.substring(0,uri.indexOf("?"));
-                window.history.replaceState({},document.title,clean_uri);
-                if (searchOrigin === 'newPlayer') {
-                    const newParams ='?player=new';
-                    window.history.replaceState({},document.title,newParams);
-                } else {
-                    const newParams ='?player='+searchOrigin;
-                    window.history.replaceState({},document.title,newParams);
-                }
-            } else if (action === 'searchPlayer') {
-                app.listLimit = 10;
-                let uri = window.location.toString();
-                let clean_uri = uri.substring(0,uri.indexOf("?"));
-                window.history.replaceState({},document.title,clean_uri);
-                window.dispatchEvent(new Event('popstate'));
-            } else if (action === 'searchTeam') {
-                app.listLimit = 10;
-                const searchOrigin = params.get('searchOrigin');
-                let uri = window.location.toString();
-                let clean_uri = uri.substring(0,uri.indexOf("?"));
-                window.history.replaceState({},document.title,clean_uri);
-                if (searchOrigin === 'newPlayer') {
-                    const newParams ='?player=new';
-                    window.history.replaceState({},document.title,newParams);
-                } else {
-                    const newParams ='?player='+searchOrigin;
-                    window.history.replaceState({},document.title,newParams);
-                }
-            }
-            
-
-
-            // let params = new URLSearchParams(document.location.search);
-            // console.log(params);
-            // let searchLeagueForPlayer = params.get('searchLeagueForPlayer');
-            // console.log(searchLeagueForPlayer);
-            // let uri = window.location.toString();
-            // let clean_uri = uri.substring(0,uri.indexOf("?"));
-            
-            //ocultamos el modal
-            modalContainer.classList.add('cm-u-inactive');
-            
-
-
-            // if (manageUsersBtn.classList.contains('active') === true) {
-            //     //console.log('estoy en manage users');
-            //     listLimit = 10;
-            //     location.hash='#manageUsers';
-            // } else if (location.search.startsWith('?searchPlayer=')){ 
-            //     listLimit = 10;
-            //     location.hash='#manageTeam';
-            // } 
-            // window.history.replaceState({},document.title,clean_uri);
-        });
+        
     },
     //--------------------------------------------------------UTILS--------------------------------------------------------
     //listar usuarios en pagina de usuarios

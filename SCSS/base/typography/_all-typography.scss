@@ -10,7 +10,7 @@ html {
 body {
     @include font-size($defFontSizeDT, $lineHeightDT);
     @include cm-qs-normal;
-    color:getColor(scarpaFlow);
+    color:getColor(primary);
 }
 
 .cm-u-text-mouse {
@@ -49,7 +49,7 @@ body {
 }
 
 .cm-u-text-link {
-    color:getColor(sandyBrown);
+    color:getColor(primary);
     text-decoration: none;
     &:hover {
         text-decoration: underline;

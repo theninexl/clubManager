@@ -39,8 +39,8 @@
         @include cm-container;
 
         &__aside {
-            border-right:1px solid getColor(scarpaFlowLight);
-            width: getCols(2);
+            border-right:1px solid getColor(secondaryLight);
+            width: getCols(2.5);
             & nav {
                 position: fixed;
             }
@@ -48,7 +48,7 @@
 
         &__body {
             flex-grow: 1;
-            padding-left: getGutter(regular);
+            padding: 0 getGutter(regular);
         }
     }
 }

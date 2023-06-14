@@ -1,6 +1,6 @@
 .cm-l-header {
     background-color: getColor(white);
-    border-bottom: 1px solid getColor(scarpaFlowLight);
+    border-bottom: 1px solid getColor(secondaryLight);
     position: fixed;
     top:0;
     z-index: 1;
@@ -10,15 +10,15 @@
 }
 
 .cm-l-footer {
-    border-top:1px solid getColor(scarpaFlowLight);
+    border-top:1px solid getColor(secondaryLight);
     padding-top: getLines(1);
     padding-bottom: getLines(1);
 }
 
 .cm-l-body-static-header {
-    border-bottom:1px solid getColor(success);
+    border-bottom:1px solid getColor(secondaryLight);
     display: flex;
     align-items: center;
     height: getSize($huge);
-    color:getColor(success);
+    color:getColor(secondary);
 }

@@ -37,26 +37,25 @@ const searchInModalBtn = $('#searchInModalBtn');
 const sortBtns = document.querySelectorAll('.cm-o-sortButton');
 
 //forms and form buttons
-const userDetailsForm = $('#userDetailsForm');
-const playerDetailsForm = $('#playerDetailsForm');
-const searchUsersForm = $('#searchUsersForm');
-const searchPlayersForm = $('#searchPlayersForm');
-const userDetailsFormUpdateBtn = $('#userDetailsFormUpdateBtn');
-const userDetailsFormDeleteBtn = $('#userDetailsFormDeleteBtn');
-const userDetailsCancelBtn = $('#userDetailsCancelBtn');
-const playerOriginClubSearchBtn = $('#playerOriginClubSearchBtn');
-const playerLeagueOriginSearchBtn = $('#playerLeagueOriginSearchBtn');
-const playerDetailsFormAddBtn = $('#playerDetailsFormAddBtn');
-const playerDetailsFormUpdateBtn = $('#playerDetailsFormUpdateBtn');
-const playerDetailsFormDeleteBtn = $('#playerDetailsFormDeleteBtn');
-const playerDetailsCancelBtn = $('#playerDetailsCancelBtn');
+
+//loginForm fields
+const loginPageForm = $('#loginPageForm');
+const loginPageSubmitBtn = $('#loginPageSubmitBtn');
+const loginEmail = $('loginEmail');
+const loginPwd = $('loginPwd');
 
 //searchForm Fields
 const searchUser = $('#searchUser');
+const searchUsersForm = $('#searchUsersForm');
+const searchPlayersForm = $('#searchPlayersForm');
 const searchInModalInput = $('#searchInModalInput');
 const searchPlayer = $('#searchPlayer');
 
 //userDetails Fields
+const userDetailsForm = $('#userDetailsForm');
+const userDetailsFormUpdateBtn = $('#userDetailsFormUpdateBtn');
+const userDetailsFormDeleteBtn = $('#userDetailsFormDeleteBtn');
+const userDetailsCancelBtn = $('#userDetailsCancelBtn');
 const userDetailsFieldName = $('#userName');
 const userDetailsFieldLastname = $('#userLastname');
 const userDetailsFieldEmail = $('#userEmail');
@@ -69,6 +68,13 @@ const userDetailsFieldForm2write = $('#userForm2write');
 const userDetailsFormAddBtn = $('#userDetailsFormAddBtn');
 
 //playerDetails Fields
+const playerDetailsForm = $('#playerDetailsForm');
+const playerOriginClubSearchBtn = $('#playerOriginClubSearchBtn');
+const playerLeagueOriginSearchBtn = $('#playerLeagueOriginSearchBtn');
+const playerDetailsFormAddBtn = $('#playerDetailsFormAddBtn');
+const playerDetailsFormUpdateBtn = $('#playerDetailsFormUpdateBtn');
+const playerDetailsFormDeleteBtn = $('#playerDetailsFormDeleteBtn');
+const playerDetailsCancelBtn = $('#playerDetailsCancelBtn');
 const playerActive = $('#playerActive');
 const playerName = $('#playerName');
 const playerLastname = $('#playerLastname');
@@ -82,9 +88,7 @@ const playerIdDate = $('#playerIdDate');
 const playerSocialSecurityNumber = $('#playerSocialSecurityNumber');
 const playerResidencyToggle = $('#playerResidencyToggle');
 const playerOriginClub = $('#playerOriginClub');
-// const playerOriginClubContainer = playerOriginClub.closest('.cm-c-field-icon');
 const playerLeagueOrigin = $('#playerLeagueOrigin');
-// const playerLeagueOriginContainer = playerLeagueOrigin.closest('.cm-c-field-icon');
 const playerNaturalPosition = $('#playerNaturalPosition');
 const playerHeight = $('#playerHeight');
 const playerWeight = $('#playerWeight');

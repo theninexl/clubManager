@@ -1,6 +1,6 @@
 @mixin icon-button {
     border:0;
-    border-radius:99px;
+    border-radius:getSize($small);
     cursor:pointer;
     display: inline-flex;
     justify-content:center;
@@ -70,11 +70,11 @@
 }
 
 @mixin icon-button-pressed {
-    background-color:getColor(sandyBrown);
+    background-color:getColor(primary);
     box-shadow:none;
 
     span {
-        color:getColor(scarpaFlow);
+        color:getColor(white);
     }
 }
 

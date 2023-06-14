@@ -1,6 +1,6 @@
 @mixin button {
     border:0;
-    border-radius:99px;
+    border-radius:getSize($small);
     cursor:pointer;
     text-align: center;
 
@@ -10,8 +10,8 @@
 }
 
 @mixin button-primary {
-    color:getColor(scarpaFlow);
-    background-color: getColor(sandyBrown);
+    color:getColor(white);
+    background-color: getColor(primary);
 }
 
 @mixin button-secondary {
@@ -20,13 +20,13 @@
 }
 
 @mixin button-transparent {
-    color:getColor(sandyBrown);
+    color:getColor(primary);
     background-color: getColor(white);
-    box-shadow:0px 0px 0px 2px getColor(sandyBrown) inset;
+    box-shadow:0px 0px 0px 2px getColor(primary) inset;
 }
 
 @mixin button-ghost {
-    color:getColor(sandyBrown);
+    color:getColor(primary);
     background:transparent;
 }
 

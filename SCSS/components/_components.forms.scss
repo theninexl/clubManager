@@ -1,16 +1,32 @@
 .cm-c-form-simple {
     $block:&;
 
+    label.error {
+
+        color: getColor(danger);
+        
+        input[type=text], input[type=number], input[type=email], input[type=password], input[type=date] {
+            $block:&;
+            border:1px solid getColor(danger);
+            color: getColor(danger);
+            @include cm-qs-bold;
+
+            &::placeholder {
+                color: getColor(danger);
+            }
+        }
+    }
+
     input[type=text], input[type=number], input[type=email], input[type=password], input[type=date]{
-        border:1px solid getColor(scarpaFlowLight);
-        border-radius: 99px;
+        border:1px solid getColor(primaryLight);
+        border-radius: getSize($small);
         height:getSize($huge);
         padding: 0 getSize($medium);
         @include font-size($defFontSizeDT, $lineHeightDT);
         @include cm-qs-normal;
 
         &:focus, &:focus-visible, &:active {
-            border-color:getColor(sandyBrown);
+            border-color:getColor(primary);
             border-width:2px;
             outline:none;
         }
@@ -30,8 +46,8 @@
         background-color: #fff;
         /* Not removed via appearance */
         margin: 0;
-        border:1px solid getColor(scarpaFlowLight);
-        border-radius:50%;
+        border:1px solid getColor(primaryLight);
+        border-radius:getSize($small);
         height: getSize($bigger);
         width: getSize($bigger);
         display: grid;
@@ -39,7 +55,7 @@
 
         &::before {
             content:"check";
-            border-radius:50%;
+            border-radius:getSize($small);
             box-shadow: inset getSize($bigger) getSize($bigger) getColor(success);
             display: flex;
             justify-content:center;
@@ -69,9 +85,9 @@
     }
 
     &__radio-toggle {
-        border:1px solid getColor(scarpaFlowLight);
+        border:1px solid getColor(primaryLight);
         background-color: getColor(white);
-        border-radius:99px;
+        border-radius:getSize($small);
         position: relative;
         height: getSize($huge);
         width: getSize($doubleHuge);
@@ -95,7 +111,7 @@
 
         input[type="checkbox"]:checked::before {
             content:"check";
-            border-radius:50%;
+            border-radius:getSize($small);
             box-shadow: inset 0 getSize($huge) getColor(success);
             display: flex;
             justify-content:center;
@@ -116,8 +132,8 @@
 
 .cm-c-field-icon {
     $block:&;
-    border:1px solid getColor(scarpaFlowLight);
-    border-radius: 99px;
+    border:1px solid getColor(primaryLight);
+    border-radius: getSize($small);
     height:getSize($huge);
     display: flex;
     overflow: hidden;
@@ -133,7 +149,7 @@
     }
 
     &--focus {
-        border-color:getColor(sandyBrown);
+        border-color:getColor(primary);
         border-width:2px;
         outline:none;
     }
@@ -183,8 +199,8 @@
 
 .cm-c-select-icon {
     $block:&;
-    border:1px solid getColor(scarpaFlowLight);
-    border-radius: 99px;
+    border:1px solid getColor(primaryLight);
+    border-radius: getSize($small);
     height:getSize($huge);
     display: inline-flex;
     overflow: hidden;
@@ -207,14 +223,14 @@
     }
 
     &--focus {
-        border-color:getColor(sandyBrown);
+        border-color:getColor(primary);
         border-width:2px;
         outline:none;
     }
 
     &::after {
         content:"expand_more";
-        border-radius:50%;
+        border-radius:getSize($small);
         box-shadow: inset getSize($huge) getSize($huge) getColor(scarpaFlowLight);
         display: flex;
         justify-content:center;
