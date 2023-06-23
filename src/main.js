@@ -577,10 +577,10 @@ const app = {
     },
     notificationsPage: () => {
         console.log('estoy en la página de notificaciones');
-        const activeUser = app.activeUserList();
-        const activeUserId = activeUser.activeUser.id;
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
+        const activeUser = app.activeUserList();
+        const activeUserId = activeUser.activeUser.id;
         app.listLimit = 10;
         notifsBtn.classList.add('active');
         manageUsersBtn.classList.remove('active');
@@ -1220,7 +1220,7 @@ const app = {
             //logout usuario activo si click en logout btn
             activeUserLogoutBtn.addEventListener('click', app.logoutActiveUser);
         } else {
-            console.log('no hay usuario activo');            
+            // console.log('no hay usuario activo');            
             location.href = "index.html";
         }
     },
@@ -1267,7 +1267,7 @@ const app = {
         }
         //crear notificacion
         notifications.items.forEach(notification => {
-            console.log(notification);
+            // console.log(notification);
             const notifCompleteText = notification.description;
             let notifDescrText;
             if (notifCompleteText.length >= truncLenght) {
