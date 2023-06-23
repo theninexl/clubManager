@@ -269,6 +269,7 @@ const app = {
         const data = {};
         updatedUserData.forEach((value, key) => data[key] = value);
         const updateUserData = await app.api.put('/users/'+userID, {
+            userUsername:data.userUsername,
             userName:data.userName,
             userLastname:data.userLastname,
             userEmail:data.userEmail,
@@ -280,7 +281,28 @@ const app = {
         })
         .then(function (response) {
             //console.log(response);
-            location.href = "manage-users.html";
+            const activeUser = app.activeUserList();
+            const activeUserId = activeUser.activeUser.id;
+            
+            if (userID === activeUserId) {
+                console.log(userID);
+                console.log(activeUserId);
+                const resource = '/users/'+userID;
+                (async(userID)=>{                    
+                    const getActiveUserData = await app.getData(resource)
+                    .then(function (response) {
+                        console.log(response);
+                        app.setActiveUser(response);
+                        location.href = "manage-users.html";
+                    })
+                    .catch(function (error) {
+                        console.warn(error);
+                    });
+                })();
+            } else {
+                location.href = "manage-users.html";
+            }
+            
         })
         .catch(function (error) {
             console.warn(error);
@@ -1445,6 +1467,9 @@ const app = {
         users.items.forEach(user => {
             const personContainer = document.createElement('div');
             personContainer.classList.add('cm-l-tabledata__row');
+            const personUsername = document.createElement('div');
+            personUsername.classList.add('tablecell-medium');
+            personUsername.textContent = user.userUsername;
             const personName = document.createElement('div');
             personName.classList.add('tablecell-medium');
             personName.textContent = user.userName;
@@ -1469,7 +1494,8 @@ const app = {
             personEditBtnIcon.textContent = 'border_color';
             personEditBtn.appendChild(personEditBtnIcon);
             personEditBtnContainer.appendChild(personEditBtn);
-    
+            
+            personContainer.appendChild(personUsername);
             personContainer.appendChild(personName);
             personContainer.appendChild(personLastname);
             personContainer.appendChild(personEmail);
@@ -1488,6 +1514,7 @@ const app = {
     //listar detalles de usuario
     listUserDetails: (user) => {
         userDetailsTitle.textContent = 'Edit user details';
+        userDetailsFieldUsername.setAttribute('value',user.userUsername);
         userDetailsFieldName.setAttribute('value',user.userName);
         userDetailsFieldLastname.setAttribute('value',user.userLastname);
         userDetailsFieldEmail.setAttribute('value',user.userEmail);

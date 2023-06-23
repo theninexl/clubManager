@@ -60,6 +60,7 @@ const userDetailsForm = $('#userDetailsForm');
 const userDetailsFormUpdateBtn = $('#userDetailsFormUpdateBtn');
 const userDetailsFormDeleteBtn = $('#userDetailsFormDeleteBtn');
 const userDetailsCancelBtn = $('#userDetailsCancelBtn');
+const userDetailsFieldUsername = $('#userUsername');
 const userDetailsFieldName = $('#userName');
 const userDetailsFieldLastname = $('#userLastname');
 const userDetailsFieldEmail = $('#userEmail');
