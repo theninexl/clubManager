@@ -16,8 +16,10 @@ const app = {
         //console.log('location.search: '+location.search);
         if (page === 'home') {
             app.homePage();
-        } else if (page === 'login') {
+        } else if (page === 'login'){
             app.loginPage();
+        } else if (page === 'notifications'){
+            app.notificationsPage();
         } else if (page === 'manageUsers' && location.search == ''){
             app.manageUsersPage();
         } else if (page === 'manageUsers' && location.search.startsWith('?searchAction=searchUser')) {
@@ -148,6 +150,19 @@ const app = {
                 // console.log(response);
                 app.paginateList(response, tablePaginationSearchResults);
             }  
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //obtener notificaciones
+    getNotifications: async (user, {page = app.currentListPage, limit = 10, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = limit;
+        resource = '/users/'+user+'/notifications';
+        const results = await app.getData(resource, page, app.listLimit, sortBy, order)
+        .then(function (response) {
+            app.listNotifications(response,notificationsListContainer);
+            app.paginateList(response, tablePaginationNotifications);
         })
         .catch(function (error) {
             console.warn(error);
@@ -400,8 +415,6 @@ const app = {
     //filtrar usuarios por busqueda
     filterUsers: async (searchTerm, {page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = 5;
-        // console.log('filterUsers Term:'+searchTerm);
-        // console.log('listLimit:'+limit);
         resource = '/users?search='+searchTerm;
         const results = await app.filterData(resource, page, limit, sortBy, order)
         .then(function (response) {
@@ -487,12 +500,27 @@ const app = {
         const loginData = new FormData(loginPageForm);
         const data = {};
         loginData.forEach((value, key) => data[key] = value);
+        console.log(data);
         const searchTerm = data.loginEmail;
+        const pwdForm = data.loginPwd;
         const resource = '/users?search='+searchTerm;
         const filterLogin = await app.filterData(resource)
         .then(function (response) {
+            // console.log(response);
             if (response.count === 1) {
-                console.log(response);
+                // console.log(response.items[0].userEmail);
+                // console.log(response.items[0].userPwd);
+                if (searchTerm === response.items[0].userEmail && pwdForm === response.items[0].userPwd) {
+                    //console.log('user y pwd son buenos');
+                    //si está todo ok mando email, nombre y apellidos a LS
+                    app.setActiveUser(response.items[0]);
+                    //location.href = "main.html";
+                } else if (searchTerm === response.items[0].userEmail && pwdForm !== response.items[0].userPwd)  {
+                    //console.log('user bien pero pwd mal');
+                    app.setInputFieldError(loginPwd,'Password is not right');
+                }
+            } else {
+                app.setInputFieldError(loginEmail,'User does not exist');
             }
         })
         .catch(function (error) {
@@ -502,19 +530,68 @@ const app = {
     },
     //------------------------------------------PAGES------------------------------------------
     loginPage: () => {
-        console.log('estoy en la pagina de login');
 
-        //boton listado de usuarios
+        //checkeo campos cuando pulso el boton de enviar
         loginPageSubmitBtn.addEventListener('click',(event)=>{
             event.preventDefault();
-            app.passLogin();
+            if (!loginEmail.checkValidity()) {
+                app.setInputFieldError(loginEmail,loginEmail.validationMessage);
+            } else {
+                if (!loginPwd.checkValidity()) {
+                    app.setInputFieldError(loginPwd,loginPwd.validationMessage);
+                } else {
+                    const errorEmailMsg = loginEmail.nextElementSibling;
+                    if (errorEmailMsg) { 
+                        loginEmail.parentElement.classList.remove('error');
+                        errorEmailMsg.remove();}
+                    const errorPwdMsg = loginPwd.nextElementSibling;
+                    if (errorPwdMsg) { 
+                        loginPwd.parentElement.classList.remove('error');
+                        errorPwdMsg.remove();}
+                    app.passLogin();
+                }
+            }
         });
+
+        //quito el error al campo si lo tiene cuando vuelvo a hacer focus en el
+        loginEmail.addEventListener('focus', event => {
+            if (loginEmail.parentElement.classList.contains('error') === true) {
+                const errorEmailMsg = loginEmail.nextElementSibling;
+                loginEmail.parentElement.classList.remove('error');
+                errorEmailMsg.remove();
+            }
+        });
+        loginPwd.addEventListener('focus', event => {
+            if (loginPwd.parentElement.classList.contains('error') === true) {
+                const errorPwdMsg = loginPwd.nextElementSibling;
+                loginPwd.parentElement.classList.remove('error');
+                errorPwdMsg.remove();
+            }
+        });
+
     },
     homePage: () => {
         console.log('estoy en la home');
+        app.setActiveUserOnMenu();
+        app.setActiveUserNotificationsBubble();
+    },
+    notificationsPage: () => {
+        console.log('estoy en la página de notificaciones');
+        const activeUser = app.activeUserList();
+        const activeUserId = activeUser.activeUser.id;
+        app.setActiveUserOnMenu();
+        app.setActiveUserNotificationsBubble();
+        app.listLimit = 10;
+        notifsBtn.classList.add('active');
+        manageUsersBtn.classList.remove('active');
+        manageTeamBtn.classList.remove('active');
+        app.getNotifications(activeUserId);
+
     },
     //pagina manage users
     manageUsersPage: () => {
+        app.setActiveUserOnMenu();
+        app.setActiveUserNotificationsBubble();
         app.listLimit = 10;
         manageUsersBtn.classList.add('active');
         manageTeamBtn.classList.remove('active');
@@ -543,6 +620,8 @@ const app = {
     },
     //pagina añadir/editar usuario
     manageUserPage: () => {
+        app.setActiveUserOnMenu();
+        app.setActiveUserNotificationsBubble();
         manageUsersBtn.classList.add('active');
         if (location.search.startsWith('?user=new')) {
             userDetailsTitle.textContent = 'Add new user';
@@ -623,6 +702,8 @@ const app = {
     },
     //pagina listado plantilla jugadores
     manageTeamPage: () => {
+        app.setActiveUserOnMenu();
+        app.setActiveUserNotificationsBubble();
         listLimit = 10;
         manageTeamBtn.classList.add('active');
         // usersListSection.classList.add('cm-u-inactive');
@@ -648,6 +729,8 @@ const app = {
     },
     //pagina añadir/editar usuario
     managePlayerPage: () => {
+        app.setActiveUserOnMenu();
+        app.setActiveUserNotificationsBubble();
         app.cleanPlayerDetails();
         manageTeamBtn.classList.add('active');
         if (location.search.startsWith('?player=new')) {
@@ -941,6 +1024,10 @@ const app = {
     navigationEvents:() => {
         const page = document.body.id;
         if (page !== 'login') {
+            //boton notificaciones
+            notifsBtn.addEventListener('click', ()=>{
+                location.href="notifications.html";
+            });
             //boton listado de usuarios
             manageUsersBtn.addEventListener('click',()=>{
                 const page = document.body.id;
@@ -1076,6 +1163,279 @@ const app = {
         
     },
     //--------------------------------------------------------UTILS--------------------------------------------------------
+    //activeUserList
+    activeUserList: () =>{
+        //esta función solo mira si existe un usuario activo listado en LS. Si lo hay, lo devuelve como un objeto JS, si no lo hay, devuelve un objeto vacío.
+        let activeUsers;
+        const item = JSON.parse(localStorage.getItem('active_user'));   
+        if(item) {
+            activeUsers = item;
+        } else {
+            activeUsers = {};
+        }
+        return activeUsers;
+    },
+    setActiveUser: (user) =>{ 
+        console.log('lo que recibo en setActiveUser');
+        // console.log(user.userUsername);
+        //miramos si el usuario activo está de hecho como usuario activo ya, si lo está, simplemente pasamos a la siguiente pantalla, si no lo está, borramos el que haya y ponemos el introducido como activo.    
+        //nos guardamos en una variable el objeto activeUserList
+        const activeUser = app.activeUserList();
+        console.log('activeUser lenght:');
+        console.log(Object.keys(activeUser).length);
+        //console.log(activeUser.activeUser.userUsername);
+        //si el usuario que ha pasado el form de login ya está en el el listado de usuario activo, entonces simplemente navegamos a la siguiente página
+        if (Object.keys(activeUser).length > 0 && user.userUsername === activeUser.activeUser.userUsername) {
+            console.log('ese usuario ya estaba activo asi que solo continuo a la siguiente pantalla');
+            location.href = "main.html"
+        } else {
+        //si el usuario no está hay que poner el que mandamos
+            console.log('ese usuario no estaba activo así que lo pongo como activo')
+            //primero me lo cargo
+            activeUser['activeUser'] = undefined;
+            //despues lo activo con la informacion que yo quiero
+            activeUser['activeUser'] = {
+                id: user.id,
+                userUsername: user.userUsername,
+                userEmail: user.userEmail,
+                userLastname: user.userLastname
+            };
+            location.href = "main.html"
+        }
+        //escribir en el llistado de usuarios activos en LS la nueva información
+        localStorage.setItem('active_user', JSON.stringify(activeUser));
+        console.log(localStorage);
+    },
+    setActiveUserOnMenu: () => {
+        //escribir el usuario activo en el menu superior y habilitar el menu de logout
+        const activeUser = app.activeUserList();
+
+        if (Object.keys(activeUser).length > 0) {
+            activeUserBtn.innerHTML = activeUser.activeUser.userUsername;
+            //desplegar overlay menu usuario
+            activeUserBtn.addEventListener('click',()=>{
+                activeUserBtn.classList.toggle('active');
+                activeUserMenu.classList.toggle('cm-u-inactive');
+            });
+            //logout usuario activo si click en logout btn
+            activeUserLogoutBtn.addEventListener('click', app.logoutActiveUser);
+        } else {
+            console.log('no hay usuario activo');            
+            location.href = "index.html";
+        }
+    },
+    //colocar el buble de notificaciones sin leer
+    setActiveUserNotificationsBubble: () => {
+        userUnreadNotifs.classList.add('cm-u-inactive');
+        const activeUser = app.activeUserList();
+        const activeUserId = activeUser.activeUser.id;
+        //miro las notificaciones que existen para ese usuario
+        (async()=>{
+            resource = '/users/'+activeUserId+'/notifications';
+            const results = await app.getData(resource)
+            .then(function (response) {
+                //me guardo las notificaciones
+                const notifs = Object.values(response.items);
+                let unreadNotifs = 0;
+                //para cada una, si no está leida, le sumo 1 al contador
+                notifs.forEach((notif) => {
+                    if (!notif.read) {
+                        unreadNotifs++;
+                    }
+                });
+                //pinto las notifiaciones no leidas en el bubble
+                if (unreadNotifs > 0) {
+                    userUnreadNotifs.classList.remove('cm-u-inactive');
+                    userUnreadNotifs.innerHTML = unreadNotifs;
+                }
+            })
+            .catch(function (error) {
+                console.warn(error);
+            });
+        })();
+    },
+    //logoutUser
+    logoutActiveUser: ()=>{
+        localStorage.removeItem('active_user');
+        location.href = "index.html"
+    },
+    //listar notificaciones
+    listNotifications: (notifications,container,{clean = true} = {}) => {
+        const truncLenght = 80;
+        if(clean) {
+            container.innerHTML = '';
+        }
+        //crear notificacion
+        notifications.items.forEach(notification => {
+            console.log(notification);
+            const notifCompleteText = notification.description;
+            let notifDescrText;
+            if (notifCompleteText.length >= truncLenght) {
+                const truncatedDescription = notifCompleteText.substring(0,truncLenght);
+                notifDescrText = truncatedDescription+' (..click to expand)';
+            } else {
+                notifDescrText = notifCompleteText;
+            }
+            
+            const notifRow = document.createElement('div');
+            notifRow.classList.add('cm-l-tabledata__row');
+            if (!notification.read) notifRow.classList.add('cm-l-tabledata__row--noRead');
+            notifRow.setAttribute('data-notifId',notification.id);
+            const levelCell = document.createElement('div');
+            levelCell.classList.add('tablecell-short');
+            levelCell.classList.add('cm-u-centerText');
+            const levelButton = document.createElement('button');
+            const levelIconBtn = document.createElement('span');
+            levelIconBtn.classList.add('material-symbols-outlined');
+            if (notification.level <= 33) {
+                levelButton.classList.add('cm-o-icon-roundel-small--primary');
+                levelIconBtn.textContent = 'low_priority';
+            }else if (notification.level > 33 && notification.level <= 66 ) {
+                levelButton.classList.add('cm-o-icon-roundel-small--warning');
+                levelIconBtn.textContent = 'priority';
+            } else {
+                levelButton.classList.add('cm-o-icon-roundel-small--danger');
+                levelIconBtn.textContent = 'priority_high';
+            }
+            levelButton.appendChild(levelIconBtn);
+            levelCell.appendChild(levelButton);
+            const markReadCell = document.createElement('div');
+            markReadCell.classList.add('tablecell-short');
+            markReadCell.classList.add('cm-u-centerText');
+            const markReadBtn = document.createElement('button');
+            if (!notification.read) {
+                markReadBtn.classList.add('cm-o-icon-button-small--primary');
+                markReadBtn.setAttribute('data-readState','false')
+            } else {
+                markReadBtn.classList.add('cm-o-icon-button-small--success');
+                markReadBtn.setAttribute('data-readState','true')
+            }
+            markReadBtn.setAttribute('id','markReadNotifBtn');
+            const markReadBtnSpan = document.createElement('span');
+            markReadBtnSpan.classList.add('material-symbols-outlined');
+            markReadBtnSpan.textContent = 'mark_email_read';
+            markReadBtn.appendChild(markReadBtnSpan);
+            markReadCell.appendChild(markReadBtn);
+            const subjectCell = document.createElement('div');
+            subjectCell.classList.add('tablecell-medium');
+            subjectCell.textContent = notification.subject;
+            const dateCell = document.createElement('div');
+            dateCell.classList.add('tablecell-medium');
+            dateCell.textContent = notification.date;
+            const descriptionCell = document.createElement('div');
+            descriptionCell.classList.add('tablecell-long');
+            descriptionCell.textContent = notifDescrText;
+            descriptionCell.setAttribute('id','notifDescriptionText');
+            descriptionCell.setAttribute('data-completeDescription',notifCompleteText)
+            const validateCell = document.createElement('div');
+            validateCell.classList.add('tablecell-short');
+            validateCell.classList.add('cm-u-centerText');
+            const validateBtn = document.createElement('button');
+            if (!notification.validated){
+                validateBtn.classList.add('cm-o-icon-button-small--primary');
+                validateBtn.setAttribute('data-valState','false');
+            } else {
+                validateBtn.classList.add('cm-o-icon-button-small--success');
+                validateBtn.setAttribute('data-valState','true');
+            }
+            validateBtn.setAttribute('id','setValNotifBtn');
+            const validateBtnSpan = document.createElement('span');
+            validateBtnSpan.classList.add('material-symbols-outlined');
+            validateBtnSpan.textContent = 'done';
+            validateBtn.appendChild(validateBtnSpan);
+            validateCell.appendChild(validateBtn);
+
+            notifRow.appendChild(levelCell);
+            notifRow.appendChild(markReadCell);
+            notifRow.appendChild(subjectCell);
+            notifRow.appendChild(dateCell);
+            notifRow.appendChild(descriptionCell);
+            notifRow.appendChild(validateCell);
+            container.appendChild(notifRow);
+        });
+        //expandir texto notificacion
+        const notifDescriptionTexts = document.querySelectorAll('#notifDescriptionText');
+        notifDescriptionTexts.forEach(description => {
+            description.addEventListener('click',()=>{
+                description.textContent = description.getAttribute('data-completeDescription');
+            });
+        });
+        //vars comunes para marcar leidas o validadas
+        const activeUser = app.activeUserList();
+        const activeUserId = activeUser.activeUser.id;
+
+        //marcar notificacion leida
+        const markReadNotifBtns = document.querySelectorAll('#markReadNotifBtn');
+        markReadNotifBtns.forEach(markReadNotifBtn => {
+            markReadNotifBtn.addEventListener('click',()=>{     
+                const markReadBtnNotifParent = markReadNotifBtn.parentNode.parentNode;
+                const notifID = markReadBtnNotifParent.getAttribute('data-notifid');           
+                const currentReadState = markReadNotifBtn.getAttribute('data-readstate');
+                let newReadState;
+                (currentReadState === 'false') ? newReadState = true : newReadState = false;
+
+                (async(userID,notifId) => {
+                    const updateReadState = await app.api.put('/users/'+activeUserId+'/notifications/'+notifID, {
+                        read:newReadState,
+                    })
+                    .then(function (response) {
+                        // console.log(response);
+                        app.setActiveUserNotificationsBubble();
+                        if (newReadState === false) {
+                            markReadBtnNotifParent.classList.add('cm-l-tabledata__row--noRead');
+                            markReadNotifBtn.setAttribute('data-readstate','false');
+                            markReadNotifBtn.classList.remove('cm-o-icon-button-small--success');
+                            markReadNotifBtn.classList.add('cm-o-icon-button-small--primary');
+
+                        } else {
+                            markReadBtnNotifParent.classList.remove('cm-l-tabledata__row--noRead');
+                            markReadNotifBtn.setAttribute('data-readstate','true');
+                            markReadNotifBtn.classList.add('cm-o-icon-button-small--success');
+                            markReadNotifBtn.classList.remove('cm-o-icon-button-small--primary');
+                        }
+                    })
+                    .catch(function (error) {
+                        console.warn(error);
+                    });
+                })();
+            })
+        });
+
+        //marcar notificacion validada
+        const markValNotifBtns = document.querySelectorAll('#setValNotifBtn');
+        markValNotifBtns.forEach(markValNotifBtn => {
+            markValNotifBtn.addEventListener('click',()=>{
+                const markValBtnNotifParent = markValNotifBtn.parentNode.parentNode;
+                const notifID = markValBtnNotifParent.getAttribute('data-notifid');    
+                const currentValState = markValNotifBtn.getAttribute('data-valstate');
+                let newValState;
+                (currentValState === 'false') ? newValState = true : newValState = false;
+
+                (async(userID,notifId) => {
+                    const updateValState = await app.api.put('/users/'+activeUserId+'/notifications/'+notifID, {
+                        validated:newValState,
+                    })
+                    .then(function (response) {
+                        console.log(response);
+                        app.setActiveUserNotificationsBubble();
+                        if (newValState === false) {
+                            markValNotifBtn.setAttribute('data-valstate','false');
+                            markValNotifBtn.classList.remove('cm-o-icon-button-small--success');
+                            markValNotifBtn.classList.add('cm-o-icon-button-small--primary');
+
+                        } else {
+                            markValNotifBtn.setAttribute('data-valstate','true');
+                            markValNotifBtn.classList.add('cm-o-icon-button-small--success');
+                            markValNotifBtn.classList.remove('cm-o-icon-button-small--primary');
+                        }
+                    })
+                    .catch(function (error) {
+                        console.warn(error);
+                    });
+                })();
+            })
+        })
+    },
     //listar usuarios en pagina de usuarios
     listUsers: (users,container,{clean = true} = {}) => {
         if(clean) {
@@ -2026,6 +2386,15 @@ const app = {
         idImageRow.appendChild(idImageLabel);
         fileUploadContainer.appendChild(idImageRow);
 
+    },
+    //poner error a un campo
+    setInputFieldError: (input,error) => {
+        const inputLabel = input.parentNode;
+        inputLabel.classList.add('error');
+        const errorMsg = document.createElement('span');
+        errorMsg.classList.add('error');
+        errorMsg.innerHTML = error;
+        inputLabel.appendChild(errorMsg);
     },
     //varias
     variousUtils: ()=> {

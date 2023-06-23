@@ -1,0 +1,29 @@
+.cm-o-icon-roundel-small {
+    $block:&;   
+
+    &--primary {
+        @include icon-roundel-small;
+        @include icon-roundel-primary;
+    }
+
+    &--secondary {
+        @include icon-roundel-small;
+        @include icon-roundel-secondary;
+    }
+
+    &--success {
+        @include icon-roundel-small;
+        @include icon-roundel-success;
+    }
+
+    &--danger {
+        @include icon-roundel-small;
+        @include icon-roundel-error;
+    }
+
+    &--warning {
+        @include icon-roundel-small;
+        @include icon-roundel-warning;
+    }
+
+}

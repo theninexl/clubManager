@@ -19,7 +19,14 @@
     &__row, &__footer {
         @extend .cm-u-text-mouse;
         align-items: center;
-        height: getSize($huge);
+        min-height: getSize($large);
+        height: auto;
+        padding: getSize($small) 0;
+    }
+
+    &__row--noRead {
+        @extend .cm-u-text-black-mouse;
+        background-color: getColor(scarpaFlowLightFade);
     }
 
     .tablecell {

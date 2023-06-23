@@ -33,6 +33,7 @@
     }
 
     &__notification {
+        cursor: pointer;
         display: flex;
         flex-flow: column nowrap;
         padding: getSize($small) getSize($medium);

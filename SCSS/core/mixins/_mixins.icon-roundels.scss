@@ -1,0 +1,93 @@
+@mixin icon-roundel {
+    border:0;
+    border-radius:99px;
+    display: inline-flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+@mixin icon-roundel-small {
+    @include icon-roundel; 
+    width: getSize($large);
+    height: getSize($large);
+
+    span {
+        font-size: getSize($big);
+    }
+}
+
+@mixin icon-roundel-primary {
+    background-color:getColor(white);
+    box-shadow:0px 0px 0px 1px getColor(scarpaFlowLight) inset;
+
+    span {
+        color:getColor(scarpaFlow);
+    }
+
+    &:is(a, a:hover){
+        color:getColor(scarpaFlow);
+        text-decoration:none;
+    }
+
+    &:hover {
+        background-color: getColor(scarpaHover);
+    }
+}
+
+@mixin icon-roundel-secondary {
+    background-color:getColor(scarpaFlowLight);
+    box-shadow:none;
+
+    span {
+        color:getColor(scarpaFlow);
+    }
+}
+
+
+@mixin icon-roundel-success {
+    background-color:getColor(success);
+    box-shadow:none;
+
+    span {
+        color:getColor(scarpaFlow);
+    }
+}
+
+@mixin icon-roundel-warning {
+    background-color:getColor(warning);
+    box-shadow:none;
+
+    span {
+        color:getColor(scarpaFlow);
+    }
+}
+
+@mixin icon-roundel-error {
+    background-color:getColor(danger);
+    box-shadow:none;
+
+    span {
+        color:getColor(white);
+    }
+}
+
+@mixin icon-button-disabled {
+    background-color:getColor(white);
+    box-shadow:0px 0px 0px 1px getColor(scarpaFlowLight) inset;
+    cursor:initial;
+    color:getColor(scarpaFlowLight);
+
+    span {
+        color:getColor(scarpaFlowLight);
+    }
+}
+
+@mixin icon-button-deco {
+    background-color:getColor(straw);
+    box-shadow:none;
+
+    span {
+        color:getColor(scarpaFlow);
+    }
+}

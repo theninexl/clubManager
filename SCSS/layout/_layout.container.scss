@@ -41,6 +41,7 @@
         &__aside {
             border-right:1px solid getColor(secondaryLight);
             width: getCols(2.5);
+            min-width: getCols(2.5);
             & nav {
                 position: fixed;
             }

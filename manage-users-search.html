@@ -92,12 +92,17 @@
                 </div>
                 <div class="cm-c-navbar__right">
                     <ul class="navbar-links-hrz">
-                        <li><a class="navbar-links__textbutt">Username</a></li>
+                        <li><a class="navbar-links__textbutt" id="activeUserBtn">Username</a></li>
                         <li><a href="structure.html" class="cm-o-icon-button--primary active"><span class="material-symbols-outlined">group</span></a></li>
-                        <li><a href="structure-notifications.html" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble">3</span></a></li>
+                        <li><a href="structure-notifications.html" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble" id="userUnreadNotifs"></span></a></li>
                      </ul>
                 </div>
             </nav>
+            <div id="activeUserMenu" class="cm-c-overlay--activeUser cm-u-inactive">
+                <a class="cm-o-overlay__notification" id="activeUserLogoutBtn">
+                    <div class="notification--text">Logout</div>
+                </a>
+            </div>
         </div>
     </header>
 

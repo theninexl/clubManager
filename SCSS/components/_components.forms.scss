@@ -7,8 +7,8 @@
         
         input[type=text], input[type=number], input[type=email], input[type=password], input[type=date] {
             $block:&;
-            border:1px solid getColor(danger);
-            color: getColor(danger);
+            border:2px solid getColor(danger);
+            color: getColor(danger) !important;
             @include cm-qs-bold;
 
             &::placeholder {
@@ -25,6 +25,7 @@
         @include font-size($defFontSizeDT, $lineHeightDT);
         @include cm-qs-normal;
 
+
         &:focus, &:focus-visible, &:active {
             border-color:getColor(primary);
             border-width:2px;
@@ -32,9 +33,13 @@
         }
 
         &:invalid, &:focus:invalid {
-            border-color:getColor(danger);
-            border-width:4px;
+            border-color:getColor(primary);
+            border-width:2px;
             outline:none;
+        }
+
+        &:-internal-autofill-selected {
+            background-color: getColor(white) !important;
         }
     }
 

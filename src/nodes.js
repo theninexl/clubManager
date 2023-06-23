@@ -8,18 +8,22 @@ const playersListSection = $('#playersList');
 const playerDetailsSection = $('#playerDetails');
 
 //containers and lists
-const notifsContainer = $('#notifsList');
+const notificationsListContainer = $('#notificationsListContainer');
 const usersListContainer = $('#usersListContainer');
 const playersListContainer = $('#playersListContainer');
 const modalContainer = $('.cm-c-modal');
 const searchResultsListHeaderContainer = $('#searchResultsListHeaderContainer');
 const searchResultsListContainer = $('#searchResultsListContainer');
+const tablePaginationNotifications = $('#tablePaginationNotifications');
 const tablePaginationUsers = $('#tablePaginationUsers');
 const tablePaginationPlayers = $('#tablePaginationPlayers');
 const tablePaginationSearchResults = $('#tablePaginationSearchResults');
 
 //elements
 const logo = $('.cm-o-logo');
+const activeUserBtn = $('#activeUserBtn');
+const activeUserLogoutBtn = $('#activeUserLogoutBtn');
+const userUnreadNotifs = $('#userUnreadNotifs');
 const notifsBtn = $('#notifsBtn');
 const manageUsersBtn = $('#manageUsersBtn');
 const userDetailsTitle = $('#userDetailsTitle');
@@ -41,8 +45,8 @@ const sortBtns = document.querySelectorAll('.cm-o-sortButton');
 //loginForm fields
 const loginPageForm = $('#loginPageForm');
 const loginPageSubmitBtn = $('#loginPageSubmitBtn');
-const loginEmail = $('loginEmail');
-const loginPwd = $('loginPwd');
+const loginEmail = $('#loginEmail');
+const loginPwd = $('#loginPwd');
 
 //searchForm Fields
 const searchUser = $('#searchUser');
