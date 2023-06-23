@@ -1268,6 +1268,7 @@ const app = {
         //crear notificacion
         notifications.items.forEach(notification => {
             // console.log(notification);
+            const [truncatedTime,_] = notification.date.split('T');
             const notifCompleteText = notification.description;
             let notifDescrText;
             if (notifCompleteText.length >= truncLenght) {
@@ -1321,7 +1322,7 @@ const app = {
             subjectCell.textContent = notification.subject;
             const dateCell = document.createElement('div');
             dateCell.classList.add('tablecell-medium');
-            dateCell.textContent = notification.date;
+            dateCell.textContent = truncatedTime;
             const descriptionCell = document.createElement('div');
             descriptionCell.classList.add('tablecell-long');
             descriptionCell.textContent = notifDescrText;
@@ -2012,14 +2013,15 @@ const app = {
         }        
     },
     //añadir paginacion en listados o resultados de busquedas
-    paginateList: (users, container) =>{
-        const count = users.count;
+    paginateList: (elements, container) =>{
+        const count = elements.count;
         const maxPages = Math.ceil(count/app.listLimit);
         container.innerHTML = '';
         // console.log('<------- paginateList');
         // console.log('añadir paginacion para: '+count);
         // console.log('limite listado: '+app.listLimit);
         // console.log('paginas maximas: '+maxPages);
+        
         // construir la tabla de paginación
         const paginationContainer = document.createElement('div');
         paginationContainer.classList.add('cm-l-tabledata__footer');
@@ -2050,9 +2052,9 @@ const app = {
     
         //botones de paginacion
         const activatePagination = () => {
-            //console.log('estoy en la pagina: '+app.currentListPage);
-            // console.log('location.search: '+location.search);
             const page = document.body.id;
+            const activeUser = app.activeUserList();
+            const activeUserId = activeUser.activeUser.id;
             const goNextBtn = container.querySelector('#goNextPage');
             const goPrevBtn = container.querySelector('#goPrevPage');
             const goNextBtnActive = goNextBtn.classList.contains('cm-o-icon-button-small--primary');
@@ -2079,8 +2081,8 @@ const app = {
                         console.log('league of origin: '+leagueOrigin);
                         searchTerm = searchInModalInput.value;
                         app.filterTeams(leagueOrigin, searchTerm, {page:app.currentListPage, limit:5});
-                    }
-                    console.log('voy a la pagina: '+app.currentListPage);                    
+                    } else if (page === 'notifications') { app.getNotifications(activeUserId,{page:app.currentListPage}); }
+                    // console.log('voy a la pagina: '+app.currentListPage);                    
                 })
             }
         
@@ -2104,7 +2106,7 @@ const app = {
                         const leagueOrigin = params.get('leagueOrigin');
                         searchTerm = searchInModalInput.value;
                         filterTeams(leagueOrigin, searchTerm, {page:app.currentListPage, limit:5});
-                    }
+                    } else if (page === 'notifications') { app.getNotifications(activeUserId,{page:app.currentListPage}); }
                     //console.log('voy a la pagina: '+app.currentListPage);  
                 })
             }
@@ -2139,6 +2141,8 @@ const app = {
     //reordenar listados
     sortButton: (element, elements) => {
         const page = document.body.id;
+        const activeUser = app.activeUserList();
+        const activeUserId = activeUser.activeUser.id;
         //span que cuelgan del botón y que muestran los iconos descendentes o ascendentes
         const descIcon = element.querySelector(':scope > span.sortIcon--desc');
         const ascIcon = element.querySelector(':scope > span.sortIcon--asc'); 
@@ -2170,6 +2174,8 @@ const app = {
                 app.getTeams({page:1, limit:5, sortBy:sortField, order:listOrder});
             } else if (location.hash.startsWith('#searchLeague')) {
                 app.getLeagues({page:1, limit:5, sortBy:sortField, order:listOrder});
+            } else if (page === 'notifications') {
+                app.getNotifications(activeUserId,{page:app.currentListPage, limit:10, sortBy:sortField, order:app.listOrder});
             }
             
             //muestro el icono correspondiente para el botón que se pulsa
