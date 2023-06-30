@@ -1,6 +1,8 @@
 .cm-o-sortButton {
+    @extend .cm-u-text-black-mouse;
     border:0;
     background: transparent;
+    color:getColor(primary);
     cursor: pointer;
     display: flex;
     align-items: center;

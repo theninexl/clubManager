@@ -234,11 +234,12 @@ const app = {
         })
     },
     //obtener listado simple de intermediarios para listado intermediarios en selects en forms
-    getIntermediariesList: async (selected, {page = app.currentListPage, limit = 10, sortBy = 'id', order = 'desc'} = {}) => {
+    getIntermediariesList: async ({page = app.currentListPage, limit = 10, sortBy = 'id', order = 'desc'} = {}) => {
+        console.log('showing: by page: '+page+' ,limit: '+limit+' sortBy: '+sortBy+' ,order: '+order);
         app.listLimit = limit;
         const results = await app.getData('intermediaries', page, limit, sortBy, order)
         .then (response =>{
-            // console.log(response);
+            console.log(response);
             app.listIntermediaries(response, intermediariesListContainer);
             app.paginateList(response, tablePaginationIntermediaries);
         })
@@ -3043,6 +3044,9 @@ const app = {
                 app.getNotifications(activeUserId,{page:app.currentListPage, limit:10, sortBy:sortField, order:app.listOrder});
             } else if (page === 'manageMasters' && location.search.startsWith('?section=teams')) {
                 app.getAllTeams({page:app.currentListPage, limit:10, sortBy:sortField, order:app.listOrder});
+            } else if (page === 'manageMasters' && location.search.startsWith('?section=intermediaries')) {
+                console.log('sorting by: '+sortField+', order: '+app.listOrder);
+                app.getIntermediariesList({page:app.currentListPage, limit:10, sortBy:sortField, order:app.listOrder});
             }
             
             //muestro el icono correspondiente para el botón que se pulsa
