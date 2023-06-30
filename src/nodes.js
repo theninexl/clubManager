@@ -144,3 +144,5 @@ const intermsDetailsFormAddBtn = $('#intermsDetailsFormAddBtn');
 const intermsDetailsFormUpdateBtn = $('#intermsDetailsFormUpdateBtn');
 const intermsDetailsFormDeleteBtn = $('#intermsDetailsFormDeleteBtn');
 const intermsDetailsFormCancelBtn = $('#intermsDetailsFormCancelBtn');
+const managedPlayersListContainer = $('#managedPlayersListContainer');
+const tablePaginationmanagedPlayers = $('#tablePaginationmanagedPlayers');

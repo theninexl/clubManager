@@ -254,10 +254,26 @@ const app = {
         const results = await app.getData(resource, page, app.listLimit, sortBy, order)
         .then(function (response) {
             app.listIntermediaryDetails(response);
+            app.getManagedPlayers(intermediaryID);
         })
         .catch(function (error) {
             console.warn(error);
         });
+    },
+    //obtener jugadores gestionados por intermediario
+    getManagedPlayers: async (intermediaryID, {page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = limit;
+        resource = '/intermediaries/'+intermediaryID+'/managedPlayers';
+        const results = await await app.getData(resource, page, app.listLimit, sortBy, order)
+        .then(response =>{
+            console.log(response);
+            if (response.count > 0) {
+                app.listManagedPlayers(response,managedPlayersListContainer);
+                app.paginateList(response, tablePaginationmanagedPlayers);
+            } else {
+                managedPlayersListContainer.innerHTML = '<p class="cm-u-spacer-mt-big cm-u-centerText">This intermediary does not manage any player</p>';
+            }
+        })
     },
     //añadir nuevo usuario
     addNewUser: async () => {
@@ -2867,6 +2883,27 @@ const app = {
         intermsDetailsLastname.setAttribute('value',intermediary.lastname);
         intermsDetailsEmail1.setAttribute('value',intermediary.email1);
         intermsDetailsPhone1.setAttribute('value',intermediary.phone1);
+    },
+    //listar jugadores gestionados en detalles de intermediario
+    listManagedPlayers: (players, container,{clean = true}={}) => {
+        if(clean) {
+            container.innerHTML = '';
+        }
+
+        players.items.forEach(player =>{
+            const managedPlayerContainer = document.createElement('div');
+            managedPlayerContainer.classList.add('cm-l-tabledata__row');
+            const managedPlayerNameContainer = document.createElement('div');
+            managedPlayerNameContainer.classList.add('tablecell-medium');
+            managedPlayerNameContainer.textContent = player.name;
+            const managedPlayerLastnameContainer = document.createElement('div');
+            managedPlayerLastnameContainer.classList.add('tablecell-medium');
+            managedPlayerLastnameContainer.textContent = player.lastname;
+
+            managedPlayerContainer.appendChild(managedPlayerNameContainer);
+            managedPlayerContainer.appendChild(managedPlayerLastnameContainer);
+            container.appendChild(managedPlayerContainer);
+        })
     },
     //añadir paginacion en listados o resultados de busquedas
     paginateList: (elements, container) =>{

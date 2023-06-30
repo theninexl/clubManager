@@ -155,13 +155,23 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="cm-l-form__row cm-u-centerText">
+                            <div class="cm-l-form__row cm-u-centerText cm-u-spacer-mb-huge">
                                 <button type="button" class="cm-o-button-cat--primary" id="intermsDetailsFormAddBtn">Add intermediary</button>
                                 <button type="button" class="cm-o-button-cat--primary" id="intermsDetailsFormUpdateBtn">Update details</button>
                                 <button type="button" class="cm-o-button-cat--transparent" id="intermsDetailsFormDeleteBtn">Delete</button>
                                 <button type="button" class="cm-o-button-cat--transparent" id="intermsDetailsFormCancelBtn">Cancel</button>
                             </div>
                         </form>
+                        <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                            <p class="cm-u-text-black-cat">List of players managed by this intermediary</p>
+                        </header>
+                        <div class="cm-l-tabledata cm-u-spacer-mb-huge">
+                            <div class="cm-l-tabledata__header">
+                                <div class="tablecell-medium"><button data-field="name" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                                <div class="tablecell-medium"><button data-field="lastname" class="cm-o-sortButton">Lastname <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            </div>
+                            <div id="managedPlayersListContainer"></div>
+                            <div id="tablePaginationmanagedPlayers"></div>
                     </div>
                 </section>
             </section>
