@@ -78,6 +78,15 @@
     }
 }
 
+@mixin icon-button-pressed--secondary {
+    background-color:getColor(secondary);
+    box-shadow:none;
+
+    span {
+        color:getColor(white);
+    }
+}
+
 @mixin icon-button-success {
     background-color:getColor(success);
     box-shadow:none;

@@ -107,7 +107,7 @@
                     <li><button id="manageTeamBtn" class="cm-o-button-cat--ghost">Plantilla</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Contratos</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
-                    <li><button class="cm-o-button-cat--ghost">Maestros</button></li>
+                    <li><button id="manageMastersBtn" class="cm-o-button-cat--ghost">Maestros</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Reporting</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Más opciones</button></li>
                 </ul>
@@ -132,43 +132,43 @@
                             <div class="cm-c-accordion__panel">
                                 <div class="cm-l-form-panel__row">
                                     <label for="userUsername" class="panel-field-long">
-                                        <span>Name</span>
-                                        <input type="text" id="userUsername" name="userUsername" placeholder="Username">
+                                        <span>Username</span>
+                                        <input type="text" id="userUsername" name="userUsername" placeholder="Username" required>
                                         <span class="assistance" aria-live="polite">Write your username</span>
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="userName" class="panel-field-long">
                                         <span>Name</span>
-                                        <input type="text" id="userName" name="userName" placeholder="Name">
+                                        <input type="text" id="userName" name="userName" placeholder="Name" required>
                                         <span class="assistance" aria-live="polite">Write your name</span>
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="userLastname" class="panel-field-long">
                                         <span>Lastname</span>
-                                        <input type="text" id="userLastname" name="userLastname" placeholder="Lastname">
+                                        <input type="text" id="userLastname" name="userLastname" placeholder="Lastname" required>
                                         <span class="assistance" aria-live="polite">Write your lastname</span>
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="userEmail" class="panel-field-long">
                                         <span>Email</span>
-                                        <input type="email" id="userEmail" name="userEmail" placeholder="Email">
+                                        <input type="email" id="userEmail" name="userEmail" placeholder="Email" required>
                                         <span class="assistance" aria-live="polite">Write a valid email</span>
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="userPwd" class="panel-field-long">
                                         <span>Password</span>
-                                        <input type="password" id="userPwd" name="userPwd" placeholder="New password">
+                                        <input type="password" id="userPwd" name="userPwd" placeholder="New password" required>
                                         <span class="assistance" aria-live="polite">8 characters min.</span>
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="userPwd2" class="panel-field-long">
                                         <span>Repeat password</span>
-                                        <input type="password" id="userPwd2" name="userPwd2" placeholder="Repeat password">
+                                        <input type="password" id="userPwd2" name="userPwd2" placeholder="Repeat password" required>
                                         <span class="assistance" aria-live="polite">repeat same password</span>
                                     </label>
                                 </div>

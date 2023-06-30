@@ -19,7 +19,7 @@ const tablePaginationUsers = $('#tablePaginationUsers');
 const tablePaginationPlayers = $('#tablePaginationPlayers');
 const tablePaginationSearchResults = $('#tablePaginationSearchResults');
 
-//elements
+//common elements
 const logo = $('.cm-o-logo');
 const activeUserBtn = $('#activeUserBtn');
 const activeUserLogoutBtn = $('#activeUserLogoutBtn');
@@ -38,6 +38,7 @@ const modalContainerBg = $('.cm-c-modal-background');
 const searchUsersBtn = $('#searchUsersBtn');
 const searchPlayersBtn = $('#searchPlayersBtn');
 const searchInModalBtn = $('#searchInModalBtn');
+const manageMastersBtn = $('#manageMastersBtn');
 const sortBtns = document.querySelectorAll('.cm-o-sortButton');
 
 //forms and form buttons
@@ -106,3 +107,40 @@ const playerEndContractDate = $('#playerEndContractDate');
 const playerContractType = $('#playerContractType');
 const playerTransferCost = $('#playerTransferCost');
 const playerSalary = $('#playerSalary');
+
+//Masters page
+const manageMastersHeadtoolTitle = $('#manageMastersHeadtoolTitle');
+const manageTeamsBtn = $('#manageTeamsBtn');
+const manageIntermBtn = $('#manageIntermBtn');
+const teamsListSection = $('#teamsListSection');
+const teamsListContainer = $('#teamsListContainer');
+const tablePaginationTeams = $('#tablePaginationTeams');
+const intermediariesListSection = $('#intermediariesListSection');
+const intermediariesListContainer = $('#intermediariesListContainer');
+const tablePaginationIntermediaries = $('#tablePaginationIntermediaries');
+const addMastersItemBtn = $('#addMastersItemBtn');
+
+//Masters Add/edit Team page
+const teamsDetailsTitle = $('#teamsDetailsTitle');
+const teamsDetailsForm = $('#teamsDetailsForm');
+const teamsDetailsTeamName = $('#teamsDetailsTeamName');
+const teamsDetailsTeamLeague = $('#teamsDetailsTeamLeague');
+const teamsDetailsTeamLeagueSearchBtn = $('#teamsDetailsTeamLeagueSearchBtn');
+const teamsDetailsLeagueCountry = $('#teamsDetailsLeagueCountry');
+const teamsDetailsContact1 = $('#teamsDetailsContact1');
+const teamsDetailsFormAddBtn = $('#teamsDetailsFormAddBtn');
+const teamsDetailsFormUpdateBtn = $('#teamsDetailsFormUpdateBtn');
+const teamsDetailsFormDeleteBtn = $('#teamsDetailsFormDeleteBtn');
+const teamsDetailsFormCancelBtn = $('#teamsDetailsFormCancelBtn');
+
+//Masters add/edit Intermediary page
+const intermsDetailsTitle = $('#intermsDetailsTitle');
+const intermsDetailsForm = $('#intermsDetailsForm');
+const intermsDetailsName = $('#intermsDetailsName');
+const intermsDetailsLastname = $('#intermsDetailsLastname');
+const intermsDetailsEmail1 = $('#intermsDetailsEmail1');
+const intermsDetailsPhone1 = $('#intermsDetailsPhone1');
+const intermsDetailsFormAddBtn = $('#intermsDetailsFormAddBtn');
+const intermsDetailsFormUpdateBtn = $('#intermsDetailsFormUpdateBtn');
+const intermsDetailsFormDeleteBtn = $('#intermsDetailsFormDeleteBtn');
+const intermsDetailsFormCancelBtn = $('#intermsDetailsFormCancelBtn');

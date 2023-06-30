@@ -278,7 +278,7 @@ strong {
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  width: 928px;
+  width: 1120px;
 }
 .cm-l-form-panel__row .panel-field-long span:not(.material-symbols-outlined) {
   text-align: right;
@@ -330,6 +330,8 @@ strong {
   flex-flow: row nowrap;
 }
 .cm-l-headtool__title {
+  display: flex;
+  flex-direction: row;
   flex-grow: 1;
 }
 .cm-l-headtool__toolbar {
@@ -700,6 +702,13 @@ strong {
   box-shadow: none;
 }
 .cm-o-icon-button--primary.active span {
+  color: #FFFFFF;
+}
+.cm-o-icon-button--primary.active--secondary {
+  background-color: #C63527;
+  box-shadow: none;
+}
+.cm-o-icon-button--primary.active--secondary span {
   color: #FFFFFF;
 }
 .cm-o-icon-button--secondary {
@@ -1223,7 +1232,7 @@ strong {
 .cm-c-form-simple label.error {
   color: #F93A3A;
 }
-.cm-c-form-simple label.error input[type=text], .cm-c-form-simple label.error input[type=number], .cm-c-form-simple label.error input[type=email], .cm-c-form-simple label.error input[type=password], .cm-c-form-simple label.error input[type=date] {
+.cm-c-form-simple label.error input[type=text], .cm-c-form-simple label.error input[type=number], .cm-c-form-simple label.error input[type=email], .cm-c-form-simple label.error input[type=password], .cm-c-form-simple label.error input[type=date], .cm-c-form-simple label.error .cm-c-field-icon {
   border: 2px solid #F93A3A;
   color: #F93A3A !important;
   font-family: "Quicksand", sans-serif;
@@ -1232,17 +1241,38 @@ strong {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.cm-c-form-simple label.error input[type=text]::-moz-placeholder, .cm-c-form-simple label.error input[type=number]::-moz-placeholder, .cm-c-form-simple label.error input[type=email]::-moz-placeholder, .cm-c-form-simple label.error input[type=password]::-moz-placeholder, .cm-c-form-simple label.error input[type=date]::-moz-placeholder {
+.cm-c-form-simple label.error input[type=text]::-moz-placeholder, .cm-c-form-simple label.error input[type=text] input::-moz-placeholder, .cm-c-form-simple label.error input[type=number]::-moz-placeholder, .cm-c-form-simple label.error input[type=number] input::-moz-placeholder, .cm-c-form-simple label.error input[type=email]::-moz-placeholder, .cm-c-form-simple label.error input[type=email] input::-moz-placeholder, .cm-c-form-simple label.error input[type=password]::-moz-placeholder, .cm-c-form-simple label.error input[type=password] input::-moz-placeholder, .cm-c-form-simple label.error input[type=date]::-moz-placeholder, .cm-c-form-simple label.error input[type=date] input::-moz-placeholder, .cm-c-form-simple label.error .cm-c-field-icon::-moz-placeholder, .cm-c-form-simple label.error .cm-c-field-icon input::-moz-placeholder {
   color: #F93A3A;
 }
-.cm-c-form-simple label.error input[type=text]::placeholder, .cm-c-form-simple label.error input[type=number]::placeholder, .cm-c-form-simple label.error input[type=email]::placeholder, .cm-c-form-simple label.error input[type=password]::placeholder, .cm-c-form-simple label.error input[type=date]::placeholder {
+.cm-c-form-simple label.error input[type=text]::placeholder, .cm-c-form-simple label.error input[type=text] input::placeholder, .cm-c-form-simple label.error input[type=number]::placeholder, .cm-c-form-simple label.error input[type=number] input::placeholder, .cm-c-form-simple label.error input[type=email]::placeholder, .cm-c-form-simple label.error input[type=email] input::placeholder, .cm-c-form-simple label.error input[type=password]::placeholder, .cm-c-form-simple label.error input[type=password] input::placeholder, .cm-c-form-simple label.error input[type=date]::placeholder, .cm-c-form-simple label.error input[type=date] input::placeholder, .cm-c-form-simple label.error .cm-c-field-icon::placeholder, .cm-c-form-simple label.error .cm-c-field-icon input::placeholder {
   color: #F93A3A;
+}
+.cm-c-form-simple label.error input[type=text] input::-moz-placeholder, .cm-c-form-simple label.error input[type=number] input::-moz-placeholder, .cm-c-form-simple label.error input[type=email] input::-moz-placeholder, .cm-c-form-simple label.error input[type=password] input::-moz-placeholder, .cm-c-form-simple label.error input[type=date] input::-moz-placeholder, .cm-c-form-simple label.error .cm-c-field-icon input::-moz-placeholder {
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.cm-c-form-simple label.error input[type=text] input::placeholder, .cm-c-form-simple label.error input[type=number] input::placeholder, .cm-c-form-simple label.error input[type=email] input::placeholder, .cm-c-form-simple label.error input[type=password] input::placeholder, .cm-c-form-simple label.error input[type=date] input::placeholder, .cm-c-form-simple label.error .cm-c-field-icon input::placeholder {
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.cm-c-form-simple label.error .assistance {
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .cm-c-form-simple input[type=text], .cm-c-form-simple input[type=number], .cm-c-form-simple input[type=email], .cm-c-form-simple input[type=password], .cm-c-form-simple input[type=date] {
   border: 1px solid rgba(44, 50, 95, 0.5);
   border-radius: 8px;
   height: 48px;
-  padding: 0 12px;
+  text-indent: 12px;
   font-size: 18px;
   font-size: 1.8rem;
   line-height: 24px;
@@ -1362,7 +1392,7 @@ strong {
 .cm-c-field-icon__input {
   border: 0;
   outline: none;
-  padding: 0 12px;
+  text-indent: 12px;
   flex-grow: 1;
   font-size: 18px;
   font-size: 1.8rem;
@@ -1373,6 +1403,11 @@ strong {
   font-stretch: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.cm-c-field-icon__input:invalid, .cm-c-field-icon__input:focus:invalid {
+  border-color: #2C325F;
+  border-width: 2px;
+  outline: none;
 }
 .cm-c-field-icon--focus {
   border-color: #2C325F;

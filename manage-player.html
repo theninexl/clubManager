@@ -107,7 +107,7 @@
                     <li><button id="manageTeamBtn" class="cm-o-button-cat--ghost">Plantilla</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Contratos</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
-                    <li><button class="cm-o-button-cat--ghost">Maestros</button></li>
+                    <li><button id="manageMastersBtn" class="cm-o-button-cat--ghost">Maestros</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Reporting</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Más opciones</button></li>
                 </ul>
@@ -141,14 +141,14 @@
                                 <div class="cm-l-form-panel__row">
                                     <label for="playerName" class="panel-field-long">
                                         <span>Name</span>
-                                        <input type="text" id="playerName" name="playerName" placeholder="Name">
+                                        <input type="text" id="playerName" name="playerName" placeholder="Name"  required>
                                         <span class="assistance" aria-live="polite">Write player name</span>
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="playerLastname" class="panel-field-long">
                                         <span>Lastname</span>
-                                        <input type="text" id="playerLastname" name="playerLastname" placeholder="Lastname">
+                                        <input type="text" id="playerLastname" name="playerLastname" placeholder="Lastname" required>
                                         <span class="assistance" aria-live="polite">Write player lastname</span>
                                     </label>
                                 </div>
@@ -162,13 +162,13 @@
                                 <div class="cm-l-form-panel__row">
                                     <label for="playerAlias" class="panel-field-long">
                                         <span>Alias</span>
-                                        <input type="text" id="playerAlias" name="playerAlias" placeholder="Alias">
+                                        <input type="text" id="playerAlias" name="playerAlias" placeholder="Alias" required>
                                         <span class="assistance" aria-live="polite">Write player alias</span>
                                     </label>
                                 </div><div class="cm-l-form-panel__row">
                                     <label for="playerCountry" class="panel-field-long">
                                         <span>Country</span>
-                                        <input type="text" id="playerCountry" name="playerCountry" placeholder="Country">
+                                        <input type="text" id="playerCountry" name="playerCountry" placeholder="Country" required>
                                         <span class="assistance" aria-live="polite">Country of origin</span>
                                     </label>
                                 </div>
@@ -181,11 +181,6 @@
                                         <span>Valid until</span>
                                         <input type="date" id="playerPassportDate" name="playerPassportDate" placeholder="dd/mm/yyyy">
                                     </label>
-                                    <!-- <div class="panel-field-short">
-                                        <div class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">add_a_photo</span></div>
-                                        <a href="#" class="cm-u-text-black-mouse">1 attachment</a>
-                                        <div class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">delete</span></div>
-                                    </div> -->
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="playerIdNumber" class="panel-field-short">
@@ -199,16 +194,6 @@
                                 </div>
                                 <!-- subir fotos, para cuando sea posible -->
                                 <div id="fileUploadContainer">
-                                    <!--<div class="cm-l-form-panel__row fileUploadRow" id="pictureInputRow1">
-                                        <label for="idPicture1" class="panel-field-long">
-                                            <span>ID image</span>
-                                            <div class="cm-c-field-icon fileUpload">
-                                                <input class="cm-c-field-icon__input pictureInput" id="idPicture1" type="file"  name="idPicture1" style="display:none;">
-                                                <span class="pictureInputName" id="playerIdPictureName">Click to select</span>
-                                            </div>
-                                            <span class="assistance" aria-live="polite"><button class="cm-o-icon-button-small--disabled cm-c-field-icon__button idPIctureDelete"><span class="material-symbols-outlined">delete</span></button>&nbsp;<button class="cm-o-icon-button-small--secondary cm-c-field-icon__button idPIctureAdd"><span class="material-symbols-outlined">add_a_photo</span></button></span>                                      
-                                        </label>
-                                    </div>-->
                                 </div>
                                 <!-- -->
                                 <div class="cm-l-form-panel__row">
@@ -293,14 +278,19 @@
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="playerIntermediary1" class="panel-field-long">
-                                        <span>Intermediary 1</span>
-                                        <input type="text" id="playerIntermediary1" name="playerIntermediary1" placeholder="Add intermediary name">
-                                        <!-- <div class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">delete</span></div> -->
-                                    <!-- </label>
-                                </div> -->
-                                <!-- <div class="cm-l-form-panel__row">
-                                    <a href="#" class="cm-u-text-black-cat">Add intermediary</a>
-                                </div> -->
+                                        <span>Intermediary</span>
+                                        <div class="cm-c-select-icon">
+                                            <select class="cm-c-select-icon__select" id="playerIntermediary1" placeholder="Search league" name="playerIntermediary1">
+                                                <option value="">Select intermediary</option>
+                                                <option value="1">Position 1</option>
+                                                <option value="2">Position 2</option>
+                                                <option value="3">Position 3</option>
+                                                <option value="4">Position 4</option>
+                                                <option value="5">Position 5</option>
+                                            </select>
+                                        </div>           
+                                    </label>
+                                </div>
                             </div>
                             <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
                                 <p class="cm-u-text-black-cat">Contract details</p>

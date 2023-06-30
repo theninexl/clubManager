@@ -5,15 +5,23 @@
 
         color: getColor(danger);
         
-        input[type=text], input[type=number], input[type=email], input[type=password], input[type=date] {
+        input[type=text], input[type=number], input[type=email], input[type=password], input[type=date], .cm-c-field-icon {
             $block:&;
             border:2px solid getColor(danger);
             color: getColor(danger) !important;
             @include cm-qs-bold;
 
-            &::placeholder {
+            &::placeholder, input::placeholder {
                 color: getColor(danger);
             }
+
+            input::placeholder {
+                @include cm-qs-bold;
+            }
+        }
+
+        .assistance {
+            @include cm-qs-bold;
         }
     }
 
@@ -21,7 +29,7 @@
         border:1px solid getColor(primaryLight);
         border-radius: getSize($small);
         height:getSize($huge);
-        padding: 0 getSize($medium);
+        text-indent: getSize($medium);
         @include font-size($defFontSizeDT, $lineHeightDT);
         @include cm-qs-normal;
 
@@ -147,10 +155,16 @@
         $block:&;
         border:0;
         outline: none;
-        padding: 0 getSize($medium);
+        text-indent: getSize($medium);
         flex-grow:1;
         @include font-size($defFontSizeDT, $lineHeightDT);
         @include cm-qs-normal;
+
+        &:invalid, &:focus:invalid {
+            border-color:getColor(primary);
+            border-width:2px;
+            outline:none;
+        }
     }
 
     &--focus {

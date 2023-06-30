@@ -4,6 +4,7 @@ const app = {
     listSortBy: 'id',
     listOrder: 'asc',
     searchTerm: '',
+    allTeamsArr: [],
     init: () => {
         window.addEventListener('DOMContentLoaded', app.navigator);
         window.addEventListener('hashchange', app.navigator);
@@ -32,10 +33,18 @@ const app = {
             app.searchPlayersModal();
         } else if (page === 'managePlayer' && location.search.startsWith('?player=')){
             app.managePlayerPage();
-        } else if (page === 'managePlayer' && location.search.startsWith('?searchAction=searchLeague')) {
+        } else if (page === 'managePlayer' && location.search.startsWith('?searchAction=searchLeague') || page === 'manageMastersTeam' && location.search.startsWith('?searchAction=searchLeague') ) {
             app.searchLeaguesPage();
         } else if (page === 'managePlayer' && location.search.startsWith('?searchAction=searchTeam')) {
             app.searchTeamsPage();
+        } else if (page === 'manageMasters' && location.search.startsWith('?section=teams')) {
+            app.manageMastersTeams();
+        } else if (page === 'manageMasters' && location.search.startsWith('?section=intermediaries')) {
+            app.manageMastersInterms();
+        } else if (page === 'manageMastersTeam') {
+            app.manageMastersTeam();
+        } else if (page === 'manageMastersIntermediary') {
+            app.manageMastersIntermediary();
         }
     },
     //------------------------------------API & API FUNCTIONS ------------------------------------------
@@ -96,13 +105,22 @@ const app = {
         resource = '/players/'+playerID;
         const data = await app.getData(resource)
         .then(function (response) {
-            console.log(response.id);
             app.listPlayerDetails(response);
+            //solicitar intermediarios y fijar segun el id
+            app.getIntermediariesOnSelect(response.intermediaryID);            
             //leer la foto con el ID que corresponde al jugador
             (async ()=>{
                 const readPlayerIdPicture = await app.getData('/players/'+response.id+'/idImages')
-                .then(function(response){
-                    app.listPlayerIdPicture(response);
+                .then(responseImgs=>{
+                    // console.log(responseImgs);
+                    if (responseImgs.length !== 0) {
+                        app.listPlayerIdPicture(responseImgs);
+                    } else {
+                        //añadir al menos una fila para subir imagenes de ID
+                        app.addIdImageRow();
+                        //remake upload inputs
+                        app.manageFileInputs();
+                    }
                 })
                 .catch(function(error){
                     console.warn(error);
@@ -137,7 +155,19 @@ const app = {
         const results = await app.getData(resource);
         return results;
     },
-    //obtener equipos
+    //obtener equipo standalone
+    getTeam: async (teamID, {page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = limit;
+        resource = '/teamsStandalone/'+teamID;
+        const results = await app.getData(resource, page, app.listLimit, sortBy, order)
+        .then(function (response) {
+            app.listTeamDetails(response);
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //obtener equipos segun liga
     getTeams: async (leagueOfOrigin, {page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = limit;
         resource = '/leagues/'+leagueOfOrigin+'/teams';
@@ -155,6 +185,19 @@ const app = {
             console.warn(error);
         });
     },
+    //obtener todos los equipos
+    getAllTeams: async ({page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = 10;
+        resource = '/teamsStandalone';        
+        const getTeams = await app.getData(resource, page, app.listLimit, sortBy, order)
+        .then((response)=>{
+            app.listTeams(response,teamsListContainer);
+            app.paginateList(response, tablePaginationTeams);
+        })
+        .catch((error)=>{
+            console.warn(error);
+        })
+    },
     //obtener notificaciones
     getNotifications: async (user, {page = app.currentListPage, limit = 10, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = limit;
@@ -163,6 +206,53 @@ const app = {
         .then(function (response) {
             app.listNotifications(response,notificationsListContainer);
             app.paginateList(response, tablePaginationNotifications);
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //obtener listado simple de intermediarios para form de añadir nuevo jugador
+    getIntermediariesOnSelect: async (selected, {page = app.currentListPage, limit = 100, sortBy = 'id', order = 'desc'} = {}) => {
+        const results = await app.getData('intermediaries', page, 100, sortBy, order)
+        .then (response =>{
+            playerIntermediary1.innerHTML = '';
+            // const firstOption = document.createElement('option');
+            // firstOption.setAttribute('value','');
+            // firstOption.textContent = 'Select intermediary';
+            // // firstOption.setAttribute(selected);
+            // playerIntermediary1.appendChild(firstOption);
+            response.items.forEach(item => {
+                const option = document.createElement('option');
+                option.setAttribute('value',item.id);
+                option.textContent = item.name+' '+item.lastname;
+                playerIntermediary1.appendChild(option);
+            })
+            playerIntermediary1.value = selected;
+        })
+        .catch(error =>{
+
+        })
+    },
+    //obtener listado simple de intermediarios para listado intermediarios en selects en forms
+    getIntermediariesList: async (selected, {page = app.currentListPage, limit = 10, sortBy = 'id', order = 'desc'} = {}) => {
+        app.listLimit = limit;
+        const results = await app.getData('intermediaries', page, limit, sortBy, order)
+        .then (response =>{
+            // console.log(response);
+            app.listIntermediaries(response, intermediariesListContainer);
+            app.paginateList(response, tablePaginationIntermediaries);
+        })
+        .catch(error =>{
+            console.warn(error);
+        })
+    },
+    //obtener intemediario
+    getIntermediary: async (intermediaryID, {page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = limit;
+        resource = '/intermediaries/'+intermediaryID;
+        const results = await app.getData(resource, page, app.listLimit, sortBy, order)
+        .then(function (response) {
+            app.listIntermediaryDetails(response);
         })
         .catch(function (error) {
             console.warn(error);
@@ -195,7 +285,6 @@ const app = {
         const newPlayerData = new FormData(playerDetailsForm); 
         const data = {};
         newPlayerData.forEach((value, key) => data[key] = value);
-        // console.log(data);        
         const postNewPlayer = await app.api.post('/players', {
             active:data.playerActive,
             userName:data.playerName,
@@ -217,49 +306,134 @@ const app = {
             armsWingspan:data.playerWinspan,
             standingJump:data.playerStandingJump,
             runningJump:data.playerRunningJump,
-            intermediary1Name:data.playerIntermediary1,
+            intermediaryID:data.playerIntermediary1,
             contractStartDate:data.playerStartContractDate,
             contractEndDate:data.playerEndContractDate,
             contractType:data.playerContractType,
             transferCost:data.playerTransferCost,
             netSalary:data.playerSalary,
         })
-        .then(function (response) {
-            // console.log(response);
-            const uploadInputItems = document.querySelectorAll('.fileUploadRow');
-            console.log(uploadInputItems.length);
+        .then(response => {
+            //meter el jugador asignado a un intermediario
+            const playerIntermediaryAssigned = playerIntermediary1.options[playerIntermediary1.selectedIndex];
+            console.log(playerIntermediaryAssigned);
+            console.log('response:')
+            console.log(response);
 
-            uploadInputItems.forEach(uploadInputItem =>{
-                const pictureInput = uploadInputItem.querySelector('.pictureInput');
-                const inputImage = pictureInput.files[0];
-                // console.log('input properties:')
-                // console.log('input value:'+pictureInput.value);
-                // console.log(inputImage);
-                // console.log('input filenam+inputImage.name);'
+            if (playerIntermediaryAssigned === undefined) {
+                console.log('no he asignado un intermediario, asi que sigo con la actualizacion de imagenes');
+                app.addNewImages(response.data.id);
+            } else {
+                console.log('hay un nuevo intermediario, así que debo añadir el jugador a la lista de managedPlayers');
+                (async()=>{
+                    const postNewManagedPlayer = await app.api.post('/intermediaries/'+data.playerIntermediary1+'/managedPlayers', {
+                        intermediaryId: data.playerIntermediary1,
+                        name: data.playerName,
+                        lastname: data.playerName
+                    })
+                    .then(result=>{
+                        app.addNewImages(response.data.id);
+                    })
+                    .catch(error=>{
+                        console.warn(error);
+                    })
+                })();
+            }
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //añadir imagenes en jugador nuevo
+    addNewImages: async (playerID) => {
+        //subir las fotografias asignadas al jugador
+        const uploadInputItems = document.querySelectorAll('.fileUploadRow');
+        console.log(uploadInputItems.length);
 
-                if (pictureInput.value !== ''){
-                    console.log('subo imagen');
-                    (async ()=>{
-                        const postNewPlayerId = await app.api.post('/players/'+response.data.id+'/idImages',{
-                            pictureName:inputImage.name,
-                            id:response.data.id,
-                            pictureURL:'https://loremflickr.com/640/480/'+inputImage.name,
+        uploadInputItems.forEach(uploadInputItem =>{
+            const pictureInput = uploadInputItem.querySelector('.pictureInput');
+            const inputImage = pictureInput.files[0];
+            if (pictureInput.value !== ''){
+                console.log('subo imagen');
+                (async ()=>{
+                    const postNewPlayerId = await app.api.post('/players/'+playerID+'/idImages',{
+                        pictureName:inputImage.name,
+                        id:playerID,
+                        pictureURL:'https://loremflickr.com/640/480/'+inputImage.name,
+                    })
+                    .then(response=>{
+                        //console.log(response);
+                        location.href="manage-team.html";
+                    })
+                    .catch(error=>{
+                        console.warn(error);
+                    });
+                })();
+            } else {
+                //console.log('no subo imagen porque el value esta vacío');
+                location.href="manage-team.html";
+            }
+        });  
+    },
+    //añadir nuevo equipo
+    addNewTeam: async () => {
+        const leagueId = teamsDetailsTeamLeague.getAttribute('data-id');
+        const newUserData = new FormData(teamsDetailsForm);
+        const data = {};
+        newUserData.forEach((value, key) => data[key] = value);
+        
+        const value = await app.getData('/leagues/'+leagueId)
+        .then((response) => {
+            (async()=>{
+                const postNewLeague = await app.api.post('/teamsStandalone', {
+                    teamName:data.teamName,
+                    leagueId:response.id,
+                    contact1:data.Contact1,
+                    leagueCountry:response.leagueCountry,
+                    leagueName: response.leagueName                    
+                })
+                .then(() => {
+                    (async()=>{
+                        const postNewLeague = await app.api.post('/leagues/'+response.id+'/teams', {
+                            teamName:data.teamName,
+                            leagueId:response.id,
+                            contact1:data.Contact1                            
                         })
-                        .then(function(response){
-                            console.log(response);
-                            location.href="manage-team.html";
+                        .then((response) => {
+                            app.currentListPage = 1;
+                            location.href="manage-masters.html?section=teams";                    
                         })
-                        .catch(function(error){
+                        .catch((error) => {
                             console.warn(error);
                         });
                     })();
-                } else {
-                    console.log('no subo imagen porque el value esta vacío');
-                    location.href="manage-team.html";
-                }
-            })  
+                })
+                .catch((error) => {
+                    console.warn(error);
+                });
+            })();
+            
         })
-        .catch(function (error) {
+        .catch((error) => {
+            console.warn(error);
+        });
+    },
+    //añadir nuevo intermediario
+    addNewIntermediary: async () => {
+        const newIntermediaryData = new FormData(intermsDetailsForm);
+        const data = {};
+        newIntermediaryData.forEach((value, key) => data[key] = value);
+        console.log(data);
+        const addIntermediary = await app.api.post('/intermediaries/',{
+            name:data.intermsDetailsName,
+            lastname:data.intermsDetailsLastname,
+            email1:data.intermsDetailsEmail1,
+            phone1:data.intermsDetailsPhone1
+        })
+        .then((response) => {
+            location.href="manage-masters.html?section=intermediaries";   
+        })
+        .catch((error) => {
             console.warn(error);
         });
     },
@@ -311,9 +485,9 @@ const app = {
     //actualizar jugador existente
     updatePlayer: async (playerID) => {
         const updatedPlayerData = new FormData(playerDetailsForm);
-        const data = {};
-        
+        const data = {};        
         updatedPlayerData.forEach((value, key) => data[key] = value);
+
         if (data.playerActive === undefined) { data.playerActive = 'false'};
         if (data.playerResidencyToggle === undefined){data.playerResidencyToggle = 'false'};
         
@@ -344,60 +518,176 @@ const app = {
             contractType:data.playerContractType,
             transferCost:data.playerTransferCost,
             netSalary:data.playerSalary,
+            intermediaryID:data.playerIntermediary1,
         })
         .then(function (response) {
-            console.log('id del jugador: '+response.data.id);
+            //meter el jugador asignado a un intermediario
+            const playerIntermediaryAssigned = playerIntermediary1.getAttribute('value');
+            console.log(playerIntermediaryAssigned);
 
-            const uploadInputItems = document.querySelectorAll('.fileUploadRow');
-            console.log(uploadInputItems.length);
-
-            uploadInputItems.forEach(uploadInputItem =>{
-                const pictureInput = uploadInputItem.querySelector('.pictureInput');
-                const pictureInputID = pictureInput.getAttribute('data-pictureid');
-                const pictureInputName = uploadInputItem.querySelector('.pictureInputName');
-                const pictureInputNameText = pictureInputName.textContent;
-                const inputImage = pictureInput.files[0];
-                console.log('input properties:')
-                console.log('input value:'+pictureInput.value);
-                console.log('pictureName:'+pictureInputNameText);
-
-                if (pictureInput.value !== ''){
-                    console.log('actualizo imagen');
-                    (async ()=>{
-                        const postNewPlayerId = await app.api.put('/players/'+response.data.id+'/idImages/'+pictureInputID,{
-                            pictureName:inputImage.name,
-                            id:response.data.id,
-                            pictureURL:'https://loremflickr.com/640/480/'+inputImage.name,
+            if (playerIntermediaryAssigned === 'undefined' || playerIntermediaryAssigned === 'null' || playerIntermediaryAssigned ==='' ) {
+                console.log('no había intermediario asignado anteriormente, asi que tengo que postear el jugador en managedPLayers');
+                if (data.playerIntermediary1 !== '') {
+                    (async()=>{
+                        const postNewManagedPlayer = await app.api.post('/intermediaries/'+data.playerIntermediary1+'/managedPlayers/',{
+                            intermediaryId: data.playerIntermediary1,
+                            name: data.playerName,
+                            lastname: data.playerLastname
                         })
-                        .then(function(response){
+                        .then(response=>{
                             console.log(response);
-                            //location.href="manage-team.html";
+                            app.updateImages();
                         })
-                        .catch(function(error){
+                        .catch(e=>{
+                            console.log(e);
+                        })
+                    })();
+                } else {
+                    app.updateImages();
+                }
+            } else {
+                console.log('ya había un manager asignado anteriormente, tengo que actualizarlo');
+                (async()=>{
+                    const updateManagedPlayer = await app.api.put('/intermediaries/'+data.playerIntermediary1+'/managedPlayers/'+playerID, {
+                        intermediaryId: data.playerIntermediary1,
+                        name: data.playerName,
+                        lastname: data.playerLastname
+                    })
+                    .then(response=>{
+                        console.log(response);
+                        app.updateImages();
+                    })
+                    .catch(e=>{
+                        console.log(e);
+                    })
+                })();
+            }
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //actualizar imagenes de un jugador existente
+    updateImages: () => {
+        console.log('entro en updateImages');
+        const uploadInputItems = document.querySelectorAll('.fileUploadRow');
+        console.log(uploadInputItems.length);
+
+        uploadInputItems.forEach(uploadInputItem =>{
+            const pictureInput = uploadInputItem.querySelector('.pictureInput');
+            const pictureInputID = pictureInput.getAttribute('data-pictureid');
+            const pictureInputName = uploadInputItem.querySelector('.pictureInputName');
+            const pictureInputNameText = pictureInputName.textContent;
+            const inputImage = pictureInput.files[0];
+            console.log('input properties:')
+            console.log('input value:'+pictureInput.value);
+            console.log('pictureName:'+pictureInputNameText);
+            console.log('pintureInputID: '+pictureInputID);
+
+            if (pictureInput.value !== '' && pictureInputID !== null){
+                console.log('actualizo imagen');
+                (async ()=>{
+                    const postNewPlayerId = await app.api.put('/players/'+response.data.id+'/idImages/'+pictureInputID,{
+                        pictureName:inputImage.name,
+                        id:response.data.id,
+                        pictureURL:'https://loremflickr.com/640/480/'+inputImage.name,
+                    })
+                    .then(function(response){
+                        console.log(response);
+                        location.href="manage-team.html";
+                    })
+                    .catch(function(error){
+                        console.warn(error);
+                    });
+                })();
+            } else if (pictureInput.value !== '' && pictureInputID === null) {
+                console.log('la imagen es nueva y la publico nueva');
+                (async ()=>{
+                    const postNewPlayerId = await app.api.post('/players/'+response.data.id+'/idImages/',{
+                        pictureName:inputImage.name,
+                        id:response.data.id,
+                        pictureURL:'https://loremflickr.com/640/480/'+inputImage.name,
+                    })
+                    .then(function(response){
+                        console.log(response);
+                        location.href="manage-team.html";
+                    })
+                    .catch(function(error){
+                        console.warn(error);
+                    });
+                })();
+            } else if (pictureInputNameText === 'Click to select' && pictureInputID !== null) {
+                console.log('aquí han borrado la imagen y debería borrarla de la bbdd');
+                //borrar imagen jugador
+                (async () => {    
+                    const deleteImage = await app.api.delete('/players/'+response.data.id+'/idImages/'+pictureInputID)
+                    .then(response => {
+                        location.href="manage-team.html";
+                    }).catch(e => {
+                        console.log(e);
+                    });        
+                })();
+            } else {
+                console.log('no subo imagen porque el value esta vacío y eso es que no ha cambiado desde que lo pinté');
+                location.href="manage-team.html";
+            }                    
+        })
+    },
+    //actualizar equipo existente
+    updateTeam: async (teamID, leagueID) => {
+        const updatedUserData = new FormData(teamsDetailsForm);
+        const data = {};
+        updatedUserData.forEach((value, key) => data[key] = value);
+        const value = await app.getData('/leagues/'+leagueID)
+        .then((response)=>{
+            (async()=>{
+                const postNewLeague = await app.api.put('/teamsStandalone/'+teamID, {
+                    teamName:data.teamName,
+                    leagueId:response.id,
+                    contact1:data.Contact1,
+                    leagueCountry:response.leagueCountry,
+                    leagueName: response.leagueName                    
+                })
+                .then(() => {
+                    (async()=>{
+                        const postNewLeague = await app.api.put('/leagues/'+response.id+'/teams/'+teamID, {
+                            teamName:data.teamName,
+                            leagueId:response.id,
+                            contact1:data.Contact1                            
+                        })
+                        .then((response) => {
+                            app.currentListPage = 1;
+                            location.href="manage-masters.html?section=teams";                    
+                        })
+                        .catch((error) => {
                             console.warn(error);
                         });
                     })();
-                } else {
-                    if (pictureInputNameText === 'Click to select') {
-                        console.log('aquí han borrado la imagen y debería borrarla de la bbdd');
-                        //borrar imagen jugador
-                        (async () => {    
-                            const deleteImage = await app.api.delete('/players/'+response.data.id+'/idImages/'+pictureInputID)
-                            .then(response => {
-                                location.href="manage-team.html";
-                            }).catch(e => {
-                                console.log(e);
-                            });        
-                        })();
-                    } else {
-                        console.log('no subo imagen porque el value esta vacío y eso es que no ha cambiado desde que lo pinté');
-                    }
-                    
-                }
-            })
-            location.href="manage-team.html"; 
+                })
+                .catch((error) => {
+                    console.warn(error);
+                });
+            })();
         })
-        .catch(function (error) {
+        .catch((error)=>{
+            console.warn(error);
+        })
+    },
+    //actualizar intermediario existente
+    updateIntermediary: async (intermediaryID, leagueID) => {
+        const updatedUserData = new FormData(intermsDetailsForm);
+        const data = {};
+        updatedUserData.forEach((value, key) => data[key] = value);
+        const updateData = await app.api.put('/intermediaries/'+intermediaryID, {
+            name:data.intermsDetailsName,
+            lastname:data.intermsDetailsLastname,
+            email1:data.intermsDetailsEmail1,
+            phone1:data.intermsDetailsPhone1               
+        })
+        .then(() => {
+            location.href="manage-masters.html?section=intermediaries";   
+        })
+        .catch((error) => {
             console.warn(error);
         });
     },
@@ -421,13 +711,111 @@ const app = {
         });        
     },
     //borrar jugador
-    deletePlayer: async(playerID) => {    
-        const deleteUser = await app.api.delete('/players/'+playerID)
+    deletePlayer: async(playerID) => { 
+        app.deletePlayerRelatedImages(playerID);
+        const updatedPlayerData = new FormData(playerDetailsForm);
+        const data = {};        
+        updatedPlayerData.forEach((value, key) => data[key] = value);
+        
+        const deletePlayer = await app.api.delete('/players/'+playerID)
         .then(response => {
-            location.href="manage-team.html";
+            app.deleteManagedPlayer(playerID);            
         }).catch(e => {
             console.log(e);
+        });
+    },
+    //borar jugador del listado de jugadores gestionados si es necesario
+    deleteManagedPlayer: async(playerID) =>{
+        const updatedPlayerData = new FormData(playerDetailsForm);
+        const data = {};        
+        updatedPlayerData.forEach((value, key) => data[key] = value);
+        console.log(data.playerIntermediary1);
+        const intermediary = data.playerIntermediary1;
+        if (!intermediary) {
+            console.log('no tiene intermediarios asignados');
+            location.href="manage-team.html";
+        } else {
+            const deletetManagedPlayer = await app.api.delete('/intermediaries/'+data.playerIntermediary1+'/managedPlayers/'+playerID)
+            .then(response=>{
+                location.href="manage-team.html";
+            }).catch(e => {
+                console.log(e);
+                location.href="manage-team.html";
+            });  
+        }
+    },
+    //borrar imagenes asociadas a un jugador
+    deletePlayerRelatedImages: async(playerID) => {
+        const getRelatedImages = await app.getData('/players/'+playerID+'/idImages')
+        .then(response => {
+            console.log(response);
+            if (response.length > 0) {
+                const items = response;
+                items.forEach(item =>{
+                    (async()=>{
+                        const deleteRelatedImgs = await app.api.delete('/players/'+playerID+'/idImages/'+item.id)
+                        .then(response=>{
+                        })
+                        .catch(e=>{
+                            console.warn(e);
+                        })
+                    })();
+                })
+            }
+        })
+        .catch(e=>{
+            console.warn(e);
+        })
+    },
+    //borrar equipo
+    deleteTeam: async(teamID, leagueID) => {    
+        const deleteTeamStandalone = await app.api.delete('/teamsStandalone/'+teamID)
+        .then(response => {
+            (async()=>{
+                const deleteTeam= await app.api.delete('/leagues/'+leagueID+'/teams/'+teamID)
+                .then(response =>{
+                    location.href="manage-masters.html?section=teams";    
+                })
+            })();
+        }).catch(e => {
+            console.warn(e);
         });        
+    },
+    //borrar intermediario
+    deleteIntermediary: async(intermediaryID) => { 
+        //primero solicito los nombres de los jugadores asignados mediante ID
+        const getManagedPlayers = await app.getData('/intermediaries/'+intermediaryID)
+        .then(response=>{
+            //borro el propio intermediario
+            (async()=>{
+                const deleteIntermediary = await app.api.delete('intermediaries/'+intermediaryID);
+            })();
+            //borro los jugadores gestionados del intermediario que quiero borrar y como puede ser más de uno utilizo map para esperar a una única respuesta de todo el proceso.
+            const managedPlayers = response.managedPlayers;
+
+            const allManagedPlayerPromises = managedPlayers.map( async (managedPlayer) =>{
+                const deleteManagedPlayer = await app.api.delete('/intermediaries/'+intermediaryID+'/managedPlayers/'+managedPlayer.id);
+
+                //tengo que setear a null el manager de los jugadores gestionados
+                (async()=>{
+                    const updateManagerForExistingPlayers = await app.api.put('players/'+managedPlayer.id,{
+                        intermediaryID:'---'
+                    })
+                })();
+
+                return deleteManagedPlayer;
+            });
+
+            Promise.all(allManagedPlayerPromises)
+            .then(response=>{
+                location.href="manage-masters.html?section=intermediaries";    
+            })
+            
+
+        })
+        .catch(e => {
+            console.warn(e);
+        });      
     },
     //filtrar genérico
     filterData: async(resource, page, limit, sortBy, order) => {
@@ -528,10 +916,7 @@ const app = {
         const resource = '/users?search='+searchTerm;
         const filterLogin = await app.filterData(resource)
         .then(function (response) {
-            // console.log(response);
             if (response.count === 1) {
-                // console.log(response.items[0].userEmail);
-                // console.log(response.items[0].userPwd);
                 if (searchTerm === response.items[0].userEmail && pwdForm === response.items[0].userPwd) {
                     //console.log('user y pwd son buenos');
                     //si está todo ok mando email, nombre y apellidos a LS
@@ -649,9 +1034,20 @@ const app = {
             userDetailsTitle.textContent = 'Add new user';
             userDetailsFormUpdateBtn.classList.add('cm-u-inactive');
             userDetailsFormDeleteBtn.classList.add('cm-u-inactive');
+            //guardar todos los campos para poder validarlos           
+            const userDetailsFormFields = document.querySelectorAll('[required]');
             //pulsar el boton de añadir
-            userDetailsFormAddBtn.addEventListener('click',()=>{
-                app.addNewUser();
+            userDetailsFormAddBtn.addEventListener('click',()=>{                
+                //primero hay que validar que los campos están rellenos
+                if (userDetailsForm.checkValidity()) {
+                    app.addNewUser();
+                } else {
+                    userDetailsFormFields.forEach(field =>{
+                        if (!field.checkValidity()){
+                            app.setInputFieldError(field,field.validationMessage);
+                        }                        
+                    })
+                }    
             });
         } else {
             app.cleanUserDetails();
@@ -760,14 +1156,28 @@ const app = {
             playerDetailsTitle.innerHTML = 'Add new Player';
             //añadir al menos una fila para subir imagenes de ID
             app.addIdImageRow();
+            //solicitar el listado de intermediarios para añadirlo al select
+            app.getIntermediariesOnSelect();
             playerDetailsFormAddBtn.classList.remove('cm-u-inactive');
             playerDetailsFormUpdateBtn.classList.add('cm-u-inactive');
             playerDetailsFormDeleteBtn.classList.add('cm-u-inactive');
             playerDetailsCancelBtn.classList.remove('cm-u-inactive');
+            //guardar todos los campos para poder validarlos           
+            const playerDetailsFormFields = document.querySelectorAll('[required]');
             //pulsar el boton de añadir
-            playerDetailsFormAddBtn.addEventListener('click',()=>{
-                app.addNewPlayer();
+            playerDetailsFormAddBtn.addEventListener('click',()=>{                
+                //primero hay que validar que los campos están rellenos
+                if (playerDetailsForm.checkValidity()) {
+                    app.addNewPlayer();
+                } else {
+                    playerDetailsFormFields.forEach(field =>{
+                        if (!field.checkValidity()){
+                            app.setInputFieldError(field,field.validationMessage);
+                        }                        
+                    })
+                }    
             });
+            
             //remake upload inputs
             app.manageFileInputs();
         } else {
@@ -852,24 +1262,36 @@ const app = {
     },
     //modal buscar ligas jugadores
     searchLeaguesPage: () => {
-        //console.log('MODAL TEAMS');
-        const playerLeagueOriginContainer = playerLeagueOrigin.closest('.cm-c-field-icon');
+        //discriminar el origen
+        const page = document.body.id;
         //cogemos los parametros de la URL
         const params = new URLSearchParams(document.location.search);
         const searchOrigin = params.get('searchOrigin');
         const searchTerm = params.get('searchTerm');
-        //mostramos el modal
-        // usersListSection.classList.add('cm-u-inactive');
-        // userDetailsSection.classList.add('cm-u-inactive');
-        // playersListSection.classList.add('cm-u-inactive');
 
-        //quitamos el error al campo de ligas, si lo tiene
-        const errorSpan = document.querySelector('span.error');
-        if (errorSpan) {
-            errorSpan.remove();
-            playerLeagueOriginContainer.classList.remove('error');
+        if (page === 'managePlayer') {
+            const playerLeagueOriginContainer = playerLeagueOrigin.closest('.cm-c-field-icon');            
+            //mostramos el modal
+            // usersListSection.classList.add('cm-u-inactive');
+            // userDetailsSection.classList.add('cm-u-inactive');
+            // playersListSection.classList.add('cm-u-inactive');
+
+            //quitamos el error al campo de ligas, si lo tiene
+            const errorSpan = document.querySelector('span.error');
+            if (errorSpan) {
+                errorSpan.remove();
+                playerLeagueOriginContainer.classList.remove('error');
+            }
+        } else if (page === 'manageMastersTeam') {
+            const teamLeagueContainer = teamsDetailsTeamLeague.closest('.cm-c-field-icon');
+            //quitamos el error al campo de ligas, si lo tiene
+            const errorSpan = document.querySelector('span.error');
+            if (errorSpan) {
+                errorSpan.remove();
+                teamLeagueContainer.classList.remove('error');
+            }
         }
-    
+
         //si el input de la ficha del jugador tiene contenido lanzar el modal y setear el value del input de busqueda con el value del input de la ficha del jugador
         if (searchTerm === null || searchTerm.length === 0) {
             searchInModalInput.value = '';
@@ -880,6 +1302,7 @@ const app = {
             app.filterLeagues(searchTerm);
             searchInModalInput.value = searchTerm;
         }
+
     },
     //modal buscar equipos jugadores
     searchTeamsPage: () => {
@@ -1042,6 +1465,258 @@ const app = {
             modalContainer.classList.add('cm-u-inactive');
         })
     },
+    //pagina manage Teams
+    manageMastersTeams: () => {
+        app.setActiveUserOnMenu();
+        app.setActiveUserNotificationsBubble();
+        app.listLimit = 10;
+        manageMastersBtn.classList.add('active');
+        manageUsersBtn.classList.remove('active');
+        manageTeamBtn.classList.remove('active');
+        teamsListSection.classList.remove('cm-u-inactive');
+        intermediariesListSection.classList.add('cm-u-inactive');
+        manageTeamsBtn.classList.add('active--secondary');
+        manageIntermBtn.classList.remove('active--secondary');
+        manageMastersHeadtoolTitle.textContent = 'Manage Teams';
+        app.getAllTeams();
+
+        addMastersItemBtn.addEventListener('click',(event)=>{
+            event.preventDefault();
+            location.href="manage-masters-team.html?team=new";
+        })
+
+        manageIntermBtn.addEventListener('click',()=>{
+            const newParams ='?section=intermediaries';
+            window.history.replaceState({},document.title, newParams);
+            window.dispatchEvent(new Event('popstate'));
+        })
+    },
+    //pagina manage Intermediarios
+    manageMastersInterms: () => {
+        //console.log('estoy en intermediarios');
+        app.setActiveUserOnMenu();
+        app.setActiveUserNotificationsBubble();
+        app.listLimit = 10;
+        manageMastersBtn.classList.add('active');
+        manageUsersBtn.classList.remove('active');
+        manageTeamBtn.classList.remove('active');
+        teamsListSection.classList.add('cm-u-inactive');
+        intermediariesListSection.classList.remove('cm-u-inactive');
+        manageTeamsBtn.classList.remove('active--secondary');
+        manageIntermBtn.classList.add('active--secondary');
+        manageMastersHeadtoolTitle.textContent = 'Intermediaries';
+        app.getIntermediariesList();
+
+        manageTeamsBtn.addEventListener('click',()=>{
+            const newParams ='?section=teams';
+            window.history.replaceState({},document.title, newParams);
+            window.dispatchEvent(new Event('popstate'));
+        })
+
+        addMastersItemBtn.addEventListener('click',(event)=>{
+            event.preventDefault();
+            location.href="manage-masters-intermediary.html?interm=new";
+        })
+    },
+    //pagina editar/añadir equipo
+    manageMastersTeam: () => {
+        app.setActiveUserOnMenu();
+        app.setActiveUserNotificationsBubble();
+        manageMastersBtn.classList.add('active');
+        manageUsersBtn.classList.remove('active');
+        manageTeamBtn.classList.remove('active');
+
+        //boton buscar liga origen en form
+        teamsDetailsTeamLeagueSearchBtn.addEventListener('click',(event)=>{
+            event.preventDefault();
+            const params = new URLSearchParams(document.location.search);
+            const originTeam = params.get('team');
+            //recoger el value del input del listado de busqueda de ligas, meterlo en la URL como un parametro, 
+            //recoger el player ID y meterlo como un parametro
+            const searchTerm = teamsDetailsTeamLeague.value;
+            //si estamos añadiendo un jugador nuevo o si estamos editando un jugador existente añadir en el parametro
+            let newParams;    
+            if (originTeam === 'new') {
+                newParams ='?searchAction=searchLeague&searchOrigin=newTeam&searchTerm='+searchTerm;
+            } else {
+                newParams ='?searchAction=searchLeague&searchOrigin='+originTeam+'&searchTerm='+searchTerm;
+            }   
+            window.history.pushState({},'',newParams);
+            app.searchLeaguesPage();
+            //window.dispatchEvent(new Event('popstate'));            
+        });    
+
+        if (location.search.startsWith('?team=new')) {
+            teamsDetailsTitle.textContent = 'Add new team';
+            teamsDetailsFormAddBtn.classList.remove('cm-u-inactive');
+            teamsDetailsFormUpdateBtn.classList.add('cm-u-inactive');
+            teamsDetailsFormDeleteBtn.classList.add('cm-u-inactive');
+            //validar campos antes de añadir           
+            const teamsDetailsFormFields = document.querySelectorAll('[required]');
+            //pulsar el boton de añadir
+            teamsDetailsFormAddBtn.addEventListener('click',()=>{
+                //primero hay que validar que los campos están rellenos
+                if (teamsDetailsForm.checkValidity()) {
+                    app.addNewTeam();
+                } else {
+                    teamsDetailsFormFields.forEach(field =>{
+                        if (!field.checkValidity()){
+                            app.setInputFieldError(field,field.validationMessage);
+                        }                        
+                    })
+                }    
+            }); 
+
+
+        } else {
+            app.cleanTeamDetails();
+            teamsDetailsTitle.textContent = 'Edit team details';
+            teamsDetailsFormAddBtn.classList.add('cm-u-inactive');
+            const params = new URLSearchParams(document.location.search);
+            const teamID = params.get('team');
+            app.getTeam(teamID);
+            //boton borrar jugador
+            teamsDetailsFormDeleteBtn.addEventListener('click',()=>{
+                const leagueID = teamsDetailsTeamLeague.getAttribute('data-leagueid');
+                app.confirmDeleteTeamModal(teamID, leagueID);    
+            })
+            //boton actualizar dentro de detalles de jugadores
+            teamsDetailsFormUpdateBtn.addEventListener('click',()=>{
+                const leagueID = teamsDetailsTeamLeague.getAttribute('data-leagueid');
+                app.updateTeam(teamID, leagueID);
+            })
+        }
+
+        //boton cancelar
+        teamsDetailsFormCancelBtn.addEventListener('click',()=>{
+            window.history.back();
+        })
+    },
+    //pagina editar/añadir intermediario
+    manageMastersIntermediary: () => {
+        app.setActiveUserOnMenu();
+        app.setActiveUserNotificationsBubble();
+        manageMastersBtn.classList.add('active');
+        manageUsersBtn.classList.remove('active');
+        manageTeamBtn.classList.remove('active'); 
+
+        if (location.search.startsWith('?interm=new')) {
+            intermsDetailsTitle.textContent = 'Add new intermediary';
+            intermsDetailsFormAddBtn.classList.remove('cm-u-inactive');
+            intermsDetailsFormUpdateBtn.classList.add('cm-u-inactive');
+            intermsDetailsFormDeleteBtn.classList.add('cm-u-inactive');
+
+            const intermsDetailsFormFields = document.querySelectorAll('[required]');
+
+            //pulsar el boton de añadir
+            intermsDetailsFormAddBtn.addEventListener('click',()=>{
+                //primero hay que validar que los campos están rellenos
+                if (intermsDetailsForm.checkValidity()) {
+                    app.addNewIntermediary();
+                } else {
+                    intermsDetailsFormFields.forEach(field =>{
+                        if (!field.checkValidity()){
+                            app.setInputFieldError(field,field.validationMessage);
+                        }                        
+                    })
+                }    
+            });               
+        } else {
+            app.cleanIntermediaryDetails();
+            intermsDetailsTitle.textContent = 'Edit intermediary details';
+            intermsDetailsFormAddBtn.classList.add('cm-u-inactive');
+            const params = new URLSearchParams(document.location.search);
+            const intermediaryID = params.get('interm');
+            app.getIntermediary(intermediaryID);
+            //boton borrar jugador
+            intermsDetailsFormDeleteBtn.addEventListener('click',()=>{
+                app.confirmDeleteIntermediaryModal(intermediaryID);    
+            })
+            //boton actualizar dentro de detalles de jugadores
+            intermsDetailsFormUpdateBtn.addEventListener('click',()=>{
+                app.updateIntermediary(intermediaryID);
+            })
+        }
+
+        //boton cancelar
+        intermsDetailsFormCancelBtn.addEventListener('click',()=>{
+            window.history.back();
+        })
+    },
+    //modal confirmar borrar jugador
+    confirmDeleteTeamModal: (teamID,leagueID)=>{
+        modalSmall.innerHTML = '';
+        const modalBody = document.createElement('div');
+        modalBody.classList.add('modal-body');
+        modalBody.classList.add('cm-u-spacer-mb-bigger');
+        const modalTitle = document.createElement('h3');
+        modalTitle.classList.add('cm-u-text-black-cat');
+        modalTitle.textContent = "You're about to delete a team";
+        const modalFooter = document.createElement('div');
+        modalFooter.classList.add('modal-footer');
+        const cancelBtn = document.createElement('button');
+        cancelBtn.classList.add('cm-o-button-cat--transparent');
+        cancelBtn.setAttribute('id','cancelBtn')
+        cancelBtn.textContent = 'Cancel';
+        const deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('cm-o-button-cat--primary');
+        deleteBtn.setAttribute('id','deleteBtn')
+        deleteBtn.textContent = "I'm fine, continue";
+    
+        modalFooter.appendChild(cancelBtn);
+        modalFooter.appendChild(deleteBtn);
+        modalBody.appendChild(modalTitle);
+        modalSmall.appendChild(modalBody);
+        modalSmall.appendChild(modalFooter);
+        modalSmall.classList.remove('cm-u-inactive');
+        modalContainer.classList.remove('cm-u-inactive');
+    
+        cancelBtn.addEventListener('click',()=>{
+            modalContainer.classList.add('cm-u-inactive');
+        })
+    
+        deleteBtn.addEventListener('click',()=>{
+            app.deleteTeam(teamID, leagueID);
+            modalContainer.classList.add('cm-u-inactive');
+        })
+    },
+    //modal confirmar borrar jugador
+    confirmDeleteIntermediaryModal: (intermediaryID)=>{
+        modalSmall.innerHTML = '';
+        const modalBody = document.createElement('div');
+        modalBody.classList.add('modal-body');
+        modalBody.classList.add('cm-u-spacer-mb-bigger');
+        const modalTitle = document.createElement('h3');
+        modalTitle.classList.add('cm-u-text-black-cat');
+        modalTitle.textContent = "You're about to delete an intermediary";
+        const modalFooter = document.createElement('div');
+        modalFooter.classList.add('modal-footer');
+        const cancelBtn = document.createElement('button');
+        cancelBtn.classList.add('cm-o-button-cat--transparent');
+        cancelBtn.setAttribute('id','cancelBtn')
+        cancelBtn.textContent = 'Cancel';
+        const deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('cm-o-button-cat--primary');
+        deleteBtn.setAttribute('id','deleteBtn')
+        deleteBtn.textContent = "I'm fine, continue";
+    
+        modalFooter.appendChild(cancelBtn);
+        modalFooter.appendChild(deleteBtn);
+        modalBody.appendChild(modalTitle);
+        modalSmall.appendChild(modalBody);
+        modalSmall.appendChild(modalFooter);
+        modalSmall.classList.remove('cm-u-inactive');
+        modalContainer.classList.remove('cm-u-inactive');
+    
+        cancelBtn.addEventListener('click',()=>{
+            modalContainer.classList.add('cm-u-inactive');
+        })
+    
+        deleteBtn.addEventListener('click',()=>{
+            app.deleteIntermediary(intermediaryID);
+            modalContainer.classList.add('cm-u-inactive');
+        })
+    },
     //------------------------------------------EVENTOS NAVEGACION ESTRUCTURALES------------------------------------------
     navigationEvents:() => {
         const page = document.body.id;
@@ -1071,6 +1746,15 @@ const app = {
                     location.href="manage-team.html";
                     app.currentListPage = 1;
             }
+            });
+            //boton abrir Maestros
+            manageMastersBtn.addEventListener('click',()=>{                
+                if (page === 'manageMasters'){
+                    window.history.back();
+                } else {
+                    location.href="manage-masters.html?section=teams";
+                    app.currentListPage = 1;
+                }
             });
             //llamar a sortButton desde los botones que ya estaban precreados en el html
             sortBtns.forEach(btn => {
@@ -1640,7 +2324,7 @@ const app = {
             pictureInput.setAttribute('data-pictureID', data[i-1].pictureId);
             const playerIDPictureName = fileUploadRow.querySelector('.pictureInputName');
             playerIDPictureName.innerHTML = data[i-1].pictureName;
-            console.log('pinto una imageRow con el data-id:'+data[i-1].pictureId);
+            //console.log('pinto una imageRow con el data-id:'+data[i-1].pictureId);
         }
 
         //remake upload inputs
@@ -1772,6 +2456,7 @@ const app = {
     },
     //listar ligas/equipos en modal
     listOptionsSelector: (results,container,origin,resourceExtraID, {clean = true} = {}) => {
+        const page = document.body.id;
         console.log('ListOptionsSelector origin:'+origin);
         searchResultsListHeaderContainer.innerHTML = '';
         if(clean) { container.innerHTML = '';}
@@ -2015,29 +2700,172 @@ const app = {
                 });
             })
         } else if (location.search.startsWith('?searchAction=searchLeague')) {
-            chooseOptionBtns.forEach(btn => {
-                btn.addEventListener('click', event => {
-                    const leagueID = btn.getAttribute('data-leagueID');
-                    let params = new URLSearchParams(document.location.search);
-                    let searchOrigin = params.get('searchOrigin');
-                    let uri = window.location.toString();
-                    let clean_uri = uri.substring(0,uri.indexOf("?")); 
-                    window.history.replaceState({},document.title,clean_uri);
-                    //colocamos el hash adecuado para volver de la modal si es un jugador nuevo o estamos editando uno existente
-                    if (searchOrigin === 'newPlayer') {
-                        //location.hash='#addPlayer';
-                        history.pushState('', '', '?player=new');
-                    } else {
-                        //location.hash='#editPlayer='+searchOrigin;
-                        history.pushState('', '', '?player='+searchOrigin);
-                    }
-                    //asignamos el la liga escogida al input del listado
-                    app.inputSetValue(playerLeagueOrigin,'/leagues/',leagueID,'leagueName');
-                    //ocultamos el modal
-                    modalContainer.classList.add('cm-u-inactive');
-                });
-            })
+            //si estoy buscando liga para un jugador
+            if (page === 'managePlayer') {
+                chooseOptionBtns.forEach(btn => {
+                    btn.addEventListener('click', event => {
+                        const leagueID = btn.getAttribute('data-leagueID');
+                        let params = new URLSearchParams(document.location.search);
+                        let searchOrigin = params.get('searchOrigin');
+                        let uri = window.location.toString();
+                        let clean_uri = uri.substring(0,uri.indexOf("?")); 
+                        window.history.replaceState({},document.title,clean_uri);
+                        //colocamos el hash adecuado para volver de la modal si es un jugador nuevo o estamos editando uno existente
+                        if (searchOrigin === 'newPlayer') {
+                            //location.hash='#addPlayer';
+                            history.pushState('', '', '?player=new');
+                        } else {
+                            //location.hash='#editPlayer='+searchOrigin;
+                            history.pushState('', '', '?player='+searchOrigin);
+                        }
+                        //asignamos el la liga escogida al input del listado
+                        app.inputSetValue(playerLeagueOrigin,'/leagues/',leagueID,'leagueName');
+                        //ocultamos el modal
+                        modalContainer.classList.add('cm-u-inactive');
+                    });
+                })
+            } else if (page === 'manageMastersTeam') {
+                chooseOptionBtns.forEach(btn => {
+                    btn.addEventListener('click', event => {
+                        const leagueID = btn.getAttribute('data-leagueID');
+                        let params = new URLSearchParams(document.location.search);
+                        let searchOrigin = params.get('searchOrigin');
+                        let uri = window.location.toString();
+                        let clean_uri = uri.substring(0,uri.indexOf("?")); 
+                        window.history.replaceState({},document.title,clean_uri);
+                        //colocamos el hash adecuado para volver de la modal si es un jugador nuevo o estamos editando uno existente
+                        if (searchOrigin === 'newTeam') {
+                            history.pushState('', '', '?team=new');
+                        } else {
+                            history.pushState('', '', '?team='+searchOrigin);
+                        }
+                        //asignamos el la liga escogida al input del listado
+                        app.inputSetValue(teamsDetailsTeamLeague,'/leagues/',leagueID,'leagueName');
+                        //ocultamos el modal
+                        modalContainer.classList.add('cm-u-inactive');
+                    });
+                })
+            }
+            
         }        
+    },
+    //listar todos los equipos
+    listTeams: (teams,container,{clean = true}={}) =>{
+        if(clean) {
+            container.innerHTML = '';
+        }
+
+        teams.items.forEach(team => {
+            const teamContainer = document.createElement('div');
+            teamContainer.classList.add('cm-l-tabledata__row');
+            const teamNameContainer = document.createElement('div');
+            teamNameContainer.classList.add('tablecell-medium');
+            teamNameContainer.textContent = team.teamName;
+            const teamCountryContainer = document.createElement('div');
+            teamCountryContainer.classList.add('tablecell-medium');
+            teamCountryContainer.textContent = team.leagueCountry;
+            const teamLeagueContainer = document.createElement('div');
+            teamLeagueContainer.classList.add('tablecell-medium');
+            teamLeagueContainer.textContent = team.leagueName;
+            const teamContactContainer = document.createElement('div');
+            teamContactContainer.classList.add('tablecell-long');
+            teamContactContainer.textContent = team.contact1;
+            const teamEditBtnContainer = document.createElement('div');
+            teamEditBtnContainer.classList.add('tablecell-short');
+            teamEditBtnContainer.classList.add('cm-u-centerText');
+            const teamEditBtn = document.createElement('button');
+            teamEditBtn.classList.add('cm-o-icon-button-small--primary');
+            teamEditBtn.setAttribute('id','editTeamsDetailsBtn');
+            teamEditBtn.setAttribute('data-teamId',team.id);
+            const teamEditBtnIcon = document.createElement('span');
+            teamEditBtnIcon.classList.add('material-symbols-outlined');
+            teamEditBtnIcon.textContent = 'border_color';        
+            teamEditBtn.appendChild(teamEditBtnIcon);
+            teamEditBtnContainer.appendChild(teamEditBtn);
+            teamContainer.appendChild(teamNameContainer);
+            teamContainer.appendChild(teamCountryContainer);
+            teamContainer.appendChild(teamLeagueContainer);
+            teamContainer.appendChild(teamContactContainer);
+            teamContainer.appendChild(teamEditBtnContainer);
+            container.appendChild(teamContainer);
+        })
+
+        const editTeamsBtns = document.querySelectorAll('#editTeamsDetailsBtn');
+
+        editTeamsBtns.forEach(btn => {
+            btn.addEventListener('click', event => {
+                location.href="manage-masters-team.html?team="+btn.getAttribute('data-teamid');
+            })
+        })
+
+    },
+    //listar detalles de equipo
+    listTeamDetails: (team) => {
+        teamsDetailsTeamName.setAttribute('value',team.teamName);
+        teamsDetailsTeamLeague.setAttribute('value',team.leagueName);
+        teamsDetailsTeamLeague.setAttribute('data-id',team.id);
+        teamsDetailsTeamLeague.setAttribute('data-leagueId',team.leagueId);
+        contact1.setAttribute('value',team.contact1);
+    },
+    //listar todos los intermediarios
+    listIntermediaries: (intermediaries,container,{clean = true}={}) =>{
+        if(clean) {
+            container.innerHTML = '';
+        }        
+        intermediaries.items.forEach(intermediary =>{
+    
+            const intermContainer = document.createElement('div');
+            intermContainer.classList.add('cm-l-tabledata__row');
+            const intermNameContainer = document.createElement('div');
+            intermNameContainer.classList.add('tablecell-medium');
+            intermNameContainer.textContent = intermediary.name;
+            const intermLastnameContainer = document.createElement('div');
+            intermLastnameContainer.classList.add('tablecell-medium');
+            intermLastnameContainer.textContent = intermediary.lastname;
+            const intermManagedContainer = document.createElement('div');
+            intermManagedContainer.classList.add('tablecell-medium');
+            intermManagedContainer.classList.add('cm-u-centerText');
+            intermManagedContainer.textContent = intermediary.managedPlayers.length;
+            const intermContactContainer = document.createElement('div');
+            intermContactContainer.classList.add('tablecell-long');
+            intermContactContainer.textContent = intermediary.email1;            
+            const intermEditBtnContainer = document.createElement('div');
+            intermEditBtnContainer.classList.add('tablecell-short');
+            intermEditBtnContainer.classList.add('cm-u-centerText');
+            const intermEditBtn = document.createElement('button');
+            intermEditBtn.classList.add('cm-o-icon-button-small--primary');
+            intermEditBtn.classList.add('editIntermDetailsBtn');
+            intermEditBtn.setAttribute('id','editIntermDetailsBtn');
+            intermEditBtn.setAttribute('data-intermediaryId',intermediary.id);
+            const intermEditBtnIcon = document.createElement('span');
+            intermEditBtnIcon.classList.add('material-symbols-outlined');
+            intermEditBtnIcon.textContent = 'border_color';        
+            intermEditBtn.appendChild(intermEditBtnIcon);
+            intermEditBtnContainer.appendChild(intermEditBtn);
+            intermContainer.appendChild(intermNameContainer);
+            intermContainer.appendChild(intermLastnameContainer);
+            intermContainer.appendChild(intermManagedContainer);
+            intermContainer.appendChild(intermContactContainer);
+            intermContainer.appendChild(intermEditBtnContainer);
+            container.appendChild(intermContainer);
+        })  
+
+        const intermTeamsBtns = container.querySelectorAll('#editIntermDetailsBtn');
+
+        intermTeamsBtns.forEach(btn => {
+            btn.addEventListener('click', event => {
+                console.log('click');
+                location.href="manage-masters-intermediary.html?interm="+btn.getAttribute('data-intermediaryId');
+            })
+        })
+
+    },
+    //listar detalles de intermediario
+    listIntermediaryDetails: (intermediary) => {
+        intermsDetailsName.setAttribute('value',intermediary.name);
+        intermsDetailsLastname.setAttribute('value',intermediary.lastname);
+        intermsDetailsEmail1.setAttribute('value',intermediary.email1);
+        intermsDetailsPhone1.setAttribute('value',intermediary.phone1);
     },
     //añadir paginacion en listados o resultados de busquedas
     paginateList: (elements, container) =>{
@@ -2108,7 +2936,12 @@ const app = {
                         console.log('league of origin: '+leagueOrigin);
                         searchTerm = searchInModalInput.value;
                         app.filterTeams(leagueOrigin, searchTerm, {page:app.currentListPage, limit:5});
-                    } else if (page === 'notifications') { app.getNotifications(activeUserId,{page:app.currentListPage}); }
+                    } else if (page === 'notifications') { app.getNotifications(activeUserId,{page:app.currentListPage}); 
+                    } else if (page === 'manageMasters' && location.search.startsWith('?section=teams')) {
+                        app.getAllTeams({page:app.currentListPage});
+                    } else if (page === 'manageMasters' && location.search.startsWith('?section=intermediaries')) {
+                        app.getIntermediariesList({page:app.currentListPage});
+                    }
                     // console.log('voy a la pagina: '+app.currentListPage);                    
                 })
             }
@@ -2133,7 +2966,12 @@ const app = {
                         const leagueOrigin = params.get('leagueOrigin');
                         searchTerm = searchInModalInput.value;
                         filterTeams(leagueOrigin, searchTerm, {page:app.currentListPage, limit:5});
-                    } else if (page === 'notifications') { app.getNotifications(activeUserId,{page:app.currentListPage}); }
+                    } else if (page === 'notifications') { app.getNotifications(activeUserId,{page:app.currentListPage}); 
+                    } else if (page === 'manageMasters' && location.search.startsWith('?section=teams')) {
+                        app.getAllTeams({page:app.currentListPage});
+                    } else if (page === 'manageMasters' && location.search.startsWith('?section=intermediaries')) {
+                        app.getIntermediariesList({page:app.currentListPage});
+                    }
                     //console.log('voy a la pagina: '+app.currentListPage);  
                 })
             }
@@ -2203,6 +3041,8 @@ const app = {
                 app.getLeagues({page:1, limit:5, sortBy:sortField, order:listOrder});
             } else if (page === 'notifications') {
                 app.getNotifications(activeUserId,{page:app.currentListPage, limit:10, sortBy:sortField, order:app.listOrder});
+            } else if (page === 'manageMasters' && location.search.startsWith('?section=teams')) {
+                app.getAllTeams({page:app.currentListPage, limit:10, sortBy:sortField, order:app.listOrder});
             }
             
             //muestro el icono correspondiente para el botón que se pulsa
@@ -2256,13 +3096,25 @@ const app = {
         playerTransferCost.removeAttribute('value');
         playerSalary.removeAttribute('value');
     },
+    //limpiar el formulario de datos de equipo
+    cleanTeamDetails: () => {
+        teamsDetailsForm.reset();
+        teamsDetailsTeamName.removeAttribute('value');
+        teamsDetailsTeamLeague.removeAttribute('value');
+        contact1.removeAttribute('value');
+    },
+    //limpiar el formulario de datos de intermediario
+    cleanIntermediaryDetails: () => {
+        intermsDetailsForm.reset();
+        intermsDetailsName.removeAttribute('value');
+        intermsDetailsLastname.removeAttribute('value');
+        intermsDetailsEmail1.removeAttribute('value');
+    },
     //asignar un valor concreto a un input desde un dato especifico de un get
-    inputSetValue: async (element, resource, id, field) => {    
-        const value = await app.getSpecificValueData(resource,id,field)
+    inputSetValue: async (element, resource, id, resourceField) => {    
+        const value = await app.getSpecificValueData(resource,id,resourceField)
         .then(function (response) {
-            console.log(response);
-            console.log("response ID: "+response.id);
-            element.value = response[field];
+            element.value = response[resourceField];
             element.setAttribute('data-id',response.id);
         })
         .catch(function (error) {
@@ -2271,7 +3123,6 @@ const app = {
     },
     //reestilizar y añadir funcionalidad a los input files
     manageFileInputs: () => {
-        console.log('manageFileInputs');
         const params = new URLSearchParams(document.location.search);
         const playerID = params.get('player');
         const fileUploadContainer = document.querySelector('#fileUploadContainer');
@@ -2422,12 +3273,18 @@ const app = {
     },
     //poner error a un campo
     setInputFieldError: (input,error) => {
-        const inputLabel = input.parentNode;
+        const inputLabel = input.closest('label');
         inputLabel.classList.add('error');
+        const ifAssistance = inputLabel.querySelector('.assistance');
         const errorMsg = document.createElement('span');
-        errorMsg.classList.add('error');
+        errorMsg.classList.add('assistance');
         errorMsg.innerHTML = error;
-        inputLabel.appendChild(errorMsg);
+        if (ifAssistance === null) {
+            inputLabel.appendChild(errorMsg);
+        } else {
+            ifAssistance.innerHTML = error;
+        }
+        
     },
     //varias
     variousUtils: ()=> {
@@ -2440,12 +3297,18 @@ const app = {
                 fieldContainer.classList.add('cm-c-field-icon--focus');
                 //playerLeagueOriginContainer.classList.remove('error');
             });
-            field.addEventListener('focusout', event => {
-                const fieldContainer = field.closest('.cm-c-field-icon');
-                fieldContainer.classList.remove('cm-c-field-icon--focus');
 
-            });
+            field.addEventListener('focusout', event => {  
+                if (field.value === '') {
+                    console.log('esta vacio');
+                } else {
+                    console.log('esta relleno');
+                    const fieldContainer = field.closest('.cm-c-field-icon');
+                    fieldContainer.classList.remove('cm-c-field-icon--focus');
+                }
+            });            
         });
+
         selectWithIconFields.forEach(field => {
             field.addEventListener('focus', event => {
                 const fieldContainer = field.closest('.cm-c-select-icon');
@@ -2455,9 +3318,31 @@ const app = {
             field.addEventListener('focusout', event => {
                 const fieldContainer = field.closest('.cm-c-select-icon');
                 fieldContainer.classList.remove('cm-c-select-icon--focus');
-
             });
         });
+
+        const searchWithIconFieldsInvalid = document.querySelectorAll('.cm-c-field-icon__input:invalid');
+        searchWithIconFieldsInvalid.forEach(field => {
+            const fieldContainer = field.closest('.cm-c-field-icon');
+            fieldContainer.classList.add('cm-c-field-icon--focus');
+        });
+
+        //recuperar el estado normal sobre campos que tengan error y recuperen focus
+        const labelWithError = document.querySelectorAll('label');
+
+        labelWithError.forEach(label => {
+            const childInput = label.querySelector('input');         
+            if (childInput) {
+                childInput.addEventListener('focus',event =>{
+                    const childAssistance = label.querySelector('span.assistance');  
+                    if (label.classList.contains('error')) {
+                        label.classList.remove('error');
+                        childAssistance.remove();
+                    }
+                })
+            }
+        });
+    
     }
 }
 app.init();

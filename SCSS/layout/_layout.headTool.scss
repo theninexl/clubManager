@@ -4,6 +4,8 @@
     flex-flow: row nowrap;
 
     &__title {
+        display: flex;
+        flex-direction: row;
         flex-grow: 1;
     }
     &__toolbar {

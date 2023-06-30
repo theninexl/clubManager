@@ -8,6 +8,10 @@
         &.active {
             @include icon-button-pressed;
         }
+
+        &.active--secondary {
+            @include icon-button-pressed--secondary;
+        }
     }
 
     &--secondary {
