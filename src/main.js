@@ -405,16 +405,27 @@ const app = {
                 const postNewLeague = await app.api.post('/teamsStandalone', {
                     teamName:data.teamName,
                     leagueId:response.id,
-                    contact1:data.Contact1,
                     leagueCountry:response.leagueCountry,
-                    leagueName: response.leagueName                    
+                    leagueName:response.leagueName,
+                    contact1name:data.contact1Name,
+                    contact1phone:data.contact1Phone,
+                    contact1email:data.contact1Email,
+                    contact1alias:data.contact1Alias,
+                    contact2name:data.contact2Name,
+                    contact2phone:data.contact2Phone,
+                    contact2email:data.contact2Email,
+                    contact2alias:data.contact2Alias,
+                    contact3name:data.contact3Name,
+                    contact3phone:data.contact3Phone,
+                    contact3email:data.contact3Email,
+                    contact3alias:data.contact3Alias,          
                 })
                 .then(() => {
                     (async()=>{
                         const postNewLeague = await app.api.post('/leagues/'+response.id+'/teams', {
                             teamName:data.teamName,
                             leagueId:response.id,
-                            contact1:data.Contact1                            
+                            contact1:data.contact1email,                            
                         })
                         .then((response) => {
                             app.currentListPage = 1;
@@ -809,12 +820,10 @@ const app = {
         .then(response=>{
             // guardar los jugadores gestionados por el manager que se quiere borrar
             const managedPlayers = response.managedPlayers;
-            console.log('managedPlayers',managedPlayers);
             //borro el propio intermediario
             (async()=>{
                 const deleteIntermediary = await app.api.delete('intermediaries/'+intermediaryID)
                 .then(response => {
-                    console.log(response);
                     //borro los jugadores gestionados del intermediario que quiero borrar y como puede ser más de uno utilizo map para esperar a una única respuesta de todo el proceso.   
                     const allManagedPlayerPromises = managedPlayers.map( async (managedPlayer) =>{
                         const deleteManagedPlayer = await app.api.delete('/intermediaries/'+intermediaryID+'/managedPlayers/'+managedPlayer.id);
@@ -1591,6 +1600,7 @@ const app = {
 
 
         } else {
+            console.log('estoy listando team');
             app.cleanTeamDetails();
             teamsDetailsTitle.textContent = 'Edit team details';
             teamsDetailsFormAddBtn.classList.add('cm-u-inactive');
@@ -1704,7 +1714,6 @@ const app = {
     },
     //modal confirmar borrar jugador
     confirmDeleteIntermediaryModal: (intermediaryID)=>{
-        console.log('confirm Delete Intermediary Modal');
         modalSmall.innerHTML = '';
         const modalBody = document.createElement('div');
         modalBody.classList.add('modal-body');
@@ -1732,13 +1741,11 @@ const app = {
         modalContainer.classList.remove('cm-u-inactive');
     
         cancelBtn.addEventListener('click',()=>{
-            console.log('cancel');
             modalContainer.classList.add('cm-u-inactive');
         })
     
         deleteBtn.addEventListener('click',()=>{            
             app.deleteIntermediary(intermediaryID);
-            console.log('borrar intermediario', intermediaryID);
             modalContainer.classList.add('cm-u-inactive');
         })
     },
@@ -2794,7 +2801,7 @@ const app = {
             teamLeagueContainer.textContent = team.leagueName;
             const teamContactContainer = document.createElement('div');
             teamContactContainer.classList.add('tablecell-long');
-            teamContactContainer.textContent = team.contact1;
+            teamContactContainer.textContent = team.contact1email;
             const teamEditBtnContainer = document.createElement('div');
             teamEditBtnContainer.classList.add('tablecell-short');
             teamEditBtnContainer.classList.add('cm-u-centerText');
@@ -2830,7 +2837,18 @@ const app = {
         teamsDetailsTeamLeague.setAttribute('value',team.leagueName);
         teamsDetailsTeamLeague.setAttribute('data-id',team.id);
         teamsDetailsTeamLeague.setAttribute('data-leagueId',team.leagueId);
-        contact1.setAttribute('value',team.contact1);
+        teamsDetailsContact1Name.setAttribute('value',team.contact1name);
+        teamsDetailsContact1Phone.setAttribute('value',team.contact1phone);
+        teamsDetailsContact1Email.setAttribute('value',team.contact1email);
+        teamsDetailsContact1Alias.setAttribute('value',team.contact1alias);
+        teamsDetailsContact2Name.setAttribute('value',team.contact2name);
+        teamsDetailsContact2Phone.setAttribute('value',team.contact2phone);
+        teamsDetailsContact2Email.setAttribute('value',team.contact2email);
+        teamsDetailsContact2Alias.setAttribute('value',team.contact2alias);
+        teamsDetailsContact3Name.setAttribute('value',team.contact3name);
+        teamsDetailsContact3Phone.setAttribute('value',team.contact3phone);
+        teamsDetailsContact3Email.setAttribute('value',team.contact3email);
+        teamsDetailsContact3Alias.setAttribute('value',team.contact3alias);
     },
     //listar todos los intermediarios
     listIntermediaries: (intermediaries,container,{clean = true}={}) =>{
@@ -3152,7 +3170,18 @@ const app = {
         teamsDetailsForm.reset();
         teamsDetailsTeamName.removeAttribute('value');
         teamsDetailsTeamLeague.removeAttribute('value');
-        contact1.removeAttribute('value');
+        teamsDetailsContact1Name.removeAttribute('value');
+        teamsDetailsContact1Phone.removeAttribute('value');
+        teamsDetailsContact1Email.removeAttribute('value');
+        teamsDetailsContact1Alias.removeAttribute('value');
+        teamsDetailsContact2Name.removeAttribute('value');
+        teamsDetailsContact2Phone.removeAttribute('value');
+        teamsDetailsContact2Email.removeAttribute('value');
+        teamsDetailsContact2Alias.removeAttribute('value');
+        teamsDetailsContact3Name.removeAttribute('value');
+        teamsDetailsContact3Phone.removeAttribute('value');
+        teamsDetailsContact3Email.removeAttribute('value');
+        teamsDetailsContact3Alias.removeAttribute('value');
     },
     //limpiar el formulario de datos de intermediario
     cleanIntermediaryDetails: () => {
