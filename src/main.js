@@ -442,10 +442,12 @@ const app = {
         newIntermediaryData.forEach((value, key) => data[key] = value);
         console.log(data);
         const addIntermediary = await app.api.post('/intermediaries/',{
+            number:data.intermsDetailsNumber,
             name:data.intermsDetailsName,
             lastname:data.intermsDetailsLastname,
             email1:data.intermsDetailsEmail1,
-            phone1:data.intermsDetailsPhone1
+            phone1:data.intermsDetailsPhone1,
+            erp:data.intermsDetailsErp, 
         })
         .then((response) => {
             location.href="manage-masters.html?section=intermediaries";   
@@ -696,10 +698,12 @@ const app = {
         const data = {};
         updatedUserData.forEach((value, key) => data[key] = value);
         const updateData = await app.api.put('/intermediaries/'+intermediaryID, {
+            number:data.intermsDetailsNumber,
             name:data.intermsDetailsName,
             lastname:data.intermsDetailsLastname,
             email1:data.intermsDetailsEmail1,
-            phone1:data.intermsDetailsPhone1               
+            phone1:data.intermsDetailsPhone1,
+            erp:data.intermsDetailsErp,               
         })
         .then(() => {
             location.href="manage-masters.html?section=intermediaries";   
@@ -803,32 +807,33 @@ const app = {
         //primero solicito los nombres de los jugadores asignados mediante ID
         const getManagedPlayers = await app.getData('/intermediaries/'+intermediaryID)
         .then(response=>{
+            // guardar los jugadores gestionados por el manager que se quiere borrar
+            const managedPlayers = response.managedPlayers;
+            console.log('managedPlayers',managedPlayers);
             //borro el propio intermediario
             (async()=>{
-                const deleteIntermediary = await app.api.delete('intermediaries/'+intermediaryID);
-            })();
-            //borro los jugadores gestionados del intermediario que quiero borrar y como puede ser más de uno utilizo map para esperar a una única respuesta de todo el proceso.
-            const managedPlayers = response.managedPlayers;
+                const deleteIntermediary = await app.api.delete('intermediaries/'+intermediaryID)
+                .then(response => {
+                    console.log(response);
+                    //borro los jugadores gestionados del intermediario que quiero borrar y como puede ser más de uno utilizo map para esperar a una única respuesta de todo el proceso.   
+                    const allManagedPlayerPromises = managedPlayers.map( async (managedPlayer) =>{
+                        const deleteManagedPlayer = await app.api.delete('/intermediaries/'+intermediaryID+'/managedPlayers/'+managedPlayer.id);
+                        //tengo que setear a null el manager de los jugadores gestionados
+                        (async()=>{
+                            const updateManagerForExistingPlayers = await app.api.put('players/'+managedPlayer.id,{
+                                intermediaryID:'---'
+                            })
+                        })();
+                        return deleteManagedPlayer;
+                    });
 
-            const allManagedPlayerPromises = managedPlayers.map( async (managedPlayer) =>{
-                const deleteManagedPlayer = await app.api.delete('/intermediaries/'+intermediaryID+'/managedPlayers/'+managedPlayer.id);
-
-                //tengo que setear a null el manager de los jugadores gestionados
-                (async()=>{
-                    const updateManagerForExistingPlayers = await app.api.put('players/'+managedPlayer.id,{
-                        intermediaryID:'---'
+                    Promise.all(allManagedPlayerPromises)
+                    .then(response=>{
+                        location.href="manage-masters.html?section=intermediaries";    
                     })
-                })();
-
-                return deleteManagedPlayer;
-            });
-
-            Promise.all(allManagedPlayerPromises)
-            .then(response=>{
-                location.href="manage-masters.html?section=intermediaries";    
-            })
-            
-
+                })
+                .catch(e => console.warn(e))
+            })();
         })
         .catch(e => {
             console.warn(e);
@@ -1699,6 +1704,7 @@ const app = {
     },
     //modal confirmar borrar jugador
     confirmDeleteIntermediaryModal: (intermediaryID)=>{
+        console.log('confirm Delete Intermediary Modal');
         modalSmall.innerHTML = '';
         const modalBody = document.createElement('div');
         modalBody.classList.add('modal-body');
@@ -1726,11 +1732,13 @@ const app = {
         modalContainer.classList.remove('cm-u-inactive');
     
         cancelBtn.addEventListener('click',()=>{
+            console.log('cancel');
             modalContainer.classList.add('cm-u-inactive');
         })
     
-        deleteBtn.addEventListener('click',()=>{
+        deleteBtn.addEventListener('click',()=>{            
             app.deleteIntermediary(intermediaryID);
+            console.log('borrar intermediario', intermediaryID);
             modalContainer.classList.add('cm-u-inactive');
         })
     },
@@ -2879,10 +2887,12 @@ const app = {
     },
     //listar detalles de intermediario
     listIntermediaryDetails: (intermediary) => {
+        intermsDetailsNumber.setAttribute('value', intermediary.number);
         intermsDetailsName.setAttribute('value',intermediary.name);
         intermsDetailsLastname.setAttribute('value',intermediary.lastname);
         intermsDetailsEmail1.setAttribute('value',intermediary.email1);
         intermsDetailsPhone1.setAttribute('value',intermediary.phone1);
+        intermsDetailsErp.setAttribute('value',intermediary.erp);
     },
     //listar jugadores gestionados en detalles de intermediario
     listManagedPlayers: (players, container,{clean = true}={}) => {
@@ -3205,7 +3215,7 @@ const app = {
                 const inputDeleteBtn = item.querySelector('.idPIctureDelete');
     
                 //ver si el input cambia para ponerle el nombre al span, etc
-                inputUpload.addEventListener("change", ()=>{                    
+                inputUpload.addEventListener("change", ()=>{                 
                     const inputImage = inputUpload.files[0]; 
                     inputUploadName.innerText = inputImage.name;
                     inputDeleteBtn.classList.remove('cm-o-icon-button-small--disabled');

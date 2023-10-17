@@ -34,7 +34,8 @@
         $block: &;
         display: flex;
         flex-flow: row nowrap;
-        min-height: calc(100vh - getLines(8));
+        min-height: 100vh;
+        // min-height: calc(100vh - getLines(8));
         padding-top: getLines(4);
         @include cm-container;
 

@@ -8,6 +8,7 @@ html {
 }
 
 body {
+    background-color: getColor(white);
     @include font-size($defFontSizeDT, $lineHeightDT);
     @include cm-qs-normal;
     color:getColor(primary);

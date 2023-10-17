@@ -15,7 +15,7 @@
     <!--<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet" />-->
                 
 </head>
-<body id="manageUsers">
+<body id="manageMastersTeam">
     <div class="cm-c-modal cm-u-inactive">
         <div class="cm-c-modal__smallContent cm-u-inactive" id="modalSmall">
             <div class="modal-body cm-u-spacer-mb-bigger">
@@ -114,35 +114,50 @@
             </nav>
         </aside>
         <section class="cm-l-container-2col__body cm-u-spacer-mt-huge">
-            <section id="usersList" class="">
+            <section id="teamDetails" class="">
                 <header class="cm-l-headtool cm-u-spacer-mb-bigger">
-                    <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear">Manage Users</h1></div>
-                    <div class="cm-l-headtool__toolbar">
-                        <form class="cm-c-form-simple-hrz" id="searchUsersForm">
-                            <div class="cm-c-field-icon">
-                                <input class="cm-c-field-icon__input" id="searchUser" name="searchUser" placeholder="Search users">
-                                <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchUsersBtn"><span class="material-symbols-outlined">search</span></button>
-                            </div>                    
-                        </form>
-                        <button class="cm-o-icon-button--primary" id="addUsersBtn"><span class="material-symbols-outlined">group_add</span></button>
-                    </div>
+                    <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear" id="teamsDetailsTitle">Add new team</h1></div>
+                    <div class="cm-l-headtool__toolbar"></div>
                 </header>
                 <section class="cm-l-body">
-                    <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
-                        <p class="cm-u-text-black-cat">List of Users</p>
-                    </header>
-                    <div class="cm-l-tabledata cm-u-spacer-mb-huge">
-                        <div class="cm-l-tabledata__header">
-                            <div class="tablecell-medium"><button data-field="userUsername" class="cm-o-sortButton">Username <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-medium"><button data-field="userName" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-medium"><button data-field="userLastname" class="cm-o-sortButton">Lastname <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-long"><button data-field="userEmail" class="cm-o-sortButton">Email <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-medium"><button data-field="userLastTime" class="cm-o-sortButton">Last time <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-short cm-u-centerText">Edit</div>
-                        </div>
-                        <div id="usersListContainer"></div>
-                        <div id="tablePaginationUsers"></div>
-                    </div>                                      
+                    <div class="cm-c-accordion cm-u-spacer-mb-huge">
+                        <form class="cm-l-form-panel cm-c-form-simple" id="teamsDetailsForm">
+                            <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                                <p class="cm-u-text-black-cat">General data</p>
+                            </header>
+                            <div class="cm-c-accordion__panel">
+                                <div class="cm-l-form-panel__row">
+                                    <label for="teamName" class="panel-field-long">
+                                        <span>Name</span>
+                                        <input type="text" id="teamsDetailsTeamName" name="teamName" placeholder="Name" required>
+                                        <span class="assistance" aria-live="polite">Write team name</span>
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="teamLeague" class="panel-field-long">
+                                        <span>League</span>
+                                        <div class="cm-c-field-icon">
+                                            <input class="cm-c-field-icon__input" id="teamsDetailsTeamLeague" type="search" placeholder="Search league" name="teamLeague" required>
+                                            <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="teamsDetailsTeamLeagueSearchBtn"><span class="material-symbols-outlined">search</span></button>
+                                        </div>           
+                                    </label>
+                                </div>
+                                <div class="cm-l-form-panel__row">
+                                    <label for="contact1" class="panel-field-long">
+                                        <span>Contact</span>
+                                        <input type="email" id="contact1" name="Contact1" placeholder="Name" required>
+                                        <span class="assistance" aria-live="polite">Write team Contact</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="cm-l-form__row cm-u-centerText">
+                                <button type="button" class="cm-o-button-cat--primary" id="teamsDetailsFormAddBtn">Add team</button>
+                                <button type="button" class="cm-o-button-cat--primary" id="teamsDetailsFormUpdateBtn">Update team details</button>
+                                <button type="button" class="cm-o-button-cat--transparent" id="teamsDetailsFormDeleteBtn">Delete</button>
+                                <button type="button" class="cm-o-button-cat--transparent" id="teamsDetailsFormCancelBtn">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
                 </section>
             </section>
         </section>

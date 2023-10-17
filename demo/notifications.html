@@ -15,7 +15,7 @@
     <!--<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet" />-->
                 
 </head>
-<body id="manageUsers">
+<body id="notifications">
     <div class="cm-c-modal cm-u-inactive">
         <div class="cm-c-modal__smallContent cm-u-inactive" id="modalSmall">
             <div class="modal-body cm-u-spacer-mb-bigger">
@@ -52,7 +52,7 @@
         <div class="cm-l-container">
             <nav class="cm-c-navbar">
                 <div class="cm-c-navbar__left">
-                    <a href="main.html" class="cm-o-logo"><span class="shield"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    <a href="" class="cm-o-logo"><span class="shield"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         viewBox="0 0 30 40.2" style="enable-background:new 0 0 30 40.2;" xml:space="preserve">
                    <style type="text/css">
                        .st0{fill:#FFFFFF;}
@@ -88,7 +88,7 @@
                     <ul class="navbar-links-hrz">
                         <li><a class="navbar-links__textbutt" id="activeUserBtn">Username</a></li>
                         <li><button id="manageUsersBtn" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">group</span></a></button></li>
-                        <li><button id="notifsBtn" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble" id="userUnreadNotifs"></span></button></li>
+                        <li><button id="notifsBtn" class="cm-o-icon-button--primary "><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble" id="userUnreadNotifs"></span></button></li>
                      </ul>
                 </div>
             </nav>
@@ -114,34 +114,22 @@
             </nav>
         </aside>
         <section class="cm-l-container-2col__body cm-u-spacer-mt-huge">
-            <section id="usersList" class="">
+            <section id="notifications" class="">
                 <header class="cm-l-headtool cm-u-spacer-mb-bigger">
-                    <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear">Manage Users</h1></div>
-                    <div class="cm-l-headtool__toolbar">
-                        <form class="cm-c-form-simple-hrz" id="searchUsersForm">
-                            <div class="cm-c-field-icon">
-                                <input class="cm-c-field-icon__input" id="searchUser" name="searchUser" placeholder="Search users">
-                                <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchUsersBtn"><span class="material-symbols-outlined">search</span></button>
-                            </div>                    
-                        </form>
-                        <button class="cm-o-icon-button--primary" id="addUsersBtn"><span class="material-symbols-outlined">group_add</span></button>
-                    </div>
+                    <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear">Notifications</h1></div>
                 </header>
                 <section class="cm-l-body">
-                    <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
-                        <p class="cm-u-text-black-cat">List of Users</p>
-                    </header>
                     <div class="cm-l-tabledata cm-u-spacer-mb-huge">
                         <div class="cm-l-tabledata__header">
-                            <div class="tablecell-medium"><button data-field="userUsername" class="cm-o-sortButton">Username <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-medium"><button data-field="userName" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-medium"><button data-field="userLastname" class="cm-o-sortButton">Lastname <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-long"><button data-field="userEmail" class="cm-o-sortButton">Email <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-medium"><button data-field="userLastTime" class="cm-o-sortButton">Last time <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-short cm-u-centerText">Edit</div>
+                            <div class="tablecell-short cm-u-centerText"><button data-field="level" class="cm-o-sortButton">Level <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText"><button data-field="read" class="cm-o-sortButton">Read <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="subject" class="cm-o-sortButton">Subject <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium"><button data-field="date" class="cm-o-sortButton">Date <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-long"><button data-field="description" class="cm-o-sortButton">Description <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText"><button data-field="validated" class="cm-o-sortButton">Validate <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
                         </div>
-                        <div id="usersListContainer"></div>
-                        <div id="tablePaginationUsers"></div>
+                        <div id="notificationsListContainer"></div>
+                        <div id="tablePaginationNotifications"></div>
                     </div>                                      
                 </section>
             </section>
