@@ -1,0 +1,34 @@
+.cm-l-contentHeader {
+  $block:&;
+    display: flex;
+    flex-direction: column;
+    background-color: getColor(white);
+    position: fixed;
+    $asideGutter: getCols(2) + getGutter(regular) + getGutter(regular);
+    width: calc(100% - $asideGutter);
+    z-index: 1;
+
+    &__titleBar {
+        display: flex;
+        flex-direction: row;
+        margin-top: getSize($medium);
+        .titleBar {
+          $block:&;
+          &__title {
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+          }
+          &__tools {
+            display: flex;
+            flex-grow: 0;
+            gap: getSize($small);
+          }
+        }
+    }
+    &__toolBar {
+        display: flex;
+        flex-flow:row nowrap;
+        gap: getSize($small);
+    }
+}

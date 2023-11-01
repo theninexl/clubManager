@@ -1,3 +1,5 @@
+import * as nodes from './nodes.js';
+
 const app = {
     currentListPage: 1,
     listLimit: 10,
@@ -58,13 +60,13 @@ const app = {
     }),
     //get generico
     getData: async(resource, page, limit, sortBy, order) => {
-        const {data} = await app.api(resource,{params: { page: page, limit: limit, sortBy:sortBy, order:order } });
-        return results = data;
+        const { data } = await app.api(resource,{params: { page: page, limit: limit, sortBy:sortBy, order:order } });
+        return data;
     },
     //obtener usuarios
     getUsers: async ({page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = 10;
-        resource = '/users';
+        const resource = '/users';
         const results = await app.getData(resource, page, limit, sortBy, order)
         .then(function (response) {
             app.listUsers(response,usersListContainer);
@@ -76,7 +78,7 @@ const app = {
     },
     //obtener detalles usuario
     getUser: async (userID) => {
-        resource = '/users/'+userID;
+        const resource = '/users/'+userID;
         const results = await app.getData(resource)
         .then(function (response) {
             //console.log(response);
@@ -89,12 +91,12 @@ const app = {
     //obtener jugadores
     getPlayers: async ({page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = 10;
-        resource = '/players';
+        const resource = '/players';
         const results = await app.getData(resource, page, limit, sortBy, order)
         .then(function (response) {
-            //console.log(response);
-            app.listPlayers(response,playersListContainer);
-            app.paginateList(response, tablePaginationPlayers);
+            app.setTeamSalaryLimit(response);
+            app.listPlayers(response,nodes.playersListContainer);
+            app.paginateList(response, nodes.tablePaginationPlayers);
         })
         .catch(function (error) {
             console.warn(error);
@@ -102,7 +104,7 @@ const app = {
     },
     //obtener detalles jugador
     getPlayer: async (playerID) => {
-        resource = '/players/'+playerID;
+        const resource = '/players/'+playerID;
         const data = await app.getData(resource)
         .then(function (response) {
             app.listPlayerDetails(response);
@@ -134,7 +136,7 @@ const app = {
     //obtener ligas
     getLeagues: async ({page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = limit;
-        resource = '/leagues';
+        const resource = '/leagues';
         origin = 'getLeagues';
         const results = await app.getData(resource, page, limit, sortBy, order)
         .then(function (response) {
@@ -158,7 +160,7 @@ const app = {
     //obtener equipo standalone
     getTeam: async (teamID, {page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = limit;
-        resource = '/teamsStandalone/'+teamID;
+        const resource = '/teamsStandalone/'+teamID;
         const results = await app.getData(resource, page, app.listLimit, sortBy, order)
         .then(function (response) {
             app.listTeamDetails(response);
@@ -170,8 +172,8 @@ const app = {
     //obtener equipos segun liga
     getTeams: async (leagueOfOrigin, {page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = limit;
-        resource = '/leagues/'+leagueOfOrigin+'/teams';
-        origin = 'getTeams';
+        const resource = '/leagues/'+leagueOfOrigin+'/teams';
+        const origin = 'getTeams';
         const results = await app.getData(resource, page, app.listLimit, sortBy, order)
         .then(function (response) {
             app.listOptionsSelector(response,searchResultsListContainer,origin,leagueOfOrigin);
@@ -188,7 +190,7 @@ const app = {
     //obtener todos los equipos
     getAllTeams: async ({page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = 10;
-        resource = '/teamsStandalone';        
+        const resource = '/teamsStandalone';        
         const getTeams = await app.getData(resource, page, app.listLimit, sortBy, order)
         .then((response)=>{
             app.listTeams(response,teamsListContainer);
@@ -201,7 +203,7 @@ const app = {
     //obtener notificaciones
     getNotifications: async (user, {page = app.currentListPage, limit = 10, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = limit;
-        resource = '/users/'+user+'/notifications';
+        const resource = '/users/'+user+'/notifications';
         const results = await app.getData(resource, page, app.listLimit, sortBy, order)
         .then(function (response) {
             app.listNotifications(response,notificationsListContainer);
@@ -235,11 +237,10 @@ const app = {
     },
     //obtener listado simple de intermediarios para listado intermediarios en selects en forms
     getIntermediariesList: async ({page = app.currentListPage, limit = 10, sortBy = 'id', order = 'desc'} = {}) => {
-        console.log('showing: by page: '+page+' ,limit: '+limit+' sortBy: '+sortBy+' ,order: '+order);
+        // console.log('showing: by page: '+page+' ,limit: '+limit+' sortBy: '+sortBy+' ,order: '+order);
         app.listLimit = limit;
         const results = await app.getData('intermediaries', page, limit, sortBy, order)
         .then (response =>{
-            console.log(response);
             app.listIntermediaries(response, intermediariesListContainer);
             app.paginateList(response, tablePaginationIntermediaries);
         })
@@ -250,7 +251,7 @@ const app = {
     //obtener intemediario
     getIntermediary: async (intermediaryID, {page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = limit;
-        resource = '/intermediaries/'+intermediaryID;
+        const resource = '/intermediaries/'+intermediaryID;
         const results = await app.getData(resource, page, app.listLimit, sortBy, order)
         .then(function (response) {
             app.listIntermediaryDetails(response);
@@ -263,10 +264,9 @@ const app = {
     //obtener jugadores gestionados por intermediario
     getManagedPlayers: async (intermediaryID, {page = app.currentListPage, limit = 5, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = limit;
-        resource = '/intermediaries/'+intermediaryID+'/managedPlayers';
+        const resource = '/intermediaries/'+intermediaryID+'/managedPlayers';
         const results = await await app.getData(resource, page, app.listLimit, sortBy, order)
         .then(response =>{
-            console.log(response);
             if (response.count > 0) {
                 app.listManagedPlayers(response,managedPlayersListContainer);
                 app.paginateList(response, tablePaginationmanagedPlayers);
@@ -285,6 +285,7 @@ const app = {
             userLastname:data.userLastname,
             userEmail:data.userEmail,
             userPwd:data.userPwd,
+            userSalaryLimit:data.userSalaryLimit,
             userForm1read:data.userForm1read,
             userForm1write:data.userForm1write,
             userForm2read:data.userForm2read,
@@ -478,6 +479,7 @@ const app = {
             userLastname:data.userLastname,
             userEmail:data.userEmail,
             userPwd:data.userPwd,
+            userSalaryLimit:data.userSalaryLimit,
             userForm1read:data.userForm1read,
             userForm1write:data.userForm1write,
             userForm2read:data.userForm2read,
@@ -534,6 +536,7 @@ const app = {
             dniDate:data.playerIdDate,
             socialSecurityNr:data.playerSocialSecurityNumber,
             sixMonthsResidency:data.playerResidencyToggle,
+            category:data.playerCategory,
             clubFrom:data.clubOfOrigin,
             leagueFrom:data.leagueOfOrigin,
             position:data.playerNaturalPosition,
@@ -851,7 +854,7 @@ const app = {
     //filtrar genérico
     filterData: async(resource, page, limit, sortBy, order) => {
         const { data } = await app.api(resource,{params: { page: page, limit: limit, sortBy:sortBy, order:order } });
-        return results = data;
+        return data;
     },
     //filtrar usuarios por busqueda
     filterUsers: async (searchTerm, {page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
@@ -887,7 +890,7 @@ const app = {
     //filtrar jugadores por busqueda
     filterPlayers: async (searchTerm, {page = 1, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = 5;
-        resource = '/players?search='+searchTerm;
+        const resource = '/players?search='+searchTerm;
         const results = await app.getData(resource, page, limit, sortBy, order)
         .then(function (response) {
             //console.log(response);
@@ -902,9 +905,9 @@ const app = {
     },
     //filtrar ligas por busqueda
     filterLeagues: async (searchTerm, {page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
-        listLimit = limit;
-        resource = '/leagues?search='+searchTerm;
-        origin = 'getLeagues';
+        const listLimit = limit;
+        const resource = '/leagues?search='+searchTerm;
+        const origin = 'getLeagues';
         const results = await app.filterData(resource, page, limit, sortBy, order)
         .then(function (response) {
             app.listOptionsSelector(response,searchResultsListContainer,origin);
@@ -919,13 +922,13 @@ const app = {
     },
     //filtrar equipos por busqueda
     filterTeams: async (leagueOfOrigin,searchTerm, {page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
-        listLimit = limit;
-        resource = '/leagues/'+leagueOfOrigin+'/teams?search='+searchTerm;
-        origin = 'getTeams';
+        const listLimit = limit;
+        const resource = '/leagues/'+leagueOfOrigin+'/teams?search='+searchTerm;
+        const origin = 'getTeams';
         const results = await app.filterData(resource, page, limit, sortBy, order)
         .then(function (response) {
-            console.log('resultado filtrar equipos:');
-            console.log(response);
+            // console.log('resultado filtrar equipos:');
+            // console.log(response);
             app.listOptionsSelector(response,searchResultsListContainer,origin,leagueOfOrigin);
             if (response.count > 0) {
                 console.log('teams:'+response.count);
@@ -941,15 +944,13 @@ const app = {
         const loginData = new FormData(loginPageForm);
         const data = {};
         loginData.forEach((value, key) => data[key] = value);
-        console.log(data);
         const searchTerm = data.loginEmail;
         const pwdForm = data.loginPwd;
-        const resource = '/users?search='+searchTerm;
+        const resource = '/users?search='+searchTerm;        
         const filterLogin = await app.filterData(resource)
         .then(function (response) {
             if (response.count === 1) {
                 if (searchTerm === response.items[0].userEmail && pwdForm === response.items[0].userPwd) {
-                    //console.log('user y pwd son buenos');
                     //si está todo ok mando email, nombre y apellidos a LS
                     app.setActiveUser(response.items[0]);
                     //location.href = "main.html";
@@ -1009,20 +1010,19 @@ const app = {
 
     },
     homePage: () => {
-        console.log('estoy en la home');
+        // console.log('estoy en la home');
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
     },
     notificationsPage: () => {
-        console.log('estoy en la página de notificaciones');
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
         const activeUser = app.activeUserList();
         const activeUserId = activeUser.activeUser.id;
         app.listLimit = 10;
-        notifsBtn.classList.add('active');
-        manageUsersBtn.classList.remove('active');
-        manageTeamBtn.classList.remove('active');
+        nodes.notifsBtn.classList.add('active');
+        nodes.manageUsersBtn.classList.remove('active');
+        nodes.manageTeamBtn.classList.remove('active');
         app.getNotifications(activeUserId);
 
     },
@@ -1138,29 +1138,24 @@ const app = {
         modalSmall.appendChild(modalBody);
         modalSmall.appendChild(modalFooter);
         modalSmall.classList.remove('cm-u-inactive');
-        modalContainer.classList.remove('cm-u-inactive');
+        nodes.modalContainer.classList.remove('cm-u-inactive');
     
         cancelBtn.addEventListener('click',()=>{
-            modalContainer.classList.add('cm-u-inactive');
+            nodes.modalContainer.classList.add('cm-u-inactive');
         })
     
         deleteBtn.addEventListener('click',()=>{
             app.deleteUser(userID);
-            modalContainer.classList.add('cm-u-inactive');
+            nodes.modalContainer.classList.add('cm-u-inactive');
         })
     },
     //pagina listado plantilla jugadores
     manageTeamPage: () => {
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
-        listLimit = 10;
-        manageTeamBtn.classList.add('active');
-        // usersListSection.classList.add('cm-u-inactive');
-        // userDetailsSection.classList.add('cm-u-inactive');
-        // playersListSection.classList.remove('cm-u-inactive');
-        // playerDetailsSection.classList.add('cm-u-inactive');
+        const listLimit = 10;
+        nodes.manageTeamBtn.classList.add('active');
         app.getPlayers();
-        // cleanPlayerDetails();
 
         //boton buscar dentro de listado de jugadores
         searchPlayersBtn.addEventListener('click',(event)=>{
@@ -1182,23 +1177,37 @@ const app = {
         app.setActiveUserNotificationsBubble();
         app.cleanPlayerDetails();
         manageTeamBtn.classList.add('active');
+
+        //rellenar select categorias con el listado de la API
+        const categories = (async () => {
+            const results = await app.getData('/categories')
+            .then(function (response) {
+                //console.log(response);
+                const options = response.map(category => category.category)
+                app.paintSelectOptions(nodes.playerCategory, options);
+            })
+            .catch(function (error) {
+                console.warn(error);
+            });
+        })();
+
+
         if (location.search.startsWith('?player=new')) {
-            console.log('estoy añadiendo un jugador nuevo');
-            playerDetailsTitle.innerHTML = 'Add new Player';
+            nodes.playerDetailsTitle.innerHTML = 'Add new Player';
             //añadir al menos una fila para subir imagenes de ID
             app.addIdImageRow();
             //solicitar el listado de intermediarios para añadirlo al select
             app.getIntermediariesOnSelect();
-            playerDetailsFormAddBtn.classList.remove('cm-u-inactive');
-            playerDetailsFormUpdateBtn.classList.add('cm-u-inactive');
-            playerDetailsFormDeleteBtn.classList.add('cm-u-inactive');
-            playerDetailsCancelBtn.classList.remove('cm-u-inactive');
+            nodes.playerDetailsFormAddBtn.classList.remove('cm-u-inactive');
+            nodes.playerDetailsFormUpdateBtn.classList.add('cm-u-inactive');
+            nodes.playerDetailsFormDeleteBtn.classList.add('cm-u-inactive');
+            nodes.playerDetailsCancelBtn.classList.remove('cm-u-inactive');
             //guardar todos los campos para poder validarlos           
             const playerDetailsFormFields = document.querySelectorAll('[required]');
             //pulsar el boton de añadir
-            playerDetailsFormAddBtn.addEventListener('click',()=>{                
+            nodes.playerDetailsFormAddBtn.addEventListener('click',()=>{                
                 //primero hay que validar que los campos están rellenos
-                if (playerDetailsForm.checkValidity()) {
+                if (nodes.playerDetailsForm.checkValidity()) {
                     app.addNewPlayer();
                 } else {
                     playerDetailsFormFields.forEach(field =>{
@@ -1212,23 +1221,22 @@ const app = {
             //remake upload inputs
             app.manageFileInputs();
         } else {
-            console.log('estoy editando un jugador que ya existe');
             app.cleanPlayerDetails();
-            playerDetailsTitle.innerHTML = 'Edit Player';    
-            playerDetailsSection.classList.remove('cm-u-inactive');
-            playerDetailsFormAddBtn.classList.add('cm-u-inactive');
-            playerDetailsFormUpdateBtn.classList.remove('cm-u-inactive');
-            playerDetailsFormDeleteBtn.classList.remove('cm-u-inactive');
-            playerDetailsCancelBtn.classList.add('cm-u-inactive');
+            nodes.playerDetailsTitle.innerHTML = 'Edit Player';    
+            nodes.playerDetailsSection.classList.remove('cm-u-inactive');
+            nodes.playerDetailsFormAddBtn.classList.add('cm-u-inactive');
+            nodes.playerDetailsFormUpdateBtn.classList.remove('cm-u-inactive');
+            nodes.playerDetailsFormDeleteBtn.classList.remove('cm-u-inactive');
+            nodes.playerDetailsCancelBtn.classList.add('cm-u-inactive');
             const params = new URLSearchParams(document.location.search);
             const playerID = params.get('player');
             app.getPlayer(playerID);
             //boton borrar jugador
-            playerDetailsFormDeleteBtn.addEventListener('click',()=>{
+            nodes.playerDetailsFormDeleteBtn.addEventListener('click',()=>{
                 app.confirmDeletePlayerModal();    
             })
             //boton actualizar dentro de detalles de jugadores
-            playerDetailsFormUpdateBtn.addEventListener('click',()=>{
+            nodes.playerDetailsFormUpdateBtn.addEventListener('click',()=>{
                 app.updatePlayer(playerID);
             })
         }
@@ -1243,7 +1251,7 @@ const app = {
             const originPlayer = params.get('player');
             //recoger el value del input del listado de busqueda de ligas, meterlo en la URL como un parametro, 
             //recoger el player ID y meterlo como un parametro
-            const searchTerm = playerLeagueOrigin.value;
+            const searchTerm = nodes.playerLeagueOrigin.value;
             //si estamos añadiendo un jugador nuevo o si estamos editando un jugador existente añadir en el parametro
             let newParams;    
             if (originPlayer === 'new') {
@@ -1265,9 +1273,9 @@ const app = {
             // let clean_uri = uri.substring(0,uri.indexOf("#"));
             // window.history.replaceState({},document.title,clean_uri);
             //recoger el nombre de la liga 
-            let leagueOrigin = playerLeagueOrigin.getAttribute('data-id');
+            let leagueOrigin = nodes.playerLeagueOrigin.getAttribute('data-id');
             //recoger el contenido del input del club para guardarlo com término de busqueda
-            const searchTerm = playerOriginClub.value;
+            const searchTerm = nodes.playerOriginClub.value;
             //si estamos añadiendo un jugador nuevo o si estamos editando un jugador existente añadir en el parametro
             let newParams;    
             if (originPlayer === 'new') {
@@ -1353,9 +1361,9 @@ const app = {
         //si el input de liga tiene contenido, hay que chequear que es una liga valida
         if (inputLeague.length > 0) {        
             (async function (league){
-                console.log("busco ligas que contengan: "+league);
-                resource = '/leagues?search='+league;
-                origin = 'getTeams';
+                // console.log("busco ligas que contengan: "+league);
+                const resource = '/leagues?search='+league;
+                const origin = 'getTeams';
                 const results = await app.filterData(resource, app.currentListPage, app.listLimit, 'id', 'asc')
                 .then(function (response) {             
                     if (response.count > 0) {
@@ -1485,15 +1493,15 @@ const app = {
         modalSmall.appendChild(modalBody);
         modalSmall.appendChild(modalFooter);
         modalSmall.classList.remove('cm-u-inactive');
-        modalContainer.classList.remove('cm-u-inactive');
+        nodes.modalContainer.classList.remove('cm-u-inactive');
     
         cancelBtn.addEventListener('click',()=>{
-            modalContainer.classList.add('cm-u-inactive');
+            nodes.modalContainer.classList.add('cm-u-inactive');
         })
     
         deleteBtn.addEventListener('click',()=>{
             app.deletePlayer(playerID);
-            modalContainer.classList.add('cm-u-inactive');
+            nodes.modalContainer.classList.add('cm-u-inactive');
         })
     },
     //pagina manage Teams
@@ -1501,22 +1509,22 @@ const app = {
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
         app.listLimit = 10;
-        manageMastersBtn.classList.add('active');
-        manageUsersBtn.classList.remove('active');
-        manageTeamBtn.classList.remove('active');
-        teamsListSection.classList.remove('cm-u-inactive');
-        intermediariesListSection.classList.add('cm-u-inactive');
-        manageTeamsBtn.classList.add('active--secondary');
-        manageIntermBtn.classList.remove('active--secondary');
-        manageMastersHeadtoolTitle.textContent = 'Manage Teams';
+        nodes.manageMastersBtn.classList.add('active');
+        nodes.manageUsersBtn.classList.remove('active');
+        nodes.manageTeamBtn.classList.remove('active');
+        nodes.teamsListSection.classList.remove('cm-u-inactive');
+        nodes.intermediariesListSection.classList.add('cm-u-inactive');
+        nodes.manageTeamsBtn.classList.add('active--secondary');
+        nodes.manageIntermBtn.classList.remove('active--secondary');
+        nodes.manageMastersHeadtoolTitle.textContent = 'Manage Teams';
         app.getAllTeams();
 
-        addMastersItemBtn.addEventListener('click',(event)=>{
+        nodes.addMastersItemBtn.addEventListener('click',(event)=>{
             event.preventDefault();
             location.href="manage-masters-team.html?team=new";
         })
 
-        manageIntermBtn.addEventListener('click',()=>{
+        nodes.manageIntermBtn.addEventListener('click',()=>{
             const newParams ='?section=intermediaries';
             window.history.replaceState({},document.title, newParams);
             window.dispatchEvent(new Event('popstate'));
@@ -1553,9 +1561,9 @@ const app = {
     manageMastersTeam: () => {
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
-        manageMastersBtn.classList.add('active');
-        manageUsersBtn.classList.remove('active');
-        manageTeamBtn.classList.remove('active');
+        nodes.manageMastersBtn.classList.add('active');
+        nodes.manageUsersBtn.classList.remove('active');
+        nodes.manageTeamBtn.classList.remove('active');
 
         //boton buscar liga origen en form
         teamsDetailsTeamLeagueSearchBtn.addEventListener('click',(event)=>{
@@ -1578,10 +1586,10 @@ const app = {
         });    
 
         if (location.search.startsWith('?team=new')) {
-            teamsDetailsTitle.textContent = 'Add new team';
-            teamsDetailsFormAddBtn.classList.remove('cm-u-inactive');
-            teamsDetailsFormUpdateBtn.classList.add('cm-u-inactive');
-            teamsDetailsFormDeleteBtn.classList.add('cm-u-inactive');
+            nodes.teamsDetailsTitle.textContent = 'Add new team';
+            nodes.teamsDetailsFormAddBtn.classList.remove('cm-u-inactive');
+            nodes.teamsDetailsFormUpdateBtn.classList.add('cm-u-inactive');
+            nodes.teamsDetailsFormDeleteBtn.classList.add('cm-u-inactive');
             //validar campos antes de añadir           
             const teamsDetailsFormFields = document.querySelectorAll('[required]');
             //pulsar el boton de añadir
@@ -1597,13 +1605,10 @@ const app = {
                     })
                 }    
             }); 
-
-
         } else {
-            console.log('estoy listando team');
             app.cleanTeamDetails();
-            teamsDetailsTitle.textContent = 'Edit team details';
-            teamsDetailsFormAddBtn.classList.add('cm-u-inactive');
+            nodes.teamsDetailsTitle.textContent = 'Edit team details';
+            nodes.teamsDetailsFormAddBtn.classList.add('cm-u-inactive');
             const params = new URLSearchParams(document.location.search);
             const teamID = params.get('team');
             app.getTeam(teamID);
@@ -1628,20 +1633,20 @@ const app = {
     manageMastersIntermediary: () => {
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
-        manageMastersBtn.classList.add('active');
-        manageUsersBtn.classList.remove('active');
-        manageTeamBtn.classList.remove('active'); 
+        nodes.manageMastersBtn.classList.add('active');
+        nodes.manageUsersBtn.classList.remove('active');
+        nodes.manageTeamBtn.classList.remove('active'); 
 
         if (location.search.startsWith('?interm=new')) {
-            intermsDetailsTitle.textContent = 'Add new intermediary';
-            intermsDetailsFormAddBtn.classList.remove('cm-u-inactive');
-            intermsDetailsFormUpdateBtn.classList.add('cm-u-inactive');
-            intermsDetailsFormDeleteBtn.classList.add('cm-u-inactive');
+            nodes.intermsDetailsTitle.textContent = 'Add new intermediary';
+            nodes.intermsDetailsFormAddBtn.classList.remove('cm-u-inactive');
+            nodes.intermsDetailsFormUpdateBtn.classList.add('cm-u-inactive');
+            nodes.intermsDetailsFormDeleteBtn.classList.add('cm-u-inactive');
 
             const intermsDetailsFormFields = document.querySelectorAll('[required]');
 
             //pulsar el boton de añadir
-            intermsDetailsFormAddBtn.addEventListener('click',()=>{
+            nodes.intermsDetailsFormAddBtn.addEventListener('click',()=>{
                 //primero hay que validar que los campos están rellenos
                 if (intermsDetailsForm.checkValidity()) {
                     app.addNewIntermediary();
@@ -1655,23 +1660,23 @@ const app = {
             });               
         } else {
             app.cleanIntermediaryDetails();
-            intermsDetailsTitle.textContent = 'Edit intermediary details';
-            intermsDetailsFormAddBtn.classList.add('cm-u-inactive');
+            nodes.intermsDetailsTitle.textContent = 'Edit intermediary details';
+            nodes.intermsDetailsFormAddBtn.classList.add('cm-u-inactive');
             const params = new URLSearchParams(document.location.search);
             const intermediaryID = params.get('interm');
             app.getIntermediary(intermediaryID);
             //boton borrar jugador
-            intermsDetailsFormDeleteBtn.addEventListener('click',()=>{
+            nodes.intermsDetailsFormDeleteBtn.addEventListener('click',()=>{
                 app.confirmDeleteIntermediaryModal(intermediaryID);    
             })
             //boton actualizar dentro de detalles de jugadores
-            intermsDetailsFormUpdateBtn.addEventListener('click',()=>{
+            nodes.intermsDetailsFormUpdateBtn.addEventListener('click',()=>{
                 app.updateIntermediary(intermediaryID);
             })
         }
 
         //boton cancelar
-        intermsDetailsFormCancelBtn.addEventListener('click',()=>{
+        nodes.intermsDetailsFormCancelBtn.addEventListener('click',()=>{
             window.history.back();
         })
     },
@@ -1701,20 +1706,20 @@ const app = {
         modalSmall.appendChild(modalBody);
         modalSmall.appendChild(modalFooter);
         modalSmall.classList.remove('cm-u-inactive');
-        modalContainer.classList.remove('cm-u-inactive');
+        nodes.modalContainer.classList.remove('cm-u-inactive');
     
         cancelBtn.addEventListener('click',()=>{
-            modalContainer.classList.add('cm-u-inactive');
+            nodes.modalContainer.classList.add('cm-u-inactive');
         })
     
         deleteBtn.addEventListener('click',()=>{
             app.deleteTeam(teamID, leagueID);
-            modalContainer.classList.add('cm-u-inactive');
+            nodes.modalContainer.classList.add('cm-u-inactive');
         })
     },
     //modal confirmar borrar jugador
     confirmDeleteIntermediaryModal: (intermediaryID)=>{
-        modalSmall.innerHTML = '';
+        nodes.modalSmall.innerHTML = '';
         const modalBody = document.createElement('div');
         modalBody.classList.add('modal-body');
         modalBody.classList.add('cm-u-spacer-mb-bigger');
@@ -1738,15 +1743,15 @@ const app = {
         modalSmall.appendChild(modalBody);
         modalSmall.appendChild(modalFooter);
         modalSmall.classList.remove('cm-u-inactive');
-        modalContainer.classList.remove('cm-u-inactive');
+        nodes.modalContainer.classList.remove('cm-u-inactive');
     
         cancelBtn.addEventListener('click',()=>{
-            modalContainer.classList.add('cm-u-inactive');
+            nodes.modalContainer.classList.add('cm-u-inactive');
         })
     
         deleteBtn.addEventListener('click',()=>{            
             app.deleteIntermediary(intermediaryID);
-            modalContainer.classList.add('cm-u-inactive');
+            nodes.modalContainer.classList.add('cm-u-inactive');
         })
     },
     //------------------------------------------EVENTOS NAVEGACION ESTRUCTURALES------------------------------------------
@@ -1789,22 +1794,22 @@ const app = {
                 }
             });
             //llamar a sortButton desde los botones que ya estaban precreados en el html
-            sortBtns.forEach(btn => {
-                app.sortButton(btn, sortBtns);
+            nodes.sortBtns.forEach(btn => {
+                app.sortButton(btn, nodes.sortBtns);
             })
             //boton buscar dentro modal
-            searchInModalBtn.addEventListener('click',(event)=>{
+            nodes.searchInModalBtn.addEventListener('click',(event)=>{
                 event.preventDefault();
-                console.log("click in search in modal");
+                // console.log("click in search in modal");
                 //asignamos el name al input correcto para que busque en la seccion que procede
                 if (location.search.startsWith('?searchAction=searchUser')){
-                    searchInModalInput.setAttribute('name','searchUser');
+                    nodes.searchInModalInput.setAttribute('name','searchUser');
                     const newParams ='?searchAction=searchUser&searchTerm='+searchInModalInput.value;
                     window.history.replaceState({},document.title, newParams);
                     // window.dispatchEvent(new Event('popstate'));
                     app.searchUsersModal();
                 } else if (location.search.startsWith('?searchAction=searchPlayer')) {
-                    searchInModalInput.setAttribute('name','searchPlayer');
+                    nodes.searchInModalInput.setAttribute('name','searchPlayer');
                     const newParams ='?searchAction=searchPlayer&searchTerm='+searchInModalInput.value;
                     window.history.replaceState({},document.title, newParams);
                     window.dispatchEvent(new Event('popstate'));
@@ -1828,7 +1833,7 @@ const app = {
                 }
             });
             //cerrar modal cuando pulsas fuera del contenido
-            modalContainerBg.addEventListener('click',()=>{
+            nodes.modalContainerBg.addEventListener('click',()=>{
             const params = new URLSearchParams(document.location.search);
             const action = params.get('searchAction');
 
@@ -1883,7 +1888,7 @@ const app = {
                 // let clean_uri = uri.substring(0,uri.indexOf("?"));
                 
                 //ocultamos el modal
-                modalContainer.classList.add('cm-u-inactive');
+                nodes.modalContainer.classList.add('cm-u-inactive');
                 
 
 
@@ -1914,32 +1919,20 @@ const app = {
         return activeUsers;
     },
     setActiveUser: (user) =>{ 
-        console.log('lo que recibo en setActiveUser');
-        // console.log(user.userUsername);
-        //miramos si el usuario activo está de hecho como usuario activo ya, si lo está, simplemente pasamos a la siguiente pantalla, si no lo está, borramos el que haya y ponemos el introducido como activo.    
         //nos guardamos en una variable el objeto activeUserList
         const activeUser = app.activeUserList();
-        console.log('activeUser lenght:');
-        console.log(Object.keys(activeUser).length);
-        //console.log(activeUser.activeUser.userUsername);
-        //si el usuario que ha pasado el form de login ya está en el el listado de usuario activo, entonces simplemente navegamos a la siguiente página
-        if (Object.keys(activeUser).length > 0 && user.userUsername === activeUser.activeUser.userUsername) {
-            console.log('ese usuario ya estaba activo asi que solo continuo a la siguiente pantalla');
-            location.href = "main.html"
-        } else {
-        //si el usuario no está hay que poner el que mandamos
-            console.log('ese usuario no estaba activo así que lo pongo como activo')
-            //primero me lo cargo
-            activeUser['activeUser'] = undefined;
-            //despues lo activo con la informacion que yo quiero
-            activeUser['activeUser'] = {
-                id: user.id,
-                userUsername: user.userUsername,
-                userEmail: user.userEmail,
-                userLastname: user.userLastname
-            };
-            location.href = "main.html"
-        }
+        //me cargo el usuario que tuviera guardado, todas las veces
+        activeUser['activeUser'] = undefined;
+        //despues lo activo con la informacion que yo quiero
+        activeUser['activeUser'] = {
+            id: user.id,
+            userUsername: user.userUsername,
+            userEmail: user.userEmail,
+            userLastname: user.userLastname,
+            salaryLimit: user.userSalaryLimit,
+        };
+        location.href = "main.html"
+
         //escribir en el llistado de usuarios activos en LS la nueva información
         localStorage.setItem('active_user', JSON.stringify(activeUser));
         console.log(localStorage);
@@ -1964,12 +1957,12 @@ const app = {
     },
     //colocar el buble de notificaciones sin leer
     setActiveUserNotificationsBubble: () => {
-        userUnreadNotifs.classList.add('cm-u-inactive');
+        nodes.userUnreadNotifs.classList.add('cm-u-inactive');
         const activeUser = app.activeUserList();
         const activeUserId = activeUser.activeUser.id;
         //miro las notificaciones que existen para ese usuario
         (async()=>{
-            resource = '/users/'+activeUserId+'/notifications';
+            const resource = '/users/'+activeUserId+'/notifications';
             const results = await app.getData(resource)
             .then(function (response) {
                 //me guardo las notificaciones
@@ -1991,6 +1984,25 @@ const app = {
                 console.warn(error);
             });
         })();
+    },
+    //widget salarios
+    setTeamSalaryLimit: (players) => {
+        console.log("entro en setTeamSalaryLimit");
+        //datos para el salary widget
+        let totalSalary = 0;
+        const activeUser = app.activeUserList();
+        totalSalary = activeUser.activeUser.salaryLimit;
+        let usedSalary = 0;
+        players.items.forEach(player => {
+            const playerSalary = Number(player.netSalary);
+            usedSalary = usedSalary + playerSalary;
+        })        
+        //buscar el límite máximo para el usuario activo
+        console.log('used:',usedSalary,' of total:',totalSalary);
+        nodes.salaryWidgetUsed.innerHTML = usedSalary;
+        nodes.salaryWidgetTotal.innerHTML = totalSalary;
+        const salaryWidth = (usedSalary * 100) / totalSalary;
+        nodes.salaryBar.setAttribute('style',`width: ${salaryWidth}%;`);
     },
     //logoutUser
     logoutActiveUser: ()=>{
@@ -2202,7 +2214,7 @@ const app = {
             personEditBtnContainer.classList.add('tablecell-short');
             personEditBtnContainer.classList.add('cm-u-centerText');
             const personEditBtn = document.createElement('button');
-            personEditBtn.classList.add('cm-o-icon-button-small--primary');
+            personEditBtn.classList.add('cm-o-icon-button-smaller--primary');
             personEditBtn.setAttribute('id','editUserDetailsBtn');
             personEditBtn.setAttribute('data-userId',user.id);
             const personEditBtnIcon = document.createElement('span');
@@ -2229,15 +2241,16 @@ const app = {
     },
     //listar detalles de usuario
     listUserDetails: (user) => {
-        userDetailsTitle.textContent = 'Edit user details';
-        userDetailsFieldUsername.setAttribute('value',user.userUsername);
-        userDetailsFieldName.setAttribute('value',user.userName);
-        userDetailsFieldLastname.setAttribute('value',user.userLastname);
-        userDetailsFieldEmail.setAttribute('value',user.userEmail);
-        if (user.userForm1read === 'on'){userDetailsFieldForm1read.checked = true;}
-        if (user.userForm1write === 'on'){userDetailsFieldForm1write.checked = true;}
-        if (user.userForm2read === 'on'){userDetailsFieldForm2read.checked = true;}
-        if (user.userForm2write === 'on'){userDetailsFieldForm2write.checked = true;}
+        nodes.userDetailsTitle.textContent = 'Edit user details';
+        nodes.userDetailsFieldUsername.setAttribute('value',user.userUsername);
+        nodes.userDetailsFieldName.setAttribute('value',user.userName);
+        nodes.userDetailsFieldLastname.setAttribute('value',user.userLastname);
+        nodes.userDetailsFieldEmail.setAttribute('value',user.userEmail);
+        nodes.userDetailsFieldSalaryLimit.setAttribute('value',user.userSalaryLimit);
+        if (user.userForm1read === 'on'){nodes.userDetailsFieldForm1read.checked = true;}
+        if (user.userForm1write === 'on'){nodes.userDetailsFieldForm1write.checked = true;}
+        if (user.userForm2read === 'on'){nodes.userDetailsFieldForm2read.checked = true;}
+        if (user.userForm2write === 'on'){nodes.userDetailsFieldForm2write.checked = true;}
     },
     //listar plantilla de jugadores
     listPlayers: (players,container,{clean = true}={}) => {
@@ -2275,10 +2288,10 @@ const app = {
             playerActiveIconState.classList.add('material-symbols-outlined');
             if(player.active === 'on') {
                 playerActiveIconState.textContent = 'check';
-                playerActiveIconContainer.classList.add('cm-o-icon-button-small--success');
+                playerActiveIconContainer.classList.add('cm-o-icon-button-smaller--success');
             } else {
                 playerActiveIconState.textContent = 'block';
-                playerActiveIconContainer.classList.add('cm-o-icon-button-small--error');
+                playerActiveIconContainer.classList.add('cm-o-icon-button-smaller--error');
             }
             playerActiveIconContainer.appendChild(playerActiveIconState);
             playerActive.appendChild(playerActiveIconContainer);
@@ -2287,7 +2300,7 @@ const app = {
             playerEditBtnContainer.classList.add('tablecell-short');
             playerEditBtnContainer.classList.add('cm-u-centerText');
             const playerEditBtn = document.createElement('button');
-            playerEditBtn.classList.add('cm-o-icon-button-small--primary');
+            playerEditBtn.classList.add('cm-o-icon-button-smaller--primary');
             playerEditBtn.setAttribute('id','editPlayerDetailsBtn');
             playerEditBtn.setAttribute('data-playerId',player.id);
             const playerEditBtnIcon = document.createElement('span');
@@ -2331,6 +2344,8 @@ const app = {
         playerIdDate.setAttribute('value',player.dniDate);
         playerSocialSecurityNumber.setAttribute('value',player.socialSecurityNr);
         if (player.sixMonthsResidency === 'on'){playerResidencyToggle.checked = true;}else if (player.sixMonthsResidency === false){playerResidencyToggle.checked = false;}
+        console.log('player.category', player.category)
+        playerCategory.value = player.category;
         playerOriginClub.setAttribute('value',player.clubFrom);
         playerLeagueOrigin.setAttribute('value',player.leagueFrom);
         playerLeagueOrigin.setAttribute('data-id',player.leagueFromID);
@@ -2454,8 +2469,8 @@ const app = {
             
         });
         modalBig.classList.remove('cm-u-inactive');
-        modalContainer.classList.remove('cm-u-inactive');
-        searchInModalInput.value = searchTerm;
+        nodes.modalContainer.classList.remove('cm-u-inactive');
+        nodes.searchInModalInput.value = searchTerm;
     
         const editUserBtns = document.querySelectorAll('#editUserDetailsBtn');
     
@@ -2470,7 +2485,7 @@ const app = {
                     let uri = window.location.toString();
                     let clean_uri = uri.substring(0,uri.indexOf("?")); 
                     window.history.replaceState({},document.title,clean_uri);
-                    modalContainer.classList.add('cm-u-inactive');
+                    nodes.modalContainer.classList.add('cm-u-inactive');
                     location.href='manage-user.html?user='+btn.getAttribute('data-userId');
                 })
             })
@@ -2480,7 +2495,7 @@ const app = {
                     let uri = window.location.toString();
                     let clean_uri = uri.substring(0,uri.indexOf("?")); 
                     window.history.replaceState({},document.title,clean_uri);
-                    modalContainer.classList.add('cm-u-inactive');
+                    nodes.modalContainer.classList.add('cm-u-inactive');
                     location.href='manage-player.html?player='+btn.getAttribute('data-userId');
                 })
             })
@@ -2489,8 +2504,8 @@ const app = {
     //listar ligas/equipos en modal
     listOptionsSelector: (results,container,origin,resourceExtraID, {clean = true} = {}) => {
         const page = document.body.id;
-        console.log('ListOptionsSelector origin:'+origin);
-        searchResultsListHeaderContainer.innerHTML = '';
+        // console.log('ListOptionsSelector origin:'+origin);
+        nodes.searchResultsListHeaderContainer.innerHTML = '';
         if(clean) { container.innerHTML = '';}
         if (results.count === 0) {container.innerHTML = 'No results. Try again.';}    
         const isHeaderEmpty = searchResultsListHeaderContainer.hasChildNodes();
@@ -2702,8 +2717,8 @@ const app = {
             });
         }
         
-        modalBig.classList.remove('cm-u-inactive');
-        modalContainer.classList.remove('cm-u-inactive');
+        nodes.modalBig.classList.remove('cm-u-inactive');
+        nodes.modalContainer.classList.remove('cm-u-inactive');
 
         const chooseOptionBtns = document.querySelectorAll('.chooseOptionBtn');
 
@@ -2728,7 +2743,7 @@ const app = {
                         history.pushState('', '', '?player='+searchOrigin);
                     }
                     //ocultamos el modal
-                    modalContainer.classList.add('cm-u-inactive');
+                    nodes.modalContainer.classList.add('cm-u-inactive');
                 });
             })
         } else if (location.search.startsWith('?searchAction=searchLeague')) {
@@ -2753,7 +2768,7 @@ const app = {
                         //asignamos el la liga escogida al input del listado
                         app.inputSetValue(playerLeagueOrigin,'/leagues/',leagueID,'leagueName');
                         //ocultamos el modal
-                        modalContainer.classList.add('cm-u-inactive');
+                        nodes.modalContainer.classList.add('cm-u-inactive');
                     });
                 })
             } else if (page === 'manageMastersTeam') {
@@ -2774,7 +2789,7 @@ const app = {
                         //asignamos el la liga escogida al input del listado
                         app.inputSetValue(teamsDetailsTeamLeague,'/leagues/',leagueID,'leagueName');
                         //ocultamos el modal
-                        modalContainer.classList.add('cm-u-inactive');
+                        nodes.modalContainer.classList.add('cm-u-inactive');
                     });
                 })
             }
@@ -2806,7 +2821,7 @@ const app = {
             teamEditBtnContainer.classList.add('tablecell-short');
             teamEditBtnContainer.classList.add('cm-u-centerText');
             const teamEditBtn = document.createElement('button');
-            teamEditBtn.classList.add('cm-o-icon-button-small--primary');
+            teamEditBtn.classList.add('cm-o-icon-button-smaller--primary');
             teamEditBtn.setAttribute('id','editTeamsDetailsBtn');
             teamEditBtn.setAttribute('data-teamId',team.id);
             const teamEditBtnIcon = document.createElement('span');
@@ -2876,7 +2891,7 @@ const app = {
             intermEditBtnContainer.classList.add('tablecell-short');
             intermEditBtnContainer.classList.add('cm-u-centerText');
             const intermEditBtn = document.createElement('button');
-            intermEditBtn.classList.add('cm-o-icon-button-small--primary');
+            intermEditBtn.classList.add('cm-o-icon-button-smaller--primary');
             intermEditBtn.classList.add('editIntermDetailsBtn');
             intermEditBtn.setAttribute('id','editIntermDetailsBtn');
             intermEditBtn.setAttribute('data-intermediaryId',intermediary.id);
@@ -2905,12 +2920,12 @@ const app = {
     },
     //listar detalles de intermediario
     listIntermediaryDetails: (intermediary) => {
-        intermsDetailsNumber.setAttribute('value', intermediary.number);
-        intermsDetailsName.setAttribute('value',intermediary.name);
-        intermsDetailsLastname.setAttribute('value',intermediary.lastname);
-        intermsDetailsEmail1.setAttribute('value',intermediary.email1);
-        intermsDetailsPhone1.setAttribute('value',intermediary.phone1);
-        intermsDetailsErp.setAttribute('value',intermediary.erp);
+        nodes.intermsDetailsNumber.setAttribute('value', intermediary.number);
+        nodes.intermsDetailsName.setAttribute('value',intermediary.name);
+        nodes.intermsDetailsLastname.setAttribute('value',intermediary.lastname);
+        nodes.intermsDetailsEmail1.setAttribute('value',intermediary.email1);
+        nodes.intermsDetailsPhone1.setAttribute('value',intermediary.phone1);
+        nodes.intermsDetailsErp.setAttribute('value',intermediary.erp);
     },
     //listar jugadores gestionados en detalles de intermediario
     listManagedPlayers: (players, container,{clean = true}={}) => {
@@ -2957,11 +2972,11 @@ const app = {
         paginationCellForward.classList.add('tablecell-long');
         paginationCellForward.classList.add('cm-u-textRight');
         const paginationButtonForward = document.createElement('button');
-        paginationButtonForward.classList.add('cm-o-icon-button-small--primary');
+        paginationButtonForward.classList.add('cm-o-icon-button-smaller--primary');
         paginationButtonForward.id = 'goNextPage';
         paginationButtonForward.textContent = '>';
         const paginationButtonBack = document.createElement('button');
-        paginationButtonBack.classList.add('cm-o-icon-button-small--disabled');
+        paginationButtonBack.classList.add('cm-o-icon-button-smaller--disabled');
         paginationButtonBack.id = 'goPrevPage';
         paginationButtonBack.textContent = '<';
         paginationCellBack.appendChild(paginationButtonBack);
@@ -2978,8 +2993,8 @@ const app = {
             const activeUserId = activeUser.activeUser.id;
             const goNextBtn = container.querySelector('#goNextPage');
             const goPrevBtn = container.querySelector('#goPrevPage');
-            const goNextBtnActive = goNextBtn.classList.contains('cm-o-icon-button-small--primary');
-            const goPrevBtnActive = goPrevBtn.classList.contains('cm-o-icon-button-small--primary');
+            const goNextBtnActive = goNextBtn.classList.contains('cm-o-icon-button-smaller--primary');
+            const goPrevBtnActive = goPrevBtn.classList.contains('cm-o-icon-button-smaller--primary');
         
             if (goNextBtnActive) {
                 goNextBtn.addEventListener('click',()=>{
@@ -2994,7 +3009,7 @@ const app = {
                         searchTerm = searchInModalInput.value;
                         app.filterPlayers(searchTerm, {page:app.currentListPage, limit:5});
                     } else if (location.search.startsWith('?searchAction=searchLeague')){ 
-                        console.log("click filtrando ligas adelante");
+                        // console.log("click filtrando ligas adelante");
                         searchTerm = searchInModalInput.value;
                         app.filterLeagues(searchTerm, {page:app.currentListPage, limit:5});
                     } else if (location.search.startsWith('?searchAction=searchTeam')){ 
@@ -3128,16 +3143,17 @@ const app = {
     },
     //limpiar el formulario de datos de usuario
     cleanUserDetails: () => {
-        userDetailsForm.reset();
-        userDetailsFieldName.removeAttribute('value');
-        userDetailsFieldLastname.removeAttribute('value');
-        userDetailsFieldEmail.removeAttribute('value');
-        userDetailsFieldPwd.removeAttribute('value');
-        userDetailsFieldPwd2.removeAttribute('value');
-        userDetailsFieldForm1read.checked = false;
-        userDetailsFieldForm1write.checked = false;
-        userDetailsFieldForm2read.checked = false;
-        userDetailsFieldForm2write.checked = false;
+        nodes.userDetailsForm.reset();
+        nodes.userDetailsFieldName.removeAttribute('value');
+        nodes.userDetailsFieldLastname.removeAttribute('value');
+        nodes.userDetailsFieldEmail.removeAttribute('value');
+        nodes.userDetailsFieldPwd.removeAttribute('value');
+        nodes.userDetailsFieldPwd2.removeAttribute('value');
+        nodes.userDetailsFieldSalaryLimit.removeAttribute('value');
+        nodes.userDetailsFieldForm1read.checked = false;
+        nodes.userDetailsFieldForm1write.checked = false;
+        nodes.userDetailsFieldForm2read.checked = false;
+        nodes.userDetailsFieldForm2write.checked = false;
     },
     //limpiar el formulario de detalles de jugador
     cleanPlayerDetails: () => {
@@ -3366,6 +3382,16 @@ const app = {
         }
         
     },
+    //pintar un select con las opciones que le des
+    paintSelectOptions: (element,optionsList) => {
+        const selectOptions = element.options;
+        optionsList.map(optionItem => {
+            const newOption = document.createElement("option");
+            newOption.text = optionItem;
+            newOption.value = optionItem;
+            selectOptions.add(newOption);
+        })
+    },
     //varias
     variousUtils: ()=> {
         //faking focus state for search and select fields w/ icon
@@ -3380,9 +3406,9 @@ const app = {
 
             field.addEventListener('focusout', event => {  
                 if (field.value === '') {
-                    console.log('esta vacio');
+                    // console.log('esta vacio');
                 } else {
-                    console.log('esta relleno');
+                    // console.log('esta relleno');
                     const fieldContainer = field.closest('.cm-c-field-icon');
                     fieldContainer.classList.remove('cm-c-field-icon--focus');
                 }

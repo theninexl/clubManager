@@ -1,0 +1,36 @@
+.cm-c-salary-widget {
+  $block:&;
+  flex-grow: 1;
+
+  &__titles {
+    display: flex;
+    justify-content: space-between;
+
+    .salaryWidgetTitles {
+      $block:&;
+      display: flex;
+      &--left, &--right {
+        flex-grow: 1;
+      }
+      &--right {
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  .salaryWidgetBar {
+    $block:&;
+    background-color: getColor(primary);
+    border-radius: getSize($small);
+    display: flex;
+    height: getSize($medium);
+    margin-top: getSize($small);
+    position: relative;
+
+    &--limit {
+      background-color: getColor(secondary);
+      border-radius: getSize($small);
+      height: getSize($medium);
+    }
+  }
+}

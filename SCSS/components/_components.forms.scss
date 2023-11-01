@@ -28,7 +28,7 @@
     input[type=text], input[type=number], input[type=email], input[type=password], input[type=date]{
         border:1px solid getColor(primaryLight);
         border-radius: getSize($small);
-        height:getSize($huge);
+        height:getSize($larger);
         text-indent: getSize($medium);
         @include font-size($defFontSizeDT, $lineHeightDT);
         @include cm-qs-normal;
@@ -102,14 +102,14 @@
         background-color: getColor(white);
         border-radius:getSize($small);
         position: relative;
-        height: getSize($huge);
-        width: getSize($doubleHuge);
+        height: getSize($large);
+        width: getSize($huger);
 
         input[type="checkbox"] {
             border:1px solid getColor(scarpaFlowLight);
             background-color: getColor(scarpaFlowLight);
-            height: getSize($huge);
-            width: getSize($huge);
+            height: getSize($large);
+            width: getSize($large);
             right:0;
             position: absolute;
             transition: transform 0.4s cubic-bezier(0.45, 1.8, 0.5, 0.75);
@@ -125,17 +125,17 @@
         input[type="checkbox"]:checked::before {
             content:"check";
             border-radius:getSize($small);
-            box-shadow: inset 0 getSize($huge) getColor(success);
+            box-shadow: inset 0 getSize($large) getColor(success);
             display: flex;
             justify-content:center;
             align-items: center;
-            height: getSize($huge);
-            width: getSize($huge);
+            height: getSize($large);
+            width: getSize($large);
             opacity:1;
         }
 
         input[type="checkbox"]:checked {
-            transform:translateX(-48px);
+            transform:translateX(-32px);
             position: absolute;
             
         }
@@ -147,7 +147,7 @@
     $block:&;
     border:1px solid getColor(primaryLight);
     border-radius: getSize($small);
-    height:getSize($huge);
+    height:getSize($larger);
     display: flex;
     overflow: hidden;
     
@@ -220,7 +220,7 @@
     $block:&;
     border:1px solid getColor(primaryLight);
     border-radius: getSize($small);
-    height:getSize($huge);
+    height:getSize($larger);
     display: inline-flex;
     overflow: hidden;
     flex-grow:1;
@@ -250,12 +250,12 @@
     &::after {
         content:"expand_more";
         border-radius:getSize($small);
-        box-shadow: inset getSize($huge) getSize($huge) getColor(scarpaFlowLight);
+        box-shadow: inset -150px getSize($large) getSize($large) getColor(scarpaFlowLight);
         display: flex;
         justify-content:center;
         align-items: center;
-        height: getSize($huge);
-        width: getSize($huge);
+        height: getSize($larger);
+        width: getSize($larger);
         color:getColor(scarpaFlow);
         font-family: 'Material Symbols Outlined';
         font-weight: normal;
@@ -271,6 +271,6 @@
         -webkit-font-smoothing: antialiased;
         position:absolute;
         right:0;
-        z-index: -1;
+        z-index: 0;
     }
 }

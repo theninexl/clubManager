@@ -86,9 +86,9 @@
                 </div>
                 <div class="cm-c-navbar__right">
                     <ul class="navbar-links-hrz">
-                        <li><a class="navbar-links__textbutt" id="activeUserBtn">Username</a></li>
-                        <li><button id="manageUsersBtn" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">group</span></a></button></li>
-                        <li><button id="notifsBtn" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble" id="userUnreadNotifs"></span></button></li>
+                        <li><a class="navbar-links__textbutt-small" id="activeUserBtn">Username</a></li>
+                        <li><button id="manageUsersBtn" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">group</span></a></button></li>
+                        <li><button id="notifsBtn" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble" id="userUnreadNotifs"></span></button></li>
                      </ul>
                 </div>
             </nav>
@@ -105,26 +105,44 @@
             <nav class="cm-c-navbar cm-u-spacer-mt-bigger">
                 <ul class="navbar-links-vert">
                     <li><button id="manageTeamBtn" class="cm-o-button-cat--ghost">Plantilla</button></li>
-                    <li><button class="cm-o-button-cat--ghost-inactive">Contratos</button></li>
-                    <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
                     <li><button id="manageMastersBtn" class="cm-o-button-cat--ghost">Maestros</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Calendario pagos</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Reporting</button></li>
-                    <li><button class="cm-o-button-cat--ghost-inactive">Más opciones</button></li>
                 </ul>
             </nav>
         </aside>
-        <section class="cm-l-container-2col__body cm-u-spacer-mt-huge">
+        <section class="cm-l-container-2col__body">
             <section id="playersList" class="">
-                <header class="cm-l-headtool cm-u-spacer-mb-bigger">
-                    <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear">Manage Team</h1></div>
-                    <div class="cm-l-headtool__toolbar">
+                <header class="cm-l-contentHeader">
+                    <div class="cm-l-contentHeader__titleBar">
+                        <div class="titleBar__title"><h1 class="cm-u-text-bear">Manage Team</h1></div>
+                        <div class="titleBar__tools">
+                            <button class="cm-o-icon-button-small--primary" id="addPlayersBtn"><span class="material-symbols-outlined">add</span></button>
+                        </div>
+                    </div>
+                    <div class="cm-l-contentHeader__toolBar cm-u-spacer-mt-big">
                         <form class="cm-c-form-simple-hrz" id="searchPlayersForm">
                             <div class="cm-c-field-icon">
                                 <input class="cm-c-field-icon__input" id="searchPlayer" name="searchPlayer" placeholder="Search players">
                                 <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchPlayersBtn"><span class="material-symbols-outlined">search</span></button>
                             </div>                    
                         </form>
-                        <button class="cm-o-icon-button--primary" id="addPlayersBtn"><span class="material-symbols-outlined">group_add</span></button>
+                    </div>
+                    <div class="cm-l-contentHeader__widgetBar cm-u-spacer-mt-big">
+                        <div class="cm-u-spacer-mb-big cm-c-salary-widget">
+                            <div class="cm-c-salary-widget__titles">
+                                <div class="salaryWidgetTitles salaryWidgetTitles--left">
+                                    <span class="cm-u-text-black-cat">Salary Limit</span>
+                                </div>
+                                <div class="salaryWidgetTitles salaryWidgetTitles--right">
+                                    <span class="cm-u-text-black-cat salaryUsed">XX</span>€ of&nbsp;<span  class=" cm-u-text-black-cat salaryTotal">XX</span>€
+                                </div>
+                            </div>
+                            <div class="salaryWidgetBar">
+                                <div class="salaryWidgetBar--limit"></div>
+                            </div>
+                        </div>
                     </div>
                 </header>
                 <section class="cm-l-body">
@@ -133,13 +151,26 @@
                     </header>
                     <div class="cm-l-tabledata cm-u-spacer-mb-huge">
                         <div class="cm-l-tabledata__header">
-                            <div class="tablecell-medium"><button data-field="userName" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-medium"><button data-field="userLastname" class="cm-o-sortButton">LastName <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-medium"><button data-field="alias" class="cm-o-sortButton">Alias <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-medium"><button data-field="country" class="cm-o-sortButton">Country <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-short cm-u-centerText"><button data-field="dorsal" class="cm-o-sortButton">Dorsal <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-medium"><button data-field="position" class="cm-o-sortButton">Position <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                            <div class="tablecell-short cm-u-centerText"><button data-field="position" class="cm-o-sortButton">active <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-medium">
+                                <button data-field="userName" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button>
+                            </div>
+                            <div class="tablecell-medium">
+                                <button data-field="userLastname" class="cm-o-sortButton">LastName <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button>
+                            </div>
+                            <div class="tablecell-medium">
+                                <button data-field="alias" class="cm-o-sortButton">Alias <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button>
+                            </div>
+                            <div class="tablecell-medium">
+                                <button data-field="country" class="cm-o-sortButton">Country <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button>
+                            </div>
+                            <div class="tablecell-short cm-u-centerText">
+                                <button data-field="dorsal" class="cm-o-sortButton">Dorsal <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button>
+                            </div>
+                            <div class="tablecell-medium">
+                                <button data-field="position" class="cm-o-sortButton">Position <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button>
+                            </div>
+                            <div class="tablecell-short cm-u-centerText">
+                                <button data-field="position" class="cm-o-sortButton">active <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
                             <div class="tablecell-short cm-u-centerText">Edit</div>
                         </div>
                         <div id="playersListContainer"></div>
@@ -150,7 +181,7 @@
         </section>
     </main>
     
-    <footer class="cm-l-footer">
+    <!-- <footer class="cm-l-footer">
         <div class="cm-l-container">
             <nav class="cm-c-navbar">
                 <div class="cm-c-navbar__left">
@@ -161,10 +192,8 @@
                 </div>
             </nav>
         </div>
-    </footer>
+    </footer> -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./src/nodes.js"></script>
-    <script src="./src/main.js"></script>   
-    <script src="./src/navigation.js"></script>     
+    <script type="module" src="./src/main.js"></script>   
 </body>
 </html>

@@ -34,6 +34,16 @@
 
 @mixin icon-button-small {
     @include icon-button;  
+    width: getSize($larger);
+    height: getSize($larger);
+
+    span {
+        font-size: getSize($bigger);
+    }
+}
+
+@mixin icon-button-smaller {
+    @include icon-button;  
     width: getSize($large);
     height: getSize($large);
 

@@ -86,9 +86,9 @@
                 </div>
                 <div class="cm-c-navbar__right">
                     <ul class="navbar-links-hrz">
-                        <li><a class="navbar-links__textbutt" id="activeUserBtn">Username</a></li>
-                        <li><button id="manageUsersBtn" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">group</span></a></button></li>
-                        <li><button id="notifsBtn" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble" id="userUnreadNotifs"></span></button></li>
+                        <li><a class="navbar-links__textbutt-small" id="activeUserBtn">Username</a></li>
+                        <li><button id="manageUsersBtn" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">group</span></a></button></li>
+                        <li><button id="notifsBtn" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble" id="userUnreadNotifs"></span></button></li>
                      </ul>
                 </div>
             </nav>
@@ -105,19 +105,29 @@
             <nav class="cm-c-navbar cm-u-spacer-mt-bigger">
                 <ul class="navbar-links-vert">
                     <li><button id="manageTeamBtn" class="cm-o-button-cat--ghost">Plantilla</button></li>
-                    <li><button class="cm-o-button-cat--ghost-inactive">Contratos</button></li>
-                    <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
                     <li><button id="manageMastersBtn" class="cm-o-button-cat--ghost">Maestros</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Calendario pagos</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Reporting</button></li>
-                    <li><button class="cm-o-button-cat--ghost-inactive">Más opciones</button></li>
                 </ul>
             </nav>
         </aside>
-        <section class="cm-l-container-2col__body cm-u-spacer-mt-huge">
+        <section class="cm-l-container-2col__body">
             <section id="teamDetails" class="">
-                <header class="cm-l-headtool cm-u-spacer-mb-bigger">
+                <!-- <header class="cm-l-headtool cm-u-spacer-mb-bigger">
                     <div class="cm-l-headtool__title"><h1 class="cm-u-text-bear" id="teamsDetailsTitle">Add new team</h1></div>
                     <div class="cm-l-headtool__toolbar"></div>
+                </header> -->
+                <header class="cm-l-contentHeader">
+                    <div class="cm-l-contentHeader__titleBar">
+                        <div class="titleBar__title"><h1 class="cm-u-text-bear"  id="teamsDetailsTitle">Add new team</h1></div>
+                        <div class="titleBar__tools">
+                            <button type="button" class="cm-o-icon-button-small--primary" id="teamsDetailsFormAddBtn"><span class="material-symbols-outlined">save</span></button>
+                            <button type="button" class="cm-o-icon-button-small--primary" id="teamsDetailsFormUpdateBtn"><span class="material-symbols-outlined">save</span></button>
+                            <button type="button" class="cm-o-icon-button-small--primary" id="teamsDetailsFormDeleteBtn"><span class="material-symbols-outlined">delete</span></button>
+                            <button type="button" class="cm-o-icon-button-small--primary" id="teamsDetailsFormCancelBtn"><span class="material-symbols-outlined">cancel</span></button>
+                        </div>
+                    </div>
                 </header>
                 <section class="cm-l-body">
                     <div class="cm-c-accordion cm-u-spacer-mb-huge">
@@ -244,10 +254,10 @@
                                 </div>
                             </div>
                             <div class="cm-l-form__row cm-u-centerText">
-                                <button type="button" class="cm-o-button-cat--primary" id="teamsDetailsFormAddBtn">Add team</button>
+                                <!-- <button type="button" class="cm-o-button-cat--primary" id="teamsDetailsFormAddBtn">Add team</button>
                                 <button type="button" class="cm-o-button-cat--primary" id="teamsDetailsFormUpdateBtn">Update team details</button>
                                 <button type="button" class="cm-o-button-cat--transparent" id="teamsDetailsFormDeleteBtn">Delete</button>
-                                <button type="button" class="cm-o-button-cat--transparent" id="teamsDetailsFormCancelBtn">Cancel</button>
+                                <button type="button" class="cm-o-button-cat--transparent" id="teamsDetailsFormCancelBtn">Cancel</button> -->
                             </div>
                         </form>
                     </div>
@@ -255,22 +265,7 @@
             </section>
         </section>
     </main>
-    
-    <footer class="cm-l-footer">
-        <div class="cm-l-container">
-            <nav class="cm-c-navbar">
-                <div class="cm-c-navbar__left">
-                    <ul class="navbar-links-hrz">
-                       <li><a class="navbar-links__link">Política de privacidad</a></li>
-                       <li><a class="navbar-links__link">Términos y condiciones</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </footer>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./src/nodes.js"></script>
-    <script src="./src/main.js"></script>   
-    <script src="./src/navigation.js"></script>     
+    <script type="module" src="./src/main.js"></script>   
 </body>
 </html>

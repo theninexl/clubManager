@@ -2,7 +2,7 @@
     border:0;
     border-radius:getSize($small);
     cursor:pointer;
-    text-align: center;
+    text-align: left;
 
     &:hover {
         text-decoration: none;
@@ -42,7 +42,7 @@
 }
 
 @mixin button-cat {
-    padding:getSize($medium);
+    padding:getSize($tiny)getSize($small);
     @include button;
     @extend .cm-u-text-cat;
     @include cm-qs-bold;

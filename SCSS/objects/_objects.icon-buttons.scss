@@ -41,6 +41,14 @@
     &--primary {
         @include icon-button-small;
         @include icon-button-primary;
+
+        &.active {
+            @include icon-button-pressed;
+        }
+
+        &.active--secondary {
+            @include icon-button-pressed--secondary;
+        }
     }
 
     &--secondary {
@@ -65,6 +73,47 @@
 
     &--disabled {
         @include icon-button-small;
+        @include icon-button-disabled;
+    }
+}
+
+.cm-o-icon-button-smaller {
+    $block:&;    
+    &--primary {
+        @include icon-button-smaller;
+        @include icon-button-primary;
+
+        &.active {
+            @include icon-button-pressed;
+        }
+
+        &.active--secondary {
+            @include icon-button-pressed--secondary;
+        }
+    }
+
+    &--secondary {
+        @include icon-button-smaller;
+        @include icon-button-secondary;
+    }
+
+    &--pressed {
+        @include icon-button-smaller;
+        @include icon-button-pressed;
+    }
+
+    &--success {
+        @include icon-button-smaller;
+        @include icon-button-success;
+    }
+
+    &--error {
+        @include icon-button-smaller;
+        @include icon-button-error;
+    }
+
+    &--disabled {
+        @include icon-button-smaller;
         @include icon-button-disabled;
     }
 }

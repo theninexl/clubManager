@@ -7,7 +7,9 @@ $medium:calc($tiny * 2) + calc($base * 2); //12px
 $big:calc($small * 2); //16px
 $bigger:calc($medium * 2); //24px
 $large:calc($big * 2); //32px
+$larger:calc($large + $small); //40px
 $huge:calc($bigger * 2); //48px
+$huger:calc($large * 2); //64px
 $enormous:calc($bigger * 3); //72px
 $doubleHuge:calc($huge * 2); //96px
 $gigantic:calc($enormous * 2); //144px

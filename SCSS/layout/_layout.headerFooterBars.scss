@@ -3,10 +3,10 @@
     border-bottom: 1px solid getColor(secondaryLight);
     position: fixed;
     top:0;
-    z-index: 1;
+    z-index: 10;
     width: 100%;
-    padding-top: getLines(1);
-    padding-bottom: getLines(1);
+    padding-top: getSize($medium);
+    padding-bottom: getSize($medium);
 }
 
 .cm-l-footer {

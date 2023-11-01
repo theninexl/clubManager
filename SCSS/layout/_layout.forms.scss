@@ -42,13 +42,13 @@
                 width:getCols(12);
 
                 span:not(.material-symbols-outlined) {
-                    text-align: right;
+                    text-align: left;
                     width:getCols(2);
                 }
 
-                input[type=text], input[type=email], input[type=password], input[type=date], .cm-c-field-icon, .cm-c-select-icon {
-                    width:getCols(5);
-                    max-width:getCols(5);
+                input[type=text], input[type=email], input[type=password], input[type=date], input[type=number], .cm-c-field-icon, .cm-c-select-icon {
+                    width:getCols(3);
+                    max-width:getCols(3);
                 }
 
                 span.assistance, span.error  {
@@ -77,7 +77,7 @@
                 margin-bottom:getSize($small);
 
                 span:not(.material-symbols-outlined) {
-                    text-align: right;
+                    text-align: left;
                     width:getCols(2);
                     
                 }

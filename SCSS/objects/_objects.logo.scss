@@ -5,6 +5,7 @@
     flex-flow: row nowrap;
     align-items: center;
     gap:getSize($small);
+    @include font-size($fontSizeJumpDT1, $lineHeightDT);
     @include cm-qs-bold;
 
     &:hover {

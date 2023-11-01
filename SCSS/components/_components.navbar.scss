@@ -31,13 +31,14 @@
         flex-flow: row nowrap;
         align-items: stretch;
         gap: getSize($small);
-        height: getSize($huge);
+        height: getSize($larger);
     }
 
     &-vert {
         display: flex;
         flex-flow: column nowrap;
         gap: getSize($small);
+        max-width: 75%;
     }
     
 
@@ -79,6 +80,29 @@
         cursor:pointer;
         display: block;
         line-height: getSize($huge);
+        padding: 0 getSize($big);
+        @extend .cm-u-text-black-mouse;
+
+        &:hover {
+            text-decoration: none;
+            background-color: getColor(scarpaHover);
+        }
+
+        &.active {
+            background-color: getColor(primary);
+            box-shadow: 0px 0px 0px 0px;
+            color:getColor(white);
+        }
+    }
+
+    &__textbutt-small {
+        background-color:getColor(white);
+        box-shadow:0px 0px 0px 1px getColor(scarpaFlowLight) inset;
+        border-radius:getSize($small);
+        color:getColor(scarpaFlow);
+        cursor:pointer;
+        display: block;
+        line-height: getSize($larger);
         padding: 0 getSize($medium);
         @extend .cm-u-text-black-mouse;
 

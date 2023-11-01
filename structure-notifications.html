@@ -24,9 +24,9 @@
                 </div>
                 <div class="cm-c-navbar__right">
                     <ul class="navbar-links-hrz">
-                        <li><a class="navbar-links__textbutt">Username</a></li>
-                        <li><a href="manage-users.html" class="cm-o-icon-button--primary"><span class="material-symbols-outlined">group</span></a></li>
-                        <li><a href="structure.html" class="cm-o-icon-button--primary active"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble">3</span></a></li>
+                        <li><a class="navbar-links__textbutt-small" id="activeUserBtn">Username</a></li>
+                        <li><button id="manageUsersBtn" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">group</span></a></button></li>
+                        <li><button id="notifsBtn" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble" id="userUnreadNotifs"></span></button></li>
                      </ul>
                 </div>
             </nav>
@@ -53,12 +53,11 @@
         <aside class="cm-l-container-2col__aside">
             <nav class="cm-c-navbar cm-u-spacer-mt-bigger">
                 <ul class="navbar-links-vert">
-                    <li><a href="manage-team.html" class="navbar-links__link">Plantilla</a></li>
-                    <li><a class="navbar-links__link inactive">Contratos</a></li>
-                    <li><a class="navbar-links__link inactive">Tesorería</a></li>
-                    <li><a class="navbar-links__link inactive">Maestros</a></li>
-                    <li><a class="navbar-links__link inactive">Reporting</a></li>
-                    <li><a class="navbar-links__link inactive">Más opciones</a></li>
+                    <li><button id="manageTeamBtn" class="cm-o-button-cat--ghost">Plantilla</button></li>
+                    <li><button id="manageMastersBtn" class="cm-o-button-cat--ghost">Maestros</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Calendario pagos</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Reporting</button></li>
                 </ul>
             </nav>
         </aside>

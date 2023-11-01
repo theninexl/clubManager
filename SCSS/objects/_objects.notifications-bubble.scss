@@ -12,6 +12,6 @@
     padding: 0 getSize($tiny);
     position: absolute;
     top:0;
-    right: getSize($tiny) * -1;
-    @extend .cm-u-text-mouse;
+    right: getSize($medium) * -1;
+    font-size: 14px !important;
 }

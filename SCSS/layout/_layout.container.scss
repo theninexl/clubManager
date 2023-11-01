@@ -36,13 +36,13 @@
         flex-flow: row nowrap;
         min-height: 100vh;
         // min-height: calc(100vh - getLines(8));
-        padding-top: getLines(4);
+        padding-top: getSize($larger) + (getSize($medium) * 2);
         @include cm-container;
 
         &__aside {
             border-right:1px solid getColor(secondaryLight);
-            width: getCols(2.5);
-            min-width: getCols(2.5);
+            width: getCols(2);
+            min-width: getCols(2);
             & nav {
                 position: fixed;
             }
@@ -50,6 +50,7 @@
 
         &__body {
             flex-grow: 1;
+            overflow-x: auto;
             padding: 0 getGutter(regular);
         }
     }

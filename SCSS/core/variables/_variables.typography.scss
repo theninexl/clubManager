@@ -8,22 +8,22 @@ $qs-medium: 500;
 $qs-bold: 700;
 
 //base size for desktop/mobile without unit
-$defFontSizeDT:18;
+$defFontSizeDT:14;
 
 //scaling factors desktop
-$factorLineHeightDT:1.31;
+$factorLineHeightDT:1.715;
 $factorScaleDT:1.333;
 
 //scaling factors mobile
 
 //Base line height calculation
-$lineHeightDT: ceil($defFontSizeDT * $factorLineHeightDT); //24
+$lineHeightDT: floor($defFontSizeDT * $factorLineHeightDT); //24
 
 //scaling jumps
-$fontSizeJumpDT1: ceil($defFontSizeDT * $factorScaleDT); //24
-$fontSizeJumpDT2: ceil($fontSizeJumpDT1 * $factorScaleDT); //32
-$fontSizeJumpDT3: ceil($fontSizeJumpDT2 * $factorScaleDT); //43
-$fontSizeJumpDT4: floor($fontSizeJumpDT3 * $factorScaleDT); //57
+$fontSizeJumpDT1: ceil($defFontSizeDT * $factorScaleDT); //19
+$fontSizeJumpDT2: floor($fontSizeJumpDT1 * $factorScaleDT); //25
+$fontSizeJumpDT3: floor($fontSizeJumpDT2 * $factorScaleDT); //33
+$fontSizeJumpDT4: floor($fontSizeJumpDT3 * $factorScaleDT); //44
 
 //other special sizes
 $mouseFontSizeDT:14;
