@@ -190,3 +190,7 @@ dist
 
 # secrets.js (API_KEY)
 src/secrets.js
+
+# others
+node_modules
+demo
