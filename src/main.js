@@ -3401,7 +3401,7 @@ const app = {
         const tabContentLayers = document.querySelectorAll('.tabContent');
         const hideAllTabs = () => {
             tabContentLayers.forEach(tabContentLayer => {
-                tabContentLayer.setAttribute('style','opacity:0; height:0;')
+                tabContentLayer.setAttribute('style','opacity:0; height:0; overflow:hidden;')
             });
             tabContentLinks.forEach(tabContentLink => tabContentLink.classList.remove('active'));
         };
@@ -3411,11 +3411,11 @@ const app = {
                 const targetTab = document.getElementById(targetData);
                 hideAllTabs();
                 tabContentLink.classList.add('active');
-                targetTab.setAttribute('style','opacity:1; height:auto;');
+                targetTab.setAttribute('style','opacity:1; height:auto; overflow:hidden;');
             });
         })
         hideAllTabs();
-        tabContentLayers[0].setAttribute('style','opacity:1; height:auto;');
+        tabContentLayers[0].setAttribute('style','opacity:1; height:auto; overflow:visible;');
         tabContentLinks[0].classList.add('active');
     },
     //varias
