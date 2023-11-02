@@ -28,7 +28,7 @@
     input[type=text], input[type=number], input[type=email], input[type=password], input[type=date]{
         border:1px solid getColor(primaryLight);
         border-radius: getSize($small);
-        height:getSize($larger);
+        height:calc(getSize($larger) - 4px);
         text-indent: getSize($medium);
         @include font-size($defFontSizeDT, $lineHeightDT);
         @include cm-qs-normal;

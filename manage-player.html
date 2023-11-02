@@ -377,10 +377,138 @@
                                         </div>
                                     </div>
                                     <div class="tabContent" id="contractVariables">
-
-                                        <!-- <header class="cm-l-body-static-header--inTab cm-u-spacer-mb-bigger">
-                                            <p class="cm-u-text-black-cat">List of players</p>
-                                        </header> -->
+                                        <div class="cm-c-simpleAccordion cm-u-spacer-mb-bigger">
+                                            <div class="cm-c-simpleAccordion__trigger">
+                                                <div class="cm-l-contentHeader__titleBar">
+                                                    <div class="titleBar__title"></div>
+                                                    <div class="titleBar__tools">
+                                                        <button class="cm-o-icon-button-small--primary" id="addBonusVariable"><span class="material-symbols-outlined">add</span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cm-c-simpleAccordion__content">
+                                                <header class="cm-l-body-static-header--inTab" style="margin-top:0;">
+                                                    <p class="cm-u-text-black-cat">Create New Variable</p>
+                                                </header>
+                                                <div class="cm-l-form-panel__row">
+                                                    <label for="newVariableDescription" class="panel-field-long">
+                                                        <span>Description</span>
+                                                        <input type="text" id="newVariableDescription" name="newVariableDescription" placeholder="Add description">
+                                                        <span class="assistance" aria-live="polite">Add description</span>    
+                                                    </label>
+                                                </div>
+                                                <div class="cm-l-form-panel__row cm-u-spacer-mt-big">
+                                                    <label for="" class="">
+                                                        <span style="display:inline-block; width:160px;">Add Condition</span>
+                                                        <div class="cm-c-select-icon">
+                                                            <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
+                                                                <option value="">Select condition</option>
+                                                                <option value="1">Games played</option>
+                                                                <option value="2">Mins. played</option>
+                                                                <option value="3">Goals scored</option>
+                                                                <option value="4">Goal assists</option>
+                                                                </select>
+                                                        </div>            
+                                                    </label>
+                                                    <label for="" class="">
+                                                        <div class="cm-c-select-icon">
+                                                            <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
+                                                                <option value="">Select condition</option>
+                                                                <option value="1">Greater than</option>
+                                                                <option value="2">Equals</option>
+                                                                <option value="3">Lower than</option>
+                                                                </select>
+                                                        </div>            
+                                                    </label>
+                                                    <label for="" class="">
+                                                        <input type="text" id="" name="newVariableDescription" placeholder="Add value">        
+                                                    </label>
+                                                    <button class="cm-o-icon-button-small--secondary" id="addBonusVariable"><span class="material-symbols-outlined">add</span></button>
+                                                </div>
+                                                <div class="cm-l-form-panel__row">
+                                                    <div class="cm-c-select-icon" style="width:156px; max-width:156px;">
+                                                        <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" >
+                                                            <option value="">Select condition</option>
+                                                            <option value="1">And</option>
+                                                            <option value="2">Or</option>
+                                                            </select>
+                                                    </div>  
+                                                    <label for="" class="">
+                                                        <div class="cm-c-select-icon">
+                                                            <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
+                                                                <option value="">Select condition</option>
+                                                                <option value="1">Games played</option>
+                                                                <option value="2">Mins. played</option>
+                                                                <option value="3">Goals scored</option>
+                                                                <option value="4">Goal assists</option>
+                                                                </select>
+                                                        </div>            
+                                                    </label>
+                                                    <label for="" class="">
+                                                        <div class="cm-c-select-icon">
+                                                            <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
+                                                                <option value="">Select condition</option>
+                                                                <option value="1">Greater than</option>
+                                                                <option value="2">Equals</option>
+                                                                <option value="3">Lower than</option>
+                                                                </select>
+                                                        </div>            
+                                                    </label>
+                                                    <label for="" class="">
+                                                        <input type="text" id="" name="newVariableDescription" placeholder="Add value">        
+                                                    </label>
+                                                    <button class="cm-o-icon-button-small--secondary" id="addBonusVariable"><span class="material-symbols-outlined">add</span></button>
+                                                    <button class="cm-o-icon-button-small--secondary" id="addBonusVariable"><span class="material-symbols-outlined">delete</span></button>
+                                                </div>
+                                                <div class="cm-l-form-panel__row cm-u-spacer-mt-big">
+                                                    <label for="" class="">
+                                                        <span style="display:inline-block; width:160px;">Add Amount</span>
+                                                        <input type="text" id="" name="newVariableDescription" placeholder="Add value">        
+                                                    </label>
+                                                    <label for="" class="">
+                                                        <div class="cm-c-select-icon">
+                                                            <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
+                                                                <option value="">Select type</option>
+                                                                <option value="1">Type 1</option>
+                                                                <option value="1">Type 2</option>
+                                                                </select>
+                                                        </div>            
+                                                    </label>
+                                                    <label for="" class="">
+                                                        <div class="cm-c-select-icon">
+                                                            <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
+                                                                <option value="">Select beneficiary</option>
+                                                                <option value="1">Player</option>
+                                                                <option value="2">Intermediary</option>
+                                                                <option value="3">Origin Club</option>
+                                                                <option value="3">Destination Club</option>
+                                                                </select>
+                                                        </div>            
+                                                    </label>
+                                                </div>
+                                                <div class="cm-l-form-panel__row cm-u-spacer-mt-big">
+                                                    <label for="" class="">
+                                                        <span style="display:inline-block; width:160px;">Start/End dates</span>
+                                                        <input type="date" id="" name="" placeholder="Start">       
+                                                    </label>
+                                                    <label for="" class="">
+                                                        <input type="date" id="" name="" placeholder="End">       
+                                                    </label>
+                                                    <label for="" class="" style="display:flex; gap:8px; align-items: center;">
+                                                        <span>Reedemable?</span>
+                                                        <div class="cm-c-form-simple__radio-toggle">
+                                                            <input type="checkbox" id="" name="">
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="cm-l-form-panel__row cm-u-spacer-mt-big cm-u-centerText cm-u-spacer-mb-large">
+                                                    <button type="button" class="cm-o-button-mouse--primary" id="variableAdd">Add variable</button>
+                                                    <button type="button" class="cm-o-button-mouse--ghost" id="variableClose">Cancel</button> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        
                                         <div class="cm-l-tabledata cm-u-spacer-mt-big">
                                             <div class="cm-l-tabledata__header">
                                                 <div class="tablecell-long">
@@ -464,6 +592,32 @@
         </section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="module" src="./src/main.js"></script>    
+    <script type="module" src="./src/main.js"></script>
+    <script>
+        const variableContent = document.querySelector('.cm-c-simpleAccordion__content');
+        const addBonusVariable = document.querySelector('#addBonusVariable');
+        const variableAdd = document.querySelector('#variableAdd');
+        const variableClose = document.querySelector('#variableClose');
+        variableContent.classList.add('cm-u-inactive');
+        addBonusVariable.addEventListener('click', (e)=>{
+            e.preventDefault();
+            if (variableContent.classList.contains('cm-u-inactive')) {
+                variableContent.classList.remove('cm-u-inactive');
+            }
+        }); 
+        variableClose.addEventListener('click', (e)=>{
+            e.preventDefault();
+            if (!variableContent.classList.contains('cm-u-inactive')) {
+                variableContent.classList.add('cm-u-inactive');
+            }
+        });
+        variableAdd.addEventListener('click', (e)=>{
+            e.preventDefault();
+            if (!variableContent.classList.contains('cm-u-inactive')) {
+                variableContent.classList.add('cm-u-inactive');
+            }
+        });          
+        
+    </script>    
 </body>
 </html>
