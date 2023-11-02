@@ -859,7 +859,7 @@ const app = {
     //filtrar usuarios por busqueda
     filterUsers: async (searchTerm, {page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = 5;
-        resource = '/users?search='+searchTerm;
+        const resource = '/users?search='+searchTerm;
         const results = await app.filterData(resource, page, limit, sortBy, order)
         .then(function (response) {
             app.listSearchResults(response,searchResultsListContainer,searchTerm);
@@ -1042,7 +1042,7 @@ const app = {
         //app.cleanUserDetails();
 
         //boton buscar dentro de listado de usuarios
-        searchUsersBtn.addEventListener('click',(e)=>{
+        nodes.searchUsersBtn.addEventListener('click',(e)=>{
             e.preventDefault();
             const inputTerm = searchUser.value;
             const newParams ='?searchAction=searchUser&searchTerm='+inputTerm;
