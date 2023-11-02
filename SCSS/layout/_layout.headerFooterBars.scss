@@ -16,9 +16,17 @@
 }
 
 .cm-l-body-static-header {
+    $block:&;
     border-bottom:1px solid getColor(secondaryLight);
     display: flex;
     align-items: center;
     height: getSize($huge);
     color:getColor(secondary);
+
+    &--inTab {
+        border-bottom:1px solid getColor(scarpaFlowLight);
+        color:getColor(primary);
+        margin-top: getSize($bigger);
+        padding-bottom: getSize($small);
+    }
 }

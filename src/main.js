@@ -1061,6 +1061,9 @@ const app = {
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
         manageUsersBtn.classList.add('active');
+        app.manageTabs();
+
+
         if (location.search.startsWith('?user=new')) {
             userDetailsTitle.textContent = 'Add new user';
             userDetailsFormUpdateBtn.classList.add('cm-u-inactive');
@@ -1086,7 +1089,6 @@ const app = {
             const userID = params.get('user');
             app.getUser(userID);
             userDetailsFormAddBtn.classList.add('cm-u-inactive');
-            userDetailsCancelBtn.classList.add('cm-u-inactive');
         }
         //boton cancelar
         userDetailsCancelBtn.addEventListener('click',()=>{
@@ -1176,6 +1178,7 @@ const app = {
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
         app.cleanPlayerDetails();
+        app.manageTabs();
         manageTeamBtn.classList.add('active');
 
         //rellenar select categorias con el listado de la API
@@ -1227,7 +1230,6 @@ const app = {
             nodes.playerDetailsFormAddBtn.classList.add('cm-u-inactive');
             nodes.playerDetailsFormUpdateBtn.classList.remove('cm-u-inactive');
             nodes.playerDetailsFormDeleteBtn.classList.remove('cm-u-inactive');
-            nodes.playerDetailsCancelBtn.classList.add('cm-u-inactive');
             const params = new URLSearchParams(document.location.search);
             const playerID = params.get('player');
             app.getPlayer(playerID);
@@ -1561,6 +1563,7 @@ const app = {
     manageMastersTeam: () => {
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
+        app.manageTabs();
         nodes.manageMastersBtn.classList.add('active');
         nodes.manageUsersBtn.classList.remove('active');
         nodes.manageTeamBtn.classList.remove('active');
@@ -3391,6 +3394,29 @@ const app = {
             newOption.value = optionItem;
             selectOptions.add(newOption);
         })
+    },
+    //manejar contenido con tabs
+    manageTabs: () => {
+        const tabContentLinks = document.querySelectorAll('.tabLink');
+        const tabContentLayers = document.querySelectorAll('.tabContent');
+        const hideAllTabs = () => {
+            tabContentLayers.forEach(tabContentLayer => {
+                tabContentLayer.setAttribute('style','opacity:0; height:0;')
+            });
+            tabContentLinks.forEach(tabContentLink => tabContentLink.classList.remove('active'));
+        };
+        tabContentLinks.forEach(tabContentLink => {
+            tabContentLink.addEventListener('click', () => {
+                const targetData = tabContentLink.getAttribute('data-target');
+                const targetTab = document.getElementById(targetData);
+                hideAllTabs();
+                tabContentLink.classList.add('active');
+                targetTab.setAttribute('style','opacity:1; height:auto;');
+            });
+        })
+        hideAllTabs();
+        tabContentLayers[0].setAttribute('style','opacity:1; height:auto;');
+        tabContentLinks[0].classList.add('active');
     },
     //varias
     variousUtils: ()=> {

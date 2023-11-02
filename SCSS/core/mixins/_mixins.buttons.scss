@@ -56,7 +56,9 @@
 }
 
 @mixin button-mouse {
+    height: getSize($larger);
     padding: getSize($tiny) getSize($big);
     @include button;
-    @extend .cm-u-text-black-mouse;
+    @extend .cm-u-text-mouse;
+    @include cm-qs-bold;
 }

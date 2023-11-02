@@ -1,0 +1,25 @@
+.cm-c-form-tabs {
+  $block:&;
+
+  &__links {
+    display: flex;
+    gap:getSize($small);
+    border-bottom:1px solid getColor(secondaryLight);
+    
+    .tabLink {
+      background: none;
+      border:0;
+      color:getColor(scarpaFlowLight);
+      cursor: pointer;      
+      display: flex;
+      align-items: center;
+      height: getSize($huge);
+      @extend .cm-u-text-cat;
+      @include cm-qs-bold;
+    }
+
+    .tabLink.active {
+      color:getColor(secondary);
+    }
+  }
+}

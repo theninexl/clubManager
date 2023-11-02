@@ -122,10 +122,10 @@
                     <div class="cm-l-contentHeader__titleBar">
                         <div class="titleBar__title"><h1 class="cm-u-text-bear"  id="userDetailsTitle">Add user</h1></div>
                         <div class="titleBar__tools">
-                            <button type="button" class="cm-o-icon-button-small--primary" id="userDetailsFormAddBtn"><span class="material-symbols-outlined">save</span></button>
-                            <button type="button" class="cm-o-icon-button-small--primary" id="userDetailsFormUpdateBtn"><span class="material-symbols-outlined">save</span></button>
+                            <button type="button" class="cm-o-button-mouse--primary" id="userDetailsFormAddBtn">Save</button>
+                            <button type="button" class="cm-o-button-mouse--primary" id="userDetailsFormUpdateBtn">Save</button>
                             <button type="button" class="cm-o-icon-button-small--primary" id="userDetailsFormDeleteBtn"><span class="material-symbols-outlined">delete</span></button>
-                            <button type="button" class="cm-o-icon-button-small--primary" id="userDetailsCancelBtn"><span class="material-symbols-outlined">cancel</span></button>
+                            <button type="button" class="cm-o-icon-button-small--primary" id="userDetailsCancelBtn"><span class="material-symbols-outlined">undo</span></button>
                         </div>
                     </div>
                 </header>
@@ -133,90 +133,100 @@
                 <section class="cm-l-body">
                     <div class="cm-c-accordion cm-u-spacer-mb-huge">
                         <form class="cm-l-form-panel cm-c-form-simple" id="userDetailsForm">
-                            <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
-                                <p class="cm-u-text-black-cat">Basic data</p>
-                            </header>
-                            <!-- <div class="cm-c-accordion__button active">
-                                <div class="accordion-button__text"><p class="cm-u-text-black-cat">Basic data</p></div>
-                                <div class="accordion-button__icon"><span class="material-symbols-outlined">expand_more</span></div>
-                            </div> -->
-                            <div class="cm-c-accordion__panel">
-                                <div class="cm-l-form-panel__row">
-                                    <label for="userUsername" class="panel-field-long">
-                                        <span>Username</span>
-                                        <input type="text" id="userUsername" name="userUsername" placeholder="Username" required>
-                                        <span class="assistance" aria-live="polite">Write your username</span>
-                                    </label>
+                            <div class="cm-c-form-tabs">
+                                <div class="cm-c-form-tabs__links cm-u-spacer-mb-big">
+                                    <button class="tabLink" data-target="basicData">Basic data</button>
+                                    <button class="tabLink" data-target="userPermissions">User Permissions</button>
                                 </div>
-                                <div class="cm-l-form-panel__row">
-                                    <label for="userName" class="panel-field-long">
-                                        <span>Name</span>
-                                        <input type="text" id="userName" name="userName" placeholder="Name" required>
-                                        <span class="assistance" aria-live="polite">Write your name</span>
-                                    </label>
-                                </div>
-                                <div class="cm-l-form-panel__row">
-                                    <label for="userLastname" class="panel-field-long">
-                                        <span>Lastname</span>
-                                        <input type="text" id="userLastname" name="userLastname" placeholder="Lastname" required>
-                                        <span class="assistance" aria-live="polite">Write your lastname</span>
-                                    </label>
-                                </div>
-                                <div class="cm-l-form-panel__row">
-                                    <label for="userEmail" class="panel-field-long">
-                                        <span>Email</span>
-                                        <input type="email" id="userEmail" name="userEmail" placeholder="Email" required>
-                                        <span class="assistance" aria-live="polite">Write a valid email</span>
-                                    </label>
-                                </div>
-                                <div class="cm-l-form-panel__row">
-                                    <label for="userPwd" class="panel-field-long">
-                                        <span>Password</span>
-                                        <input type="password" id="userPwd" name="userPwd" placeholder="New password" required>
-                                        <span class="assistance" aria-live="polite">8 characters min.</span>
-                                    </label>
-                                </div>
-                                <div class="cm-l-form-panel__row">
-                                    <label for="userPwd2" class="panel-field-long">
-                                        <span>Repeat password</span>
-                                        <input type="password" id="userPwd2" name="userPwd2" placeholder="Repeat password" required>
-                                        <span class="assistance" aria-live="polite">repeat same password</span>
-                                    </label>
-                                </div>
-                                <div class="cm-l-form-panel__row">
-                                    <label for="userSalaryLimit" class="panel-field-long">
-                                        <span>Salary Limit</span>
-                                        <input type="number" id="userSalaryLimit" name="userSalaryLimit" placeholder="ex: 1000000" required>
-                                        <span class="assistance" aria-live="polite">In euros</span>
-                                    </label>
+                                <div class="cm-c-form-tabs__content">
+                                    <div class="tabContent" id="basicData">
+                                        <div class="cm-l-form-panel__row">
+                                            <label for="userUsername" class="panel-field-long">
+                                                <span>Username</span>
+                                                <input type="text" id="userUsername" name="userUsername" placeholder="Username" required>
+                                                <span class="assistance" aria-live="polite">Write your username</span>
+                                            </label>
+                                        </div>
+                                        <div class="cm-l-form-panel__row">
+                                            <label for="userName" class="panel-field-long">
+                                                <span>Name</span>
+                                                <input type="text" id="userName" name="userName" placeholder="Name" required>
+                                                <span class="assistance" aria-live="polite">Write your name</span>
+                                            </label>
+                                        </div>
+                                        <div class="cm-l-form-panel__row">
+                                            <label for="userLastname" class="panel-field-long">
+                                                <span>Lastname</span>
+                                                <input type="text" id="userLastname" name="userLastname" placeholder="Lastname" required>
+                                                <span class="assistance" aria-live="polite">Write your lastname</span>
+                                            </label>
+                                        </div>
+                                        <div class="cm-l-form-panel__row">
+                                            <label for="userEmail" class="panel-field-long">
+                                                <span>Email</span>
+                                                <input type="email" id="userEmail" name="userEmail" placeholder="Email" required>
+                                                <span class="assistance" aria-live="polite">Write a valid email</span>
+                                            </label>
+                                        </div>
+                                        <div class="cm-l-form-panel__row">
+                                            <label for="userPwd" class="panel-field-long">
+                                                <span>Password</span>
+                                                <input type="password" id="userPwd" name="userPwd" placeholder="New password" required>
+                                                <span class="assistance" aria-live="polite">8 characters min.</span>
+                                            </label>
+                                        </div>
+                                        <div class="cm-l-form-panel__row">
+                                            <label for="userPwd2" class="panel-field-long">
+                                                <span>Repeat password</span>
+                                                <input type="password" id="userPwd2" name="userPwd2" placeholder="Repeat password" required>
+                                                <span class="assistance" aria-live="polite">repeat same password</span>
+                                            </label>
+                                        </div>
+                                        <div class="cm-l-form-panel__row">
+                                            <label for="userSalaryLimit" class="panel-field-long">
+                                                <span>Salary Limit</span>
+                                                <input type="number" id="userSalaryLimit" name="userSalaryLimit" placeholder="ex: 1000000" required>
+                                                <span class="assistance" aria-live="polite">In euros</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="tabContent" id="userPermissions">
+                                        <table class="cm-l-table-players cm-u-spacer-mb-huge">
+                                            <thead class="cm-l-table-players__header">
+                                                <tr>
+                                                    <td class="table-players-td-long">Form name</td>
+                                                    <td class="table-players-td-long">Reading</td>
+                                                    <td class="table-players-td-long">Writing</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="cm-l-table-players__body">
+                                                <tr>
+                                                    <td class="table-players-td-long">Form name</td>
+                                                    <td class="table-players-td-long"><input type="checkbox" id="userForm1read" name="userForm1read"></td>
+                                                    <td class="table-players-td-long"><input type="checkbox" id="userForm1write" name="userForm1write"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="table-players-td-long">Form name</td>
+                                                    <td class="table-players-td-long"><input type="checkbox" id="userForm2read" name="userForm2read"></td>
+                                                    <td class="table-players-td-long"><input type="checkbox" id="userForm2write" name="userForm2write"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                            <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                            <!-- <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                                <p class="cm-u-text-black-cat">Basic data</p>
+                            </header>
+                            <div class="cm-c-accordion__panel">
+                                
+                            </div> -->
+                            <!-- <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
                                 <p class="cm-u-text-black-cat">User permissions</p>
                             </header>
                             <div class="cm-l-accordion__panel">
-                                <table class="cm-l-table-players cm-u-spacer-mb-huge">
-                                    <thead class="cm-l-table-players__header">
-                                        <tr>
-                                            <td class="table-players-td-long">Form name</td>
-                                            <td class="table-players-td-long">Reading</td>
-                                            <td class="table-players-td-long">Writing</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="cm-l-table-players__body">
-                                        <tr>
-                                            <td class="table-players-td-long">Form name</td>
-                                            <td class="table-players-td-long"><input type="checkbox" id="userForm1read" name="userForm1read"></td>
-                                            <td class="table-players-td-long"><input type="checkbox" id="userForm1write" name="userForm1write"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="table-players-td-long">Form name</td>
-                                            <td class="table-players-td-long"><input type="checkbox" id="userForm2read" name="userForm2read"></td>
-                                            <td class="table-players-td-long"><input type="checkbox" id="userForm2write" name="userForm2write"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                
+                            </div> -->
                             <div class="cm-l-form__row cm-u-centerText">
                                 <!-- <button type="button" class="cm-o-button-cat--primary" id="userDetailsFormAddBtn">Add user</button>
                                 <button type="button" class="cm-o-button-cat--primary" id="userDetailsFormUpdateBtn">Update details</button>
