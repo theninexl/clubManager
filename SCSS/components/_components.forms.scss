@@ -225,6 +225,7 @@
     overflow: hidden;
     flex-grow:1;
     position:relative;
+    max-width: getCols(3);
 
     &__select {
         -webkit-appearance: none;
@@ -272,5 +273,20 @@
         position:absolute;
         right:0;
         z-index: 0;
+    }
+
+    &--disabled {
+        
+        border:1px solid getColor(scarpaFlowLight);
+
+        .cm-c-select-icon__select {
+            color:getColor(scarpaFlowLight);
+        }
+
+        &::after {
+            box-shadow: inset -150px getSize($large) getSize($large) getColor(scarpaFlowLight);
+            color:getColor(white);
+            
+        }
     }
 }

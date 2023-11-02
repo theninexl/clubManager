@@ -30,8 +30,8 @@
             <div class="modal-body">
                 <form class="cm-c-form-simple-hrz" id="searchUsersInModalForm">
                     <div class="cm-c-field-icon cm-u-spacer-mb-bigger">
-                        <input class="cm-c-field-icon__input" id="searchInModalInput" name="" placeholder="Search users" type="search" value="">
-                        <button type="submit" class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchInModalBtn"><span class="material-symbols-outlined">search</span></button>
+                        <input class="cm-c-field-icon__input" id="searchInModalInput" name="" placeholder="Search players" type="search" value="">
+                        <button type="submit" class="cm-o-icon-button-small--secondary cm-c-field-icon__button" id="searchInModalBtn"><span class="material-symbols-outlined">search</span></button>
                     </div>                    
                 </form>
                 <section class="cm-l-body">
@@ -122,10 +122,24 @@
                         </div>
                     </div>
                     <div class="cm-l-contentHeader__toolBar cm-u-spacer-mt-big">
+                        <div class="cm-c-select-icon cm-c-select-icon--disabled">
+                            <select class="cm-c-select-icon__select" id="searchPlayerByCategory" placeholder="Select category" name="playerNaturalPosition">
+                                <option value="">Select category</option>
+                                <option value="1">Active</option>
+                                <option value="2">Non active</option>
+                                </select>
+                        </div> 
+                        <div class="cm-c-select-icon cm-c-select-icon--disabled">
+                            <select class="cm-c-select-icon__select" id="searchActivePlayers" placeholder="Select active" name="playerNaturalPosition">
+                                <option value="">Select options</option>
+                                <option value="1">Active</option>
+                                <option value="2">Non active</option>
+                                </select>
+                        </div> 
                         <form class="cm-c-form-simple-hrz" id="searchPlayersForm">
                             <div class="cm-c-field-icon">
                                 <input class="cm-c-field-icon__input" id="searchPlayer" name="searchPlayer" placeholder="Search players">
-                                <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchPlayersBtn"><span class="material-symbols-outlined">search</span></button>
+                                <button class="cm-o-icon-button-small--secondary cm-c-field-icon__button" id="searchPlayersBtn"><span class="material-symbols-outlined">search</span></button>
                             </div>                    
                         </form>
                     </div>

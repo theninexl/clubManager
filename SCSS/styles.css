@@ -1831,6 +1831,7 @@ strong {
   overflow: hidden;
   flex-grow: 1;
   position: relative;
+  max-width: 256px;
 }
 .cm-c-select-icon__select {
   -webkit-appearance: none;
@@ -1882,6 +1883,16 @@ strong {
   position: absolute;
   right: 0;
   z-index: 0;
+}
+.cm-c-select-icon--disabled {
+  border: 1px solid #E1E1E1;
+}
+.cm-c-select-icon--disabled .cm-c-select-icon__select {
+  color: #E1E1E1;
+}
+.cm-c-select-icon--disabled::after {
+  box-shadow: inset -150px 32px 32px #E1E1E1;
+  color: #FFFFFF;
 }
 
 .cm-c-overlay--notifications, .cm-c-overlay--activeUser {
