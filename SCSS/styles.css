@@ -106,7 +106,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.cm-u-text-dog {
+.cm-u-text-dog, .cm-o-button-dog--inactive, .cm-o-button-dog--ghost-inactive, .cm-o-button-dog--ghost, .cm-o-button-dog--transparent, .cm-o-button-dog--secondary, .cm-o-button-dog--primary {
   font-size: 19px;
   font-size: 1.9rem;
   line-height: 24px;
@@ -742,6 +742,115 @@ strong {
   background-color: #E1E1E1;
 }
 .cm-o-button-mouse--inactive:hover {
+  text-decoration: none;
+}
+
+.cm-o-button-dog--primary {
+  padding: 12px 8px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #FFFFFF;
+  background-color: #2C325F;
+}
+.cm-o-button-dog--primary:hover {
+  text-decoration: none;
+}
+.cm-o-button-dog--secondary {
+  padding: 12px 8px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #454548;
+  background-color: #CECE7E;
+}
+.cm-o-button-dog--secondary:hover {
+  text-decoration: none;
+}
+.cm-o-button-dog--transparent {
+  padding: 12px 8px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2C325F;
+  background-color: #FFFFFF;
+  box-shadow: 0px 0px 0px 2px #2C325F inset;
+}
+.cm-o-button-dog--transparent:hover {
+  text-decoration: none;
+}
+.cm-o-button-dog--ghost {
+  padding: 12px 8px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2C325F;
+  background: transparent;
+}
+.cm-o-button-dog--ghost:hover {
+  text-decoration: none;
+}
+.cm-o-button-dog--ghost.active {
+  color: #FFFFFF;
+  background-color: #2C325F;
+}
+.cm-o-button-dog--ghost-inactive {
+  padding: 12px 8px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #E1E1E1;
+  background: transparent;
+  cursor: default;
+}
+.cm-o-button-dog--ghost-inactive:hover {
+  text-decoration: none;
+}
+.cm-o-button-dog--inactive {
+  padding: 12px 8px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #FFFFFF;
+  background-color: #E1E1E1;
+}
+.cm-o-button-dog--inactive:hover {
   text-decoration: none;
 }
 

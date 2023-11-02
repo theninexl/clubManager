@@ -62,3 +62,10 @@
     @extend .cm-u-text-mouse;
     @include cm-qs-bold;
 }
+
+@mixin button-dog {
+    padding:getSize($medium)getSize($small);
+    @include button;
+    @extend .cm-u-text-dog;
+    @include cm-qs-bold;
+}

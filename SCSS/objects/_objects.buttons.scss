@@ -94,3 +94,41 @@
         @include button-inactive;
     }      
 }
+
+.cm-o-button-dog {
+    $block:&;
+
+    &--primary {
+        @include button-dog;
+        @include button-primary;
+    }
+    
+    &--secondary {
+        @include button-dog;
+        @include button-secondary;        
+    }
+    
+    &--transparent {
+        @include button-dog;
+        @include button-transparent;        
+    }
+
+    &--ghost {
+        @include button-dog;
+        @include button-ghost;
+        
+        &.active {
+            @include button-primary;
+        }
+    }
+
+    &--ghost-inactive {
+        @include button-dog;
+        @include button-ghost-inactive;
+    }
+
+    &--inactive {
+        @include button-dog;
+        @include button-inactive;        
+    }
+}
