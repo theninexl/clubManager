@@ -1993,7 +1993,6 @@ const app = {
     },
     //widget salarios
     setTeamSalaryLimit: (players) => {
-        console.log("entro en setTeamSalaryLimit");
         //datos para el salary widget
         let totalSalary = 0;
         const activeUser = app.activeUserList();
@@ -2004,7 +2003,6 @@ const app = {
             usedSalary = usedSalary + playerSalary;
         })        
         //buscar el límite máximo para el usuario activo
-        console.log('used:',usedSalary,' of total:',totalSalary);
         nodes.salaryWidgetUsed.innerHTML = usedSalary;
         nodes.salaryWidgetTotal.innerHTML = totalSalary;
         const salaryWidth = (usedSalary * 100) / totalSalary;
