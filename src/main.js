@@ -109,7 +109,9 @@ const app = {
         .then(function (response) {
             app.listPlayerDetails(response);
             //solicitar intermediarios y fijar segun el id
-            app.getIntermediariesOnSelect(response.intermediaryID);            
+            app.getIntermediariesOnSelect(response.intermediaryID);     
+            //solicitar el listado de categorias para añadirlo al select
+            app.getCategoriesOnSelect(response.category);       
             //leer la foto con el ID que corresponde al jugador
             (async ()=>{
                 const readPlayerIdPicture = await app.getData('/players/'+response.id+'/idImages')
@@ -217,23 +219,31 @@ const app = {
     getIntermediariesOnSelect: async (selected, {page = app.currentListPage, limit = 100, sortBy = 'id', order = 'desc'} = {}) => {
         const results = await app.getData('intermediaries', page, 100, sortBy, order)
         .then (response =>{
-            playerIntermediary1.innerHTML = '';
-            // const firstOption = document.createElement('option');
-            // firstOption.setAttribute('value','');
-            // firstOption.textContent = 'Select intermediary';
-            // // firstOption.setAttribute(selected);
-            // playerIntermediary1.appendChild(firstOption);
+            nodes.playerIntermediary1.innerHTML = '';
             response.items.forEach(item => {
                 const option = document.createElement('option');
                 option.setAttribute('value',item.id);
                 option.textContent = item.name+' '+item.lastname;
                 playerIntermediary1.appendChild(option);
             })
-            playerIntermediary1.value = selected;
+            nodes.playerIntermediary1.value = selected;
         })
         .catch(error =>{
-
+            console.warn(error);
         })
+    },
+    //obtener listado de categorias para form de añadir nuevo jugador
+    getCategoriesOnSelect:async (selectedCategory) => {
+        const results = await app.getData('/categories')
+        .then(function (response) {
+            nodes.playerCategory.innerHTML = '';
+            const options = response.map(category => category.category)
+            app.paintSelectOptions(nodes.playerCategory, options);
+            nodes.playerCategory.value = selectedCategory;
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
     },
     //obtener listado simple de intermediarios para listado intermediarios en selects en forms
     getIntermediariesList: async ({page = app.currentListPage, limit = 10, sortBy = 'id', order = 'desc'} = {}) => {
@@ -520,11 +530,14 @@ const app = {
         const data = {};        
         updatedPlayerData.forEach((value, key) => data[key] = value);
 
+        console.log(data);
+
         if (data.playerActive === undefined) { data.playerActive = 'false'};
         if (data.playerResidencyToggle === undefined){data.playerResidencyToggle = 'false'};
         
-        const updatePlayerrData = await app.api.put('/players/'+playerID, {
+        const updatePlayerData = await app.api.put('/players/'+playerID, {
             active:data.playerActive,
+            euPlayer:data.playerEUStatus,
             userName:data.playerName,
             userLastname:data.playerLastname,
             userLastname2:data.playerLastname2,
@@ -554,6 +567,7 @@ const app = {
             intermediaryID:data.playerIntermediary1,
         })
         .then(function (response) {
+            console.log(response);
             //meter el jugador asignado a un intermediario
             const playerIntermediaryAssigned = playerIntermediary1.getAttribute('value');
             console.log(playerIntermediaryAssigned);
@@ -1181,24 +1195,13 @@ const app = {
         app.manageTabs();
         manageTeamBtn.classList.add('active');
 
-        //rellenar select categorias con el listado de la API
-        const categories = (async () => {
-            const results = await app.getData('/categories')
-            .then(function (response) {
-                //console.log(response);
-                const options = response.map(category => category.category)
-                app.paintSelectOptions(nodes.playerCategory, options);
-            })
-            .catch(function (error) {
-                console.warn(error);
-            });
-        })();
-
 
         if (location.search.startsWith('?player=new')) {
             nodes.playerDetailsTitle.innerHTML = 'Add new Player';
             //añadir al menos una fila para subir imagenes de ID
             app.addIdImageRow();
+            //solicitar el listado de categorias para añadirlo al select
+            app.getCategoriesOnSelect();
             //solicitar el listado de intermediarios para añadirlo al select
             app.getIntermediariesOnSelect();
             nodes.playerDetailsFormAddBtn.classList.remove('cm-u-inactive');
@@ -2267,22 +2270,31 @@ const app = {
             const playerName = document.createElement('div');
             playerName.classList.add('tablecell-medium');
             playerName.textContent = player.userName;
-            const playerLastname = document.createElement('div');
-            playerLastname.classList.add('tablecell-medium');
-            playerLastname.textContent = player.userLastname;
             const playerAlias = document.createElement('div');
             playerAlias.classList.add('tablecell-medium');
             playerAlias.textContent = player.alias;
-            const playerCountry = document.createElement('div');
-            playerCountry.classList.add('tablecell-medium');
-            playerCountry.textContent = player.country;
-            const playerDorsal = document.createElement('div');
-            playerDorsal.classList.add('tablecell-short');
-            playerDorsal.classList.add('cm-u-centerText');
-            playerDorsal.textContent = player.dorsal;
+            const playerEU = document.createElement('div');
+            playerEU.classList.add('tablecell-medium');
+            if(player.euPlayer === 'on') {
+                playerEU.textContent = 'Yes';
+            } else {
+                playerEU.textContent = 'No';
+            }
             const playerPosition = document.createElement('div');
             playerPosition.classList.add('tablecell-medium');
             playerPosition.textContent = player.position;
+            const playerCountry = document.createElement('div');
+            playerCountry.classList.add('tablecell-medium');
+            playerCountry.textContent = player.netSalary;
+            const playerNetSalary = document.createElement('div');
+            playerNetSalary.classList.add('tablecell-medium');
+            playerNetSalary.textContent = player.netSalary;
+            const playerBonusTotal = document.createElement('div');
+            playerBonusTotal.classList.add('tablecell-medium');
+            playerBonusTotal.textContent = player.bonusTotal;
+            const playerTransferCost = document.createElement('div');
+            playerTransferCost.classList.add('tablecell-medium');
+            playerTransferCost.textContent = player.transferCost;
             const playerActive = document.createElement('div');
             playerActive.classList.add('tablecell-short');
             playerActive.classList.add('cm-u-centerText');
@@ -2313,11 +2325,12 @@ const app = {
             playerEditBtnContainer.appendChild(playerEditBtn);
 
             playerContainer.appendChild(playerName);
-            playerContainer.appendChild(playerLastname);
             playerContainer.appendChild(playerAlias);
-            playerContainer.appendChild(playerCountry);
-            playerContainer.appendChild(playerDorsal);
+            playerContainer.appendChild(playerEU);
             playerContainer.appendChild(playerPosition);
+            playerContainer.appendChild(playerNetSalary);
+            playerContainer.appendChild(playerBonusTotal);
+            playerContainer.appendChild(playerTransferCost);            
             playerContainer.appendChild(playerActive);
             playerContainer.appendChild(playerEditBtnContainer);
             container.appendChild(playerContainer);
@@ -2335,6 +2348,7 @@ const app = {
     //listar detalles jugador
     listPlayerDetails: (player) => {
         if (player.active === 'on'){playerActive.checked = true;} else if (player.active === false){playerActive.checked = false;}
+        if (player.euPlayer === 'on'){playerEUStatus.checked = true;} else if (player.euPlayer === false){playerEUStatus.checked = false;}
         playerDetailsTitle.textContent = 'Edit player';
         playerName.setAttribute('value',player.userName);
         playerLastname.setAttribute('value',player.userLastname);
@@ -2347,8 +2361,6 @@ const app = {
         playerIdDate.setAttribute('value',player.dniDate);
         playerSocialSecurityNumber.setAttribute('value',player.socialSecurityNr);
         if (player.sixMonthsResidency === 'on'){playerResidencyToggle.checked = true;}else if (player.sixMonthsResidency === false){playerResidencyToggle.checked = false;}
-        console.log('player.category', player.category)
-        playerCategory.value = player.category;
         playerOriginClub.setAttribute('value',player.clubFrom);
         playerLeagueOrigin.setAttribute('value',player.leagueFrom);
         playerLeagueOrigin.setAttribute('data-id',player.leagueFromID);
@@ -2358,6 +2370,7 @@ const app = {
         playerWinspan.setAttribute('value',player.armsWingspan);
         playerStandingJump.setAttribute('value',player.standingJump);
         playerRunningJump.setAttribute('value',player.runningJump);
+        playerCategory.setAttribute('value',player.category);
         playerIntermediary1.setAttribute('value',player.intermediary1Name);
         playerStartContractDate.setAttribute('value',player.contractStartDate);
         playerEndContractDate.setAttribute('value',player.contractEndDate);
@@ -3388,6 +3401,10 @@ const app = {
     //pintar un select con las opciones que le des
     paintSelectOptions: (element,optionsList) => {
         const selectOptions = element.options;
+        const firstOption = document.createElement("option");
+        firstOption.text = 'Click to select';
+        firstOption.value = '';
+        selectOptions.add(firstOption);
         optionsList.map(optionItem => {
             const newOption = document.createElement("option");
             newOption.text = optionItem;
@@ -3406,7 +3423,8 @@ const app = {
             tabContentLinks.forEach(tabContentLink => tabContentLink.classList.remove('active'));
         };
         tabContentLinks.forEach(tabContentLink => {
-            tabContentLink.addEventListener('click', () => {
+            tabContentLink.addEventListener('click', (e) => {
+                e.preventDefault();
                 const targetData = tabContentLink.getAttribute('data-target');
                 const targetTab = document.getElementById(targetData);
                 hideAllTabs();

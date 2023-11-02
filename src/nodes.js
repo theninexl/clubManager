@@ -89,6 +89,7 @@ export const playerDetailsFormUpdateBtn = $('#playerDetailsFormUpdateBtn');
 export const playerDetailsFormDeleteBtn = $('#playerDetailsFormDeleteBtn');
 export const playerDetailsCancelBtn = $('#playerDetailsCancelBtn');
 export const playerActive = $('#playerActive');
+export const playerEUStatus = $('#playerEUStatus');
 export const playerName = $('#playerName');
 export const playerLastname = $('#playerLastname');
 export const playerLastname2 = $('#playerLastname2');

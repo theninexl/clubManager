@@ -149,6 +149,15 @@
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
+                                            <label for="playerEUStatus" class="panel-field-short">
+                                                <span>EU player?</span>
+                                                <div class="cm-c-form-simple__radio-toggle">
+                                                    <input type="checkbox" id="playerEUStatus" name="playerEUStatus">
+                                                </div>
+                                                <span class="assistance" aria-live="polite">Is player registered as EU player?</span>   
+                                            </label>
+                                        </div>
+                                        <div class="cm-l-form-panel__row">
                                             <label for="playerName" class="panel-field-long">
                                                 <span>Name</span>
                                                 <input type="text" id="playerName" name="playerName" placeholder="Name"  required>
@@ -175,13 +184,14 @@
                                                 <input type="text" id="playerAlias" name="playerAlias" placeholder="Alias" required>
                                                 <span class="assistance" aria-live="polite">Write player alias</span>
                                             </label>
-                                        </div><div class="cm-l-form-panel__row">
+                                        </div>
+                                        <div class="cm-l-form-panel__row">
                                             <label for="playerCountry" class="panel-field-long">
-                                                <span>Country</span>
+                                                <span>Country of origin</span>
                                                 <input type="text" id="playerCountry" name="playerCountry" placeholder="Country" required>
                                                 <span class="assistance" aria-live="polite">Country of origin</span>
                                             </label>
-                                        </div>
+                                        </div>                                        
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerPassportNumber" class="panel-field-short">
                                                 <span>Passport number</span>
@@ -233,7 +243,7 @@
                                                 <span>Category</span>
                                                 <div class="cm-c-select-icon">
                                                     <select class="cm-c-select-icon__select" id="playerCategory" placeholder="Player category" name="playerCategory" required>
-                                                        <option value="">Select category</option>
+                                                        <option value="">Select cat</option>
                                                     </select>
                                                 </div>           
                                             </label>
