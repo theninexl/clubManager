@@ -107,11 +107,12 @@ const app = {
         const resource = '/players/'+playerID;
         const data = await app.getData(resource)
         .then(function (response) {
+            console.log(response);
             app.listPlayerDetails(response);
             //solicitar intermediarios y fijar segun el id
             app.getIntermediariesOnSelect(response.intermediaryID);     
             //solicitar el listado de categorias para añadirlo al select
-            app.getCategoriesOnSelect(response.category);       
+            app.getCategoriesOnSelect(nodes.playerCategory,response.category);       
             //leer la foto con el ID que corresponde al jugador
             (async ()=>{
                 const readPlayerIdPicture = await app.getData('/players/'+response.id+'/idImages')
@@ -233,13 +234,15 @@ const app = {
         })
     },
     //obtener listado de categorias para form de añadir nuevo jugador
-    getCategoriesOnSelect:async (selectedCategory) => {
+    getCategoriesOnSelect:async (selectField, selectedCategory) => {
         const results = await app.getData('/categories')
         .then(function (response) {
-            nodes.playerCategory.innerHTML = '';
+            console.log(selectField);
+            console.log(selectedCategory);
+            selectField.innerHTML = '';
             const options = response.map(category => category.category)
-            app.paintSelectOptions(nodes.playerCategory, options);
-            nodes.playerCategory.value = selectedCategory;
+            app.paintSelectOptions(selectField, options);
+            selectField.value = selectedCategory;
         })
         .catch(function (error) {
             console.warn(error);
@@ -704,6 +707,7 @@ const app = {
                         })
                         .then((response) => {
                             app.currentListPage = 1;
+                            console.log(response);
                             location.href="manage-masters.html?section=teams";                    
                         })
                         .catch((error) => {
@@ -1169,6 +1173,7 @@ const app = {
     manageTeamPage: () => {
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
+        app.getCategoriesOnSelect(nodes.searchPlayerByCategory,'');
         const listLimit = 10;
         nodes.manageTeamBtn.classList.add('active');
         app.getPlayers();
@@ -1201,7 +1206,7 @@ const app = {
             //añadir al menos una fila para subir imagenes de ID
             app.addIdImageRow();
             //solicitar el listado de categorias para añadirlo al select
-            app.getCategoriesOnSelect();
+            app.getCategoriesOnSelect(nodes.playerCategory,'');
             //solicitar el listado de intermediarios para añadirlo al select
             app.getIntermediariesOnSelect();
             nodes.playerDetailsFormAddBtn.classList.remove('cm-u-inactive');
@@ -1620,12 +1625,12 @@ const app = {
             app.getTeam(teamID);
             //boton borrar jugador
             teamsDetailsFormDeleteBtn.addEventListener('click',()=>{
-                const leagueID = teamsDetailsTeamLeague.getAttribute('data-leagueid');
+                const leagueID = nodes.teamsDetailsTeamLeague.getAttribute('data-leagueid');
                 app.confirmDeleteTeamModal(teamID, leagueID);    
             })
             //boton actualizar dentro de detalles de jugadores
             teamsDetailsFormUpdateBtn.addEventListener('click',()=>{
-                const leagueID = teamsDetailsTeamLeague.getAttribute('data-leagueid');
+                const leagueID = nodes.teamsDetailsTeamLeague.getAttribute('data-id');
                 app.updateTeam(teamID, leagueID);
             })
         }
@@ -2350,7 +2355,7 @@ const app = {
         playerDetailsTitle.textContent = 'Edit player';
         playerName.setAttribute('value',player.userName);
         playerLastname.setAttribute('value',player.userLastname);
-        playerLastname2.setAttribute('value',player.userLastname2);
+        // playerLastname2.setAttribute('value',player.userLastname2);
         playerAlias.setAttribute('value',player.alias);
         playerCountry.setAttribute('value',player.country);
         playerPassportNumber.setAttribute('value',player.passport);
@@ -3400,7 +3405,7 @@ const app = {
     paintSelectOptions: (element,optionsList) => {
         const selectOptions = element.options;
         const firstOption = document.createElement("option");
-        firstOption.text = 'Click to select';
+        firstOption.text = 'Selecciona';
         firstOption.value = '';
         selectOptions.add(firstOption);
         optionsList.map(optionItem => {

@@ -7,13 +7,13 @@
   <script src="https://use.fontawesome.com/3a2eaf6206.js"></script>
 	<title>repl.it</title>
   <style>
-      div{
+      div.selectImage{
         text-align:center;
         padding:3%;
         border:thin solid black;
       }
 
-      input{
+      input[type=file]{
         display: none;
       }
       label{
@@ -26,7 +26,8 @@
 </head>
 
 <body>
-    <div>
+  <h2>Herramienta para añadir categorias y ligas al fake api</h2>
+    <!-- <div class="selectImage">
       <label for="inputTag">
         Select Image <br/>
         <i class="fa fa-2x fa-camera"></i>
@@ -34,17 +35,205 @@
         <br/>
         <span id="imageName"></span>
       </label>
+    </div> -->
+    <div>
+      <h3>Existing categories</h3>
+      <ul id="categoryListing"></ul>
+      <input type="text" id="addCategories" placeholder="category or id">
+      <button id="postCategory">postCategory with a name</button>
+      <button id="deleteCategory">deleteCategory with id</button>
+    </div>
+    <div>
+      <h3>Existing leagues</h3>
+      <ul id="leaguesList"></ul>
+      <form id="addLeaguesForm">
+        <input type="text" id="addLeagueName" placeholder="league name">
+        <input type="text" id="addLeagueCountry" placeholder="league country">
+        <button id="postLeague">post League with a name</button>
+      </form>
+      <br/>
+      <input type="text" id="deleteLeagueId" placeholder="delete league by ID">
+      <button id="deleteLeague">delete League by id</button>
     </div>
 
-    <script>
-        let input = document.getElementById("inputTag");
-        let imageName = document.getElementById("imageName")
+    <script type="text/javascript">
+        // let input = document.getElementById("inputTag");
+        // let imageName = document.getElementById("imageName")
 
-        input.addEventListener("change", ()=>{
-            let inputImage = document.querySelector("input[type=file]").files[0];
+        // input.addEventListener("change", ()=>{
+        //     let inputImage = document.querySelector("input[type=file]").files[0];
 
-            imageName.innerText = inputImage.name;
+        //     imageName.innerText = inputImage.name;
+        // })
+
+        let categories = null;
+        const categoryList = document.getElementById("categoryListing");
+        const inputCategories = document.getElementById("addCategories");
+        const postCategoryBtn = document.getElementById("postCategory");
+        const deleteCategoryBtn = document.getElementById("deleteCategory");
+        const leaguesList = document.getElementById("leaguesList");
+        const addLeaguesForm = document.getElementById("addLeaguesForm");
+        const inputLeagueName = document.getElementById("addLeagueName");
+        const inputLeagueCountry = document.getElementById("addLeagueCountry");
+        const postLeagueBtn = document.getElementById("postLeague");
+        const deleteLeagueId = document.getElementById("deleteLeagueId");
+        const deleteLeagueBtn = document.getElementById("deleteLeague");
+
+
+        //fetch categories
+        const fetchCategories = async() => {
+          const data = await fetch('https://64492e4ae7eb3378ca41f493.mockapi.io/api/v1/categories',{
+            method: 'GET',
+            headers: {'Content-Type': 'application/json;charset=utf-8'}
+          })
+          .then(response => {
+            if (response.ok) {
+              categories = response.json();
+              return categories;
+            }
+          })
+          .then(categories => {
+            categoryList.innerHTML='';
+            categories.forEach(category => {
+              const cat = document.createElement('li');
+              cat.textContent = category.category+' -- id:'+category.id;
+              categoryList.appendChild(cat);
+            })
+          })
+          .catch(err => console.log(err))
+        }
+        fetchCategories();
+
+        //fetch categories
+        const fetchLeagues = async() => {
+          const data = await fetch('https://64492e4ae7eb3378ca41f493.mockapi.io/api/v1/leagues',{
+            method: 'GET',
+            headers: {'Content-Type': 'application/json;charset=utf-8'}
+          })
+          .then(response => {
+            if (response.ok) {
+              leagues = response.json();
+              return leagues;
+            }
+          })
+          .then(leagues => {
+            leaguesList.innerHTML='';
+            leagues.items.forEach(league => {
+              const leagueLI = document.createElement('li');
+              leagueLI.textContent = league.leagueName+' -- country:'+league.leagueCountry+' -- id:'+league.id;
+              leaguesList.appendChild(leagueLI);
+            })
+          })
+          .catch(err => console.log(err))
+        }
+        fetchLeagues();
+
+        const postCategories = async(newCategory) => {
+          const data = await fetch('https://64492e4ae7eb3378ca41f493.mockapi.io/api/v1/categories',{
+            method: 'POST',
+            headers: {'Content-Type': 'application/json;charset=utf-8'},
+            body: JSON.stringify(newCategory)
+          })
+          .then(response => {
+            if (response.ok) {
+              categories = response.json();
+              return categories;
+            }
+          })
+          .then(categories => {
+            fetchCategories();
+          })
+          .catch(err => console.log(err))
+        }
+
+        const postLeagues = async(newLeague) => {
+          const data = await fetch('https://64492e4ae7eb3378ca41f493.mockapi.io/api/v1/leagues',{
+            method: 'POST',
+            headers: {'Content-Type': 'application/json;charset=utf-8'},
+            body: JSON.stringify(newLeague)
+          })
+          .then(response => {
+            if (response.ok) {
+              leagues = response.json();
+              return leagues;
+            }
+          })
+          .then(leagues => {
+            fetchLeagues();
+          })
+          .catch(err => console.log(err))
+        }
+
+        const deleteCategory = async(category) => {
+          const resource = 'https://64492e4ae7eb3378ca41f493.mockapi.io/api/v1/categories/'+category;
+          const data = await fetch(resource, {
+            method: 'DELETE',
+          })
+          .then(response => {
+            if (response.ok) {
+              categories = response.json();
+              return categories;
+            }
+          })
+          .then(categories => {
+            fetchCategories();
+          })
+          .catch(err => console.log(err))
+        }
+
+        const deleteLeague = async(league) => {
+          const resource = 'https://64492e4ae7eb3378ca41f493.mockapi.io/api/v1/leagues/'+league;
+          const data = await fetch(resource, {
+            method: 'DELETE',
+          })
+          .then(response => {
+            if (response.ok) {
+              leagues = response.json();
+              return leagues;
+            }
+          })
+          .then(leagues => {
+            fetchLeagues();
+          })
+          .catch(err => console.log(err))
+        }
+
+        postCategoryBtn.addEventListener("click", (event)=>{
+          event.preventDefault();
+          const newCategory = {
+            "createdAt": "2023-11-02T22:59:58.799Z",
+            "category": inputCategories.value,
+            "id": ""
+          }
+          // console.log(newCategory);
+          postCategories(newCategory);
         })
+
+        postLeagueBtn.addEventListener("click", (event)=>{
+          event.preventDefault();
+          const newLeague = {
+            "leagueCountry": inputLeagueCountry.value,
+            "leagueName": inputLeagueName.value,
+            "id": ""
+          }
+          postLeagues(newLeague);
+        })
+
+        deleteCategoryBtn.addEventListener("click", (event) =>{
+          event.preventDefault();
+          const delCat = inputCategories.value;
+          deleteCategory(delCat);
+        })
+
+        deleteLeagueBtn.addEventListener("click", (event) =>{
+          event.preventDefault();
+          const delLeague = deleteLeagueId.value;
+          deleteLeague(delLeague);
+        })
+
+        
+
+
     </script>
   </body>
 </html>

@@ -80,6 +80,9 @@ export const userDetailsFieldForm2read = $('#userForm2read');
 export const userDetailsFieldForm2write = $('#userForm2write');
 export const userDetailsFormAddBtn = $('#userDetailsFormAddBtn');
 
+//manageTeam Page
+export const searchPlayerByCategory = $('#searchPlayerByCategory');
+
 //playerDetails Fields
 export const playerDetailsForm = $('#playerDetailsForm');
 export const playerOriginClubSearchBtn = $('#playerOriginClubSearchBtn');
