@@ -19,11 +19,11 @@
     <div class="cm-c-modal cm-u-inactive">
         <div class="cm-c-modal__smallContent cm-u-inactive" id="modalSmall">
             <div class="modal-body cm-u-spacer-mb-bigger">
-                <h3 class="cm-u-text-black-cat">Are you sure?</h3>
+                <h3 class="cm-u-text-black-cat">Está seguro?</h3>
             </div>
             <div class="modal-footer">
-                <a href="edit-user.html" class="cm-o-button-cat--transparent">Cancel</a> 
-                <a href="manage-users.html" class="cm-o-button-cat--primary">Continue</a>
+                <a href="edit-user.html" class="cm-o-button-cat--transparent">Cancelar</a> 
+                <a href="manage-users.html" class="cm-o-button-cat--primary">Continuar</a>
             </div>
         </div>
         <div class="cm-c-modal__bigContent cm-u-inactive" id="modalBig">
@@ -31,16 +31,16 @@
                 <form class="cm-c-form-simple-hrz" id="searchUsersInModalForm">
                     <div class="cm-c-field-icon cm-u-spacer-mb-bigger">
                         <input class="cm-c-field-icon__input" id="searchInModalInput" name="" placeholder="Search users" type="search" value="">
-                        <button type="submit" class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchInModalBtn"><span class="material-symbols-outlined">search</span></button>
+                        <button type="submit" class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchInModalBtn"><span class="material-symbols-outlined">Buscar</span></button>
                     </div>                    
                 </form>
                 <section class="cm-l-body">
                     <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
-                        <p class="cm-u-text-black-cat" id="modalBigListTitle">Search results</p>
+                        <p class="cm-u-text-black-cat" id="modalBigListTitle">Buscar</p>
                     </header>
                     <div class="cm-l-tabledata cm-u-spacer-mb-huge">
                         <div id="searchResultsListHeaderContainer"></div>
-                        <div id="searchResultsListContainer">results</div>
+                        <div id="searchResultsListContainer">Resultados</div>
                         <div id="tablePaginationSearchResults"></div> 
                     </div>                   
                 </section>
@@ -89,13 +89,13 @@
                         <li>
                             <div class="cm-c-select-icon cm-c-select-icon">
                                 <select class="cm-c-select-icon__select" id="clubSelector" placeholder="Select Club" name="clubSelector" value="ATM" style="width:350px;">
-                                    <option value="">Choose</option>
                                     <option value="ATM" selected>Club Atlético de Madrid S.A.D</option>
-                                    <option value="ATM">Otro club deportivo S.A.D</option>
+                                    <option value="ATM">Club Deportivo2 S.A.D</option>
+                                    <option value="ATM">Club Deportivo3 S.A.D</option>
                                     </select>
                             </div> 
                         </li>
-                        <li><a class="navbar-links__textbutt-small" id="activeUserBtn">Username</a></li>
+                        <li><a class="navbar-links__textbutt-small" id="activeUserBtn">Nombre</a></li>
                         <li><button id="manageUsersBtn" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">group</span></a></button></li>
                         <li><button id="notifsBtn" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble" id="userUnreadNotifs"></span></button></li>
                      </ul>
@@ -114,10 +114,12 @@
             <nav class="cm-c-navbar cm-u-spacer-mt-bigger">
                 <ul class="navbar-links-vert">
                     <li><button id="manageTeamBtn" class="cm-o-button-cat--ghost">Plantilla</button></li>
-                    <li><button id="manageMastersBtn" class="cm-o-button-cat--ghost">Maestros</button></li>
-                    <li><button class="cm-o-button-cat--ghost-inactive">Calendario pagos</button></li>
+                    <li><button id="manageMastersBtn" class="cm-o-button-cat--ghost">Gestión relacional</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Calendario de pagos</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Reporting</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Scouting</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Simula tu plantilla</button></li>
                 </ul>
             </nav>
         </aside>
@@ -129,10 +131,10 @@
                 </header> -->
                 <header class="cm-l-contentHeader">
                     <div class="cm-l-contentHeader__titleBar">
-                        <div class="titleBar__title"><h1 class="cm-u-text-bear"  id="intermsDetailsTitle">Add new intermediary</h1></div>
+                        <div class="titleBar__title"><h1 class="cm-u-text-bear"  id="intermsDetailsTitle">Crear intermediario</h1></div>
                         <div class="titleBar__tools">
-                            <button type="button" class="cm-o-button-mouse--primary" id="intermsDetailsFormAddBtn">Save</button>
-                            <button type="button" class="cm-o-button-mouse--primary" id="intermsDetailsFormUpdateBtn">Save</span></button>
+                            <button type="button" class="cm-o-button-mouse--primary" id="intermsDetailsFormAddBtn">Guardar</button>
+                            <button type="button" class="cm-o-button-mouse--primary" id="intermsDetailsFormUpdateBtn">Guardar</span></button>
                             <button type="button" class="cm-o-icon-button-small--primary" id="intermsDetailsFormDeleteBtn"><span class="material-symbols-outlined">delete</span></button>
                             <button type="button" class="cm-o-icon-button-small--primary" id="intermsDetailsFormCancelBtn"><span class="material-symbols-outlined">undo</span></button>
                         </div>
@@ -142,49 +144,43 @@
                     <div class="cm-c-accordion cm-u-spacer-mb-huge">
                         <form class="cm-l-form-panel cm-c-form-simple" id="intermsDetailsForm">
                             <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
-                                <p class="cm-u-text-black-cat">General data</p>
+                                <p class="cm-u-text-black-cat">Información general</p>
                             </header>
                             <div class="cm-c-accordion__panel">
                                 <div class="cm-l-form-panel__row">
                                     <label for="intermsDetailsNumber" class="panel-field-long">
-                                        <span>Number</span>
+                                        <span>Número</span>
                                         <input type="number" id="intermsDetailsNumber" name="intermsDetailsNumber" placeholder="Number">
-                                        <span class="assistance" aria-live="polite">Write Intermediary Number</span>
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="intermsDetailsName" class="panel-field-long">
-                                        <span>Name</span>
+                                        <span>Nombre</span>
                                         <input type="text" id="intermsDetailsName" name="intermsDetailsName" placeholder="Name" required>
-                                        <span class="assistance" aria-live="polite">Write Intermediary name</span>
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="intermsDetailsLastname" class="panel-field-long">
-                                        <span>Lastname</span>
+                                        <span>Apellidos</span>
                                         <input type="text" id="intermsDetailsLastname" name="intermsDetailsLastname" placeholder="Lastname" required>
-                                        <span class="assistance" aria-live="polite">Write Intermediary lastname</span>
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="intermsDetailsEmail1" class="panel-field-long">
                                         <span>Email</span>
                                         <input type="email" id="intermsDetailsEmail1" name="intermsDetailsEmail1" placeholder="Email" required>
-                                        <span class="assistance" aria-live="polite">Write Intermediary email</span>
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="intermsDetailsPhone1" class="panel-field-long">
-                                        <span>Phone nr.</span>
+                                        <span>Nº teléfono</span>
                                         <input type="number" id="intermsDetailsPhone1" name="intermsDetailsPhone1" placeholder="phone number">
-                                        <span class="assistance" aria-live="polite">Write Intermediary phone</span>
                                     </label>
                                 </div>
                                 <div class="cm-l-form-panel__row">
                                     <label for="intermsDetailsErp" class="panel-field-long">
-                                        <span>ERP</span>
+                                        <span>ID ERP</span>
                                         <input type="number" id="intermsDetailsErp" name="intermsDetailsErp" placeholder="ERP">
-                                        <span class="assistance" aria-live="polite">Write Intermediary ERP</span>
                                     </label>
                                 </div>
                             </div>
@@ -196,12 +192,12 @@
                             </div>
                         </form>
                         <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
-                            <p class="cm-u-text-black-cat">List of players managed by this intermediary</p>
+                            <p class="cm-u-text-black-cat">Jugadores gestionados</p>
                         </header>
                         <div class="cm-l-tabledata cm-u-spacer-mb-huge">
                             <div class="cm-l-tabledata__header">
-                                <div class="tablecell-medium"><button data-field="name" class="cm-o-sortButton">Name <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
-                                <div class="tablecell-medium"><button data-field="lastname" class="cm-o-sortButton">Lastname <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                                <div class="tablecell-medium"><button data-field="name" class="cm-o-sortButton">Nombre <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                                <div class="tablecell-medium"><button data-field="lastname" class="cm-o-sortButton">Apellidos <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
                             </div>
                             <div id="managedPlayersListContainer"></div>
                             <div id="tablePaginationmanagedPlayers"></div>

@@ -19,11 +19,11 @@
     <div class="cm-c-modal cm-u-inactive">
         <div class="cm-c-modal__smallContent cm-u-inactive" id="modalSmall">
             <div class="modal-body cm-u-spacer-mb-bigger">
-                <h3 class="cm-u-text-black-cat">Are you sure?</h3>
+                <h3 class="cm-u-text-black-cat">Está seguro?</h3>
             </div>
             <div class="modal-footer">
-                <a href="edit-user.html" class="cm-o-button-cat--transparent">Cancel</a> 
-                <a href="manage-users.html" class="cm-o-button-cat--primary">Continue</a>
+                <a href="edit-user.html" class="cm-o-button-cat--transparent">Cancelar</a> 
+                <a href="manage-users.html" class="cm-o-button-cat--primary">Continuar</a>
             </div>
         </div>
         <div class="cm-c-modal__bigContent cm-u-inactive" id="modalBig">
@@ -36,11 +36,11 @@
                 </form>
                 <section class="cm-l-body">
                     <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
-                        <p class="cm-u-text-black-cat" id="modalBigListTitle">Search results</p>
+                        <p class="cm-u-text-black-cat" id="modalBigListTitle">Buscar</p>
                     </header>
                     <div class="cm-l-tabledata cm-u-spacer-mb-huge">
                         <div id="searchResultsListHeaderContainer"></div>
-                        <div id="searchResultsListContainer">results</div>
+                        <div id="searchResultsListContainer">Resultados</div>
                         <div id="tablePaginationSearchResults"></div> 
                     </div>                   
                 </section>
@@ -89,13 +89,13 @@
                         <li>
                             <div class="cm-c-select-icon cm-c-select-icon">
                                 <select class="cm-c-select-icon__select" id="clubSelector" placeholder="Select Club" name="clubSelector" value="ATM" style="width:350px;">
-                                    <option value="">Choose</option>
                                     <option value="ATM" selected>Club Atlético de Madrid S.A.D</option>
-                                    <option value="ATM">Otro club deportivo S.A.D</option>
+                                    <option value="ATM">Club Deportivo2 S.A.D</option>
+                                    <option value="ATM">Club Deportivo3 S.A.D</option>
                                     </select>
                             </div> 
                         </li>
-                        <li><a class="navbar-links__textbutt-small" id="activeUserBtn">Username</a></li>
+                        <li><a class="navbar-links__textbutt-small" id="activeUserBtn">Nombre</a></li>
                         <li><button id="manageUsersBtn" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">group</span></a></button></li>
                         <li><button id="notifsBtn" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble" id="userUnreadNotifs"></span></button></li>
                      </ul>
@@ -114,10 +114,12 @@
             <nav class="cm-c-navbar cm-u-spacer-mt-bigger">
                 <ul class="navbar-links-vert">
                     <li><button id="manageTeamBtn" class="cm-o-button-cat--ghost">Plantilla</button></li>
-                    <li><button id="manageMastersBtn" class="cm-o-button-cat--ghost">Maestros</button></li>
-                    <li><button class="cm-o-button-cat--ghost-inactive">Calendario pagos</button></li>
+                    <li><button id="manageMastersBtn" class="cm-o-button-cat--ghost">Gestión relacional</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Calendario de pagos</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Reporting</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Scouting</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Simula tu plantilla</button></li>
                 </ul>
             </nav>
         </aside>
@@ -129,12 +131,12 @@
                 </header> -->
                 <header class="cm-l-contentHeader">
                     <div class="cm-l-contentHeader__titleBar">
-                        <div class="titleBar__title"><h1 class="cm-u-text-bear"  id="playerDetailsTitle">New Player</h1></div>
+                        <div class="titleBar__title"><h1 class="cm-u-text-bear"  id="playerDetailsTitle">Crear jugador</h1></div>
                         <div class="titleBar__tools">
-                            <button type="button" class="cm-o-button-mouse--primary" id="playerDetailsFormAddBtn">Save</button>
-                            <button type="button" class="cm-o-button-mouse--primary" id="playerDetailsFormUpdateBtn">Save</button>
+                            <button type="button" class="cm-o-button-mouse--primary" id="playerDetailsFormAddBtn">Guardar</button>
+                            <button type="button" class="cm-o-button-mouse--primary" id="playerDetailsFormUpdateBtn">Guardar</button>
                             <button type="button" class="cm-o-icon-button-small--primary" id="playerDetailsFormDeleteBtn"><span class="material-symbols-outlined">delete</span></button>
-                            <button type="button" class="cm-o-icon-button-small--primary" id="playerDetailsCancelBtn"><span class="material-symbols-outlined">cancel</span></button> 
+                            <button type="button" class="cm-o-icon-button-small--primary" id="playerDetailsCancelBtn"><span class="material-symbols-outlined">undo</span></button> 
                         </div>
                     </div>
                 </header>
@@ -143,16 +145,16 @@
                         <form class="cm-l-form-panel cm-c-form-simple" id="playerDetailsForm">
                             <div class="cm-c-form-tabs">
                                 <div class="cm-c-form-tabs__links cm-u-spacer-mb-big">
-                                    <button class="tabLink" data-target="generalData">General data</button>
-                                    <button class="tabLink" data-target="sportDetails">Sport details</button>
-                                    <button class="tabLink" data-target="contractDetails">Contract details</button>
+                                    <button class="tabLink" data-target="generalData">General</button>
+                                    <button class="tabLink" data-target="sportDetails">Deportivo</button>
+                                    <button class="tabLink" data-target="contractDetails">Contractual</button>
                                     <button class="tabLink" data-target="contractVariables">Variables</button>
                                 </div>
                                 <div class="cm-c-form-tabs__content">
                                     <div class="tabContent" id="generalData">
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerActive" class="panel-field-short">
-                                                <span>Is player active?</span>
+                                                <span>Jugador activo</span>
                                                 <div class="cm-c-form-simple__radio-toggle">
                                                     <input type="checkbox" id="playerActive" name="playerActive">
                                                 </div>
@@ -160,72 +162,58 @@
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerEUStatus" class="panel-field-short">
-                                                <span>EU player?</span>
+                                                <span>Jugador comunitario</span>
                                                 <div class="cm-c-form-simple__radio-toggle">
                                                     <input type="checkbox" id="playerEUStatus" name="playerEUStatus">
                                                 </div>
-                                                <span class="assistance" aria-live="polite">Is player registered as EU player?</span>   
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerName" class="panel-field-long">
-                                                <span>Name</span>
+                                                <span>Nombre</span>
                                                 <input type="text" id="playerName" name="playerName" placeholder="Name"  required>
-                                                <span class="assistance" aria-live="polite">Write player name</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerLastname" class="panel-field-long">
-                                                <span>Lastname</span>
+                                                <span>Apellidos</span>
                                                 <input type="text" id="playerLastname" name="playerLastname" placeholder="Lastname" required>
-                                                <span class="assistance" aria-live="polite">Write player lastname</span>
-                                            </label>
-                                        </div>
-                                        <div class="cm-l-form-panel__row">
-                                            <label for="playerLastname2" class="panel-field-long">
-                                                <span>Second Lastname</span>
-                                                <input type="text" id="playerLastname2" name="playerLastname2" placeholder="second lastname">
-                                                <span class="assistance" aria-live="polite">Write player second lastname (if applicable)</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerAlias" class="panel-field-long">
                                                 <span>Alias</span>
                                                 <input type="text" id="playerAlias" name="playerAlias" placeholder="Alias" required>
-                                                <span class="assistance" aria-live="polite">Write player alias</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerCountry" class="panel-field-long">
-                                                <span>Country of origin</span>
+                                                <span>País de origen</span>
                                                 <input type="text" id="playerCountry" name="playerCountry" placeholder="Country" required>
-                                                <span class="assistance" aria-live="polite">Country of origin</span>
                                             </label>
                                         </div>                                        
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerPassportNumber" class="panel-field-short">
-                                                <span>Passport number</span>
+                                                <span>Pasaporte</span>
                                                 <input type="text" id="playerPassportNumber" name="playerPassportNumber" placeholder="Passport number">
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerPassportDate" class="panel-field-long">
-                                                <span>Passport valid until</span>
+                                                <span>Caducidad pasaporte</span>
                                                 <input type="date" id="playerPassportDate" name="playerPassportDate" placeholder="dd/mm/yyyy">
-                                                <span class="assistance" aria-live="polite">Select passport expiry date</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerIdNumber" class="panel-field-short">
-                                                <span>ID number</span>
+                                                <span>DNI/NIE</span>
                                                 <input type="text" id="playerIdNumber" name="playerIdNumber" placeholder="ID number">
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerIdDate" class="panel-field-long">
-                                                <span>Valid until</span>
+                                                <span>Caducidad DNI/NIE</span>
                                                 <input type="date" id="playerIdDate" name="playerIdDate" placeholder="dd/mm/yyyy">
-                                                <span class="assistance" aria-live="polite">Select ID expiry date</span>
                                             </label>
                                         </div>
                                         <!-- subir fotos, para cuando sea posible -->
@@ -234,13 +222,13 @@
                                         <!-- -->
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerSocialSecurityNumber" class="panel-field-short">
-                                                <span>Social security number</span>
+                                                <span>Nº seguridad social</span>
                                                 <input type="text" id="playerSocialSecurityNumber" name="playerSocialSecurityNumber" placeholder="S.S. Number">
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerResidencyToggle" class="panel-field-long">
-                                                <span>6 months min. residency</span>
+                                                <span>Residencia mayor de 6 meses</span>
                                                 <div class="cm-c-form-simple__radio-toggle">
                                                     <input type="checkbox" id="playerResidencyToggle" name="playerResidencyToggle">
                                                 </div>
@@ -250,17 +238,19 @@
                                     <div class="tabContent" id="sportDetails">
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerCategory" class="panel-field-long">
-                                                <span>Category</span>
+                                                <span>Categoría</span>
                                                 <div class="cm-c-select-icon">
                                                     <select class="cm-c-select-icon__select" id="playerCategory" placeholder="Player category" name="playerCategory" required>
-                                                        <option value="">Select cat</option>
+                                                        <option value="">Categoría1</option>
+                                                        <option value="">Categoría2</option>
+                                                        <option value="">Categoría3</option>
                                                     </select>
                                                 </div>           
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerLeagueOrigin" class="panel-field-long">
-                                                <span>League of origin</span>
+                                                <span>Liga de origen</span>
                                                 <div class="cm-c-field-icon">
                                                     <input class="cm-c-field-icon__input" id="playerLeagueOrigin" type="search" placeholder="Search league" name="leagueOfOrigin">
                                                     <button class="cm-o-icon-button-small--secondary cm-c-field-icon__button" id="playerLeagueOriginSearchBtn"><span class="material-symbols-outlined">search</span></button>
@@ -269,7 +259,7 @@
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerOriginClub" class="panel-field-long">
-                                                <span>Club of origin</span>
+                                                <span>Club de origen</span>
                                                 <div class="cm-c-field-icon">
                                                     <input class="cm-c-field-icon__input" id="playerOriginClub" type="search" placeholder="Search club" name="clubOfOrigin">
                                                     <button class="cm-o-icon-button-small--secondary cm-c-field-icon__button" id="playerOriginClubSearchBtn"><span class="material-symbols-outlined">search</span></button>
@@ -278,46 +268,47 @@
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerNaturalPosition" class="panel-field-long">
-                                                <span>Natural position</span>
+                                                <span>Posición natural</span>
                                                 <div class="cm-c-select-icon">
                                                     <select class="cm-c-select-icon__select" id="playerNaturalPosition" placeholder="Search league" name="playerNaturalPosition">
-                                                        <option value="">Select position</option>
-                                                        <option value="1">Position 1</option>
-                                                        <option value="2">Position 2</option>
-                                                        <option value="3">Position 3</option>
-                                                        <option value="4">Position 4</option>
-                                                        <option value="5">Position 5</option>
+                                                        <option value="">Seleccionar</option>
+                                                        <option value="1">Defensa</option>
+                                                        <option value="2">Lateral izquierdo</option>
+                                                        <option value="3">Lateral derecho</option>
+                                                        <option value="4">Central</option>
+                                                        <option value="5">Delantero</option>
+                                                        <option value="6">Portero</option>
                                                         </select>
                                                 </div>           
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerHeight" class="panel-field-short">
-                                                <span>Height(cm)</span>
+                                                <span>Altura(cm)</span>
                                                 <input type="text" id="playerHeight" name="playerHeight" placeholder="Add height">
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerWeight" class="panel-field-long">
-                                                <span>Weight(kg)</span>
+                                                <span>Peso(kg)</span>
                                                 <input type="text" id="playerWeight" name="playerWeight" placeholder="Add weight">
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerWinspan" class="panel-field-short">
-                                                <span>Arms wingspan</span>
+                                                <span>Envergadura brazos</span>
                                                 <input type="text" id="playerWinspan" name="playerWinspan" placeholder="Add wingspan">
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerStandingJump" class="panel-field-short">
-                                                <span>Standing jump</span>
+                                                <span>Salto vertical</span>
                                                 <input type="text" id="playerStandingJump" name="playerStandingJump" placeholder="jump in cm">
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerRunningJump" class="panel-field-long">
-                                                <span>Running jump</span>
+                                                <span>Salto carrera</span>
                                                 <input type="text" id="playerRunningJump" name="playerRunningJump" placeholder="jump in cm">
                                             </label>
                                         </div>
@@ -325,53 +316,53 @@
                                     <div class="tabContent" id="contractDetails">
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerIntermediary1" class="panel-field-long">
-                                                <span>Intermediary</span>
+                                                <span>Intermediario</span>
                                                 <div class="cm-c-select-icon">
                                                     <select class="cm-c-select-icon__select" id="playerIntermediary1" placeholder="Search league" name="playerIntermediary1">
-                                                        <option value="">Select intermediary</option>
+                                                        <option value="">Seleccionar</option>
+                                                        <option value="1">Juan</option>
+                                                        <option value="2">Ana</option>
+                                                        <option value="3">Sandra</option>
                                                     </select>
                                                 </div>           
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerStartContractDate" class="panel-field-long">
-                                                <span>Start date</span>
+                                                <span>Fecha alta</span>
                                                 <input type="date" id="playerStartContractDate" name="playerStartContractDate" placeholder="dd/mm/yyyy">
-                                                <span class="assistance" aria-live="polite">Select contract start date</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerEndContractDate" class="panel-field-long">
-                                                <span>End date</span>
+                                                <span>Fecha baja</span>
                                                 <input type="date" id="playerEndContractDate" name="playerEndContractDate" placeholder="dd/mm/yyyy">
-                                                <span class="assistance" aria-live="polite">Select contract end date</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerContractType" class="panel-field-long">
-                                                <span>Contract type</span>
+                                                <span>Tipo de contrato</span>
                                                 <div class="cm-c-select-icon">
                                                     <select class="cm-c-select-icon__select" id="playerContractType" placeholder="Contract type" name="playerContractType">
-                                                        <option value="">Select contract</option>
-                                                        <option value="1">Contract 1</option>
-                                                        <option value="2">Contract 2</option>
-                                                        <option value="3">Contract 3</option>
-                                                        <option value="4">Contract 4</option>
-                                                        <option value="5">Contract 5</option>
+                                                        <option value="">Seleccionar</option>
+                                                        <option value="1">Contrato 1</option>
+                                                        <option value="2">Contrato 2</option>
+                                                        <option value="3">Contrato 3</option>
+                                                        <option value="4">Contrato 4</option>
+                                                        <option value="5">Contrato 5</option>
                                                         </select>
-                                                </div>   
-                                                <span class="assistance" aria-live="polite">Select contract type</span>                 
+                                                </div>                    
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerTransferCost" class="panel-field-long">
-                                                <span>Transfer cost (€)</span>
+                                                <span>Conste transferencia(€)</span>
                                                 <input type="number" id="playerTransferCost" name="playerTransferCost" placeholder="Transfer cost in €">
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="playerSalary" class="panel-field-long">
-                                                <span>Total Salary (€)</span>
+                                                <span>Salario total(€)</span>
                                                 <input type="number" id="playerSalary" name="playerSalary" placeholder="Salary in €">
                                             </label>
                                         </div>
@@ -382,41 +373,38 @@
                                                 <div class="cm-l-contentHeader__titleBar">
                                                     <div class="titleBar__title"></div>
                                                     <div class="titleBar__tools">
-                                                        <button class="cm-o-icon-button-small--primary" id="addBonusVariable"><span class="material-symbols-outlined">add</span></button>
+                                                        <button class="cm-o-icon-button-small--primary" id="addBonusVariable"><span class="material-symbols-outlined">Añadir</span></button>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="cm-c-simpleAccordion__content">
                                                 <header class="cm-l-body-static-header--inTab" style="margin-top:0;">
-                                                    <p class="cm-u-text-black-cat">Create New Variable</p>
+                                                    <p class="cm-u-text-black-cat">Crear variable</p>
                                                 </header>
                                                 <div class="cm-l-form-panel__row">
                                                     <label for="newVariableDescription" class="panel-field-long">
-                                                        <span>Description</span>
-                                                        <input type="text" id="newVariableDescription" name="newVariableDescription" placeholder="Add description">
-                                                        <span class="assistance" aria-live="polite">Add description</span>    
+                                                        <span>Descripción</span>
+                                                        <input type="text" id="newVariableDescription" name="newVariableDescription" placeholder="Add description"> 
                                                     </label>
                                                 </div>
                                                 <div class="cm-l-form-panel__row cm-u-spacer-mt-big">
                                                     <label for="" class="">
-                                                        <span style="display:inline-block; width:160px;">Add Condition</span>
+                                                        <span style="display:inline-block; width:160px;">Condición</span>
                                                         <div class="cm-c-select-icon">
                                                             <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
-                                                                <option value="">Select condition</option>
-                                                                <option value="1">Games played</option>
-                                                                <option value="2">Mins. played</option>
-                                                                <option value="3">Goals scored</option>
-                                                                <option value="4">Goal assists</option>
+                                                                <option value="1">Partidos jugados</option>
+                                                                <option value="2">Minutos jugados</option>
+                                                                <option value="3">Goles marcados</option>
+                                                                <option value="4">Goles asistidos</option>
                                                                 </select>
                                                         </div>            
                                                     </label>
                                                     <label for="" class="">
                                                         <div class="cm-c-select-icon">
                                                             <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
-                                                                <option value="">Select condition</option>
-                                                                <option value="1">Greater than</option>
-                                                                <option value="2">Equals</option>
-                                                                <option value="3">Lower than</option>
+                                                                <option value="1">Mayor que</option>
+                                                                <option value="2">Igual</option>
+                                                                <option value="3">Menor que</option>
                                                                 </select>
                                                         </div>            
                                                     </label>
@@ -428,82 +416,79 @@
                                                 <div class="cm-l-form-panel__row">
                                                     <div class="cm-c-select-icon" style="width:156px; max-width:156px;">
                                                         <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" >
-                                                            <option value="">Select condition</option>
-                                                            <option value="1">And</option>
-                                                            <option value="2">Or</option>
+                                                            <option value="1">Y</option>
+                                                            <option value="2">O</option>
                                                             </select>
                                                     </div>  
                                                     <label for="" class="">
                                                         <div class="cm-c-select-icon">
                                                             <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
-                                                                <option value="">Select condition</option>
-                                                                <option value="1">Games played</option>
-                                                                <option value="2">Mins. played</option>
-                                                                <option value="3">Goals scored</option>
-                                                                <option value="4">Goal assists</option>
+                                                                <option value="1">Partidos jugados</option>
+                                                                <option value="2">Minutos jugados</option>
+                                                                <option value="3">Goles marcados</option>
+                                                                <option value="4">Goles asistidos</option>
                                                                 </select>
                                                         </div>            
                                                     </label>
                                                     <label for="" class="">
                                                         <div class="cm-c-select-icon">
                                                             <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
-                                                                <option value="">Select condition</option>
-                                                                <option value="1">Greater than</option>
-                                                                <option value="2">Equals</option>
-                                                                <option value="3">Lower than</option>
+                                                                <option value="1">Mayor que</option>
+                                                                <option value="2">Igual</option>
+                                                                <option value="3">Menor que</option>
                                                                 </select>
                                                         </div>            
                                                     </label>
                                                     <label for="" class="">
                                                         <input type="text" id="" name="newVariableDescription" placeholder="Add value">        
                                                     </label>
-                                                    <button class="cm-o-icon-button-small--secondary" id="addBonusVariable"><span class="material-symbols-outlined">add</span></button>
-                                                    <button class="cm-o-icon-button-small--secondary" id="addBonusVariable"><span class="material-symbols-outlined">delete</span></button>
+                                                    <button class="cm-o-icon-button-small--secondary" id="addBonusVariable"><span class="material-symbols-outlined">Añadir</span></button>
+                                                    <button class="cm-o-icon-button-small--secondary" id="addBonusVariable"><span class="material-symbols-outlined">Borrar</span></button>
                                                 </div>
                                                 <div class="cm-l-form-panel__row cm-u-spacer-mt-big">
                                                     <label for="" class="">
-                                                        <span style="display:inline-block; width:160px;">Add Amount</span>
+                                                        <span style="display:inline-block; width:160px;">Importe</span>
                                                         <input type="text" id="" name="newVariableDescription" placeholder="Add value">        
                                                     </label>
                                                     <label for="" class="">
                                                         <div class="cm-c-select-icon">
                                                             <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
-                                                                <option value="">Select type</option>
-                                                                <option value="1">Type 1</option>
-                                                                <option value="1">Type 2</option>
+                                                                <option value="">Tipo variable</option>
+                                                                <option value="1">Variable1</option>
+                                                                <option value="1">Variable2</option>
                                                                 </select>
                                                         </div>            
                                                     </label>
                                                     <label for="" class="">
                                                         <div class="cm-c-select-icon">
                                                             <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
-                                                                <option value="">Select beneficiary</option>
-                                                                <option value="1">Player</option>
-                                                                <option value="2">Intermediary</option>
-                                                                <option value="3">Origin Club</option>
-                                                                <option value="3">Destination Club</option>
+                                                                <option value="">Beneficiario</option>
+                                                                <option value="1">Jugador</option>
+                                                                <option value="2">Intermediario</option>
+                                                                <option value="3">Club origen</option>
+                                                                <option value="3">Club destino</option>
                                                                 </select>
                                                         </div>            
                                                     </label>
                                                 </div>
                                                 <div class="cm-l-form-panel__row cm-u-spacer-mt-big">
                                                     <label for="" class="">
-                                                        <span style="display:inline-block; width:160px;">Start/End dates</span>
+                                                        <span style="display:inline-block; width:160px;">Vigencia</span>
                                                         <input type="date" id="" name="" placeholder="Start">       
                                                     </label>
                                                     <label for="" class="">
                                                         <input type="date" id="" name="" placeholder="End">       
                                                     </label>
                                                     <label for="" class="" style="display:flex; gap:8px; align-items: center;">
-                                                        <span>Reedemable?</span>
+                                                        <span>Amortizable</span>
                                                         <div class="cm-c-form-simple__radio-toggle">
                                                             <input type="checkbox" id="" name="">
                                                         </div>
                                                     </label>
                                                 </div>
                                                 <div class="cm-l-form-panel__row cm-u-spacer-mt-big cm-u-centerText cm-u-spacer-mb-large">
-                                                    <button type="button" class="cm-o-button-mouse--primary" id="variableAdd">Add variable</button>
-                                                    <button type="button" class="cm-o-button-mouse--ghost" id="variableClose">Cancel</button> 
+                                                    <button type="button" class="cm-o-button-mouse--primary" id="variableAdd">Guardar</button>
+                                                    <button type="button" class="cm-o-button-mouse--ghost" id="variableClose">Cancelar</button> 
                                                 </div>
                                             </div>
                                         </div>
@@ -512,29 +497,29 @@
                                         <div class="cm-l-tabledata cm-u-spacer-mt-big">
                                             <div class="cm-l-tabledata__header">
                                                 <div class="tablecell-long">
-                                                    <p class="">Description</p>
+                                                    <p class="">Descripción</p>
                                                 </div>
                                                 <div class="tablecell-medium">
-                                                    <p class="">Amount</p>
+                                                    <p class="">Importe</p>
                                                 </div>
                                                 <div class="tablecell-medium">
-                                                    <p class="">Beneficiary</p>
+                                                    <p class="">Beneficiario</p>
                                                 </div>
                                                 <div class="tablecell-medium">
-                                                    <p class="">Start Date</p>
+                                                    <p class="">Fecha inicio</p>
                                                 </div>
                                                 <div class="tablecell-medium">
-                                                    <p class="">End Date</p>
+                                                    <p class="">Fecha final</p>
                                                 </div>
-                                                <div class="tablecell-short cm-u-centerText">Edit</div>
-                                                <div class="tablecell-short cm-u-centerText">Delete</div>
+                                                <div class="tablecell-short cm-u-centerText"></div>
+                                                <div class="tablecell-short cm-u-centerText"></div>
                                             </div>
                                             <div id="contractVariablesListContainer">
                                                 <div class="cm-l-tabledata__row">
-                                                    <div class="tablecell-long">Description of variable</div>
-                                                    <div class="tablecell-medium">5000</div>
-                                                    <div class="tablecell-medium">Player</div>
-                                                    <div class="tablecell-medium">12/12/2023</div>
+                                                    <div class="tablecell-long">Descripción variable 1</div>
+                                                    <div class="tablecell-medium">560.000€</div>
+                                                    <div class="tablecell-medium">Jugador</div>
+                                                    <div class="tablecell-medium">01/01/2023</div>
                                                     <div class="tablecell-medium">12/12/2024</div>
                                                     <div class="tablecell-short cm-u-centerText">
                                                         <p class="cm-o-icon-button-smaller--primary" id="" data-playerid="1"><span class="material-symbols-outlined">border_color</span></p>
@@ -544,10 +529,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="cm-l-tabledata__row">
-                                                    <div class="tablecell-long">Description of variable</div>
-                                                    <div class="tablecell-medium">5000</div>
-                                                    <div class="tablecell-medium">Player</div>
-                                                    <div class="tablecell-medium">12/12/2023</div>
+                                                    <div class="tablecell-long">Descripción variable 2</div>
+                                                    <div class="tablecell-medium">400.000€</div>
+                                                    <div class="tablecell-medium">Club origen</div>
+                                                    <div class="tablecell-medium">01/01/2023</div>
                                                     <div class="tablecell-medium">12/12/2024</div>
                                                     <div class="tablecell-short cm-u-centerText">
                                                         <p class="cm-o-icon-button-smaller--primary" id="" data-playerid="1"><span class="material-symbols-outlined">border_color</span></p>
@@ -557,10 +542,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="cm-l-tabledata__row">
-                                                    <div class="tablecell-long">Description of variable</div>
-                                                    <div class="tablecell-medium">5000</div>
-                                                    <div class="tablecell-medium">Player</div>
-                                                    <div class="tablecell-medium">12/12/2023</div>
+                                                    <div class="tablecell-long">Descripción variable 3</div>
+                                                    <div class="tablecell-medium">34.000€</div>
+                                                    <div class="tablecell-medium">Intermediario</div>
+                                                    <div class="tablecell-medium">01/01/2023</div>
                                                     <div class="tablecell-medium">12/12/2024</div>
                                                     <div class="tablecell-short cm-u-centerText">
                                                         <p class="cm-o-icon-button-smaller--primary" id="" data-playerid="1"><span class="material-symbols-outlined">border_color</span></p>

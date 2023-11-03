@@ -19,11 +19,11 @@
     <div class="cm-c-modal cm-u-inactive">
         <div class="cm-c-modal__smallContent cm-u-inactive" id="modalSmall">
             <div class="modal-body cm-u-spacer-mb-bigger">
-                <h3 class="cm-u-text-black-cat">Are you sure?</h3>
+                <h3 class="cm-u-text-black-cat">Está seguro?</h3>
             </div>
             <div class="modal-footer">
-                <a href="edit-user.html" class="cm-o-button-cat--transparent">Cancel</a> 
-                <a href="manage-users.html" class="cm-o-button-cat--primary">Continue</a>
+                <a href="edit-user.html" class="cm-o-button-cat--transparent">Cancelar</a> 
+                <a href="manage-users.html" class="cm-o-button-cat--primary">Continuar</a>
             </div>
         </div>
         <div class="cm-c-modal__bigContent cm-u-inactive" id="modalBig">
@@ -36,11 +36,11 @@
                 </form>
                 <section class="cm-l-body">
                     <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
-                        <p class="cm-u-text-black-cat" id="modalBigListTitle">Search results</p>
+                        <p class="cm-u-text-black-cat" id="modalBigListTitle">Buscar</p>
                     </header>
                     <div class="cm-l-tabledata cm-u-spacer-mb-huge">
                         <div id="searchResultsListHeaderContainer"></div>
-                        <div id="searchResultsListContainer">results</div>
+                        <div id="searchResultsListContainer">Resultados</div>
                         <div id="tablePaginationSearchResults"></div> 
                     </div>                   
                 </section>
@@ -89,13 +89,13 @@
                         <li>
                             <div class="cm-c-select-icon cm-c-select-icon">
                                 <select class="cm-c-select-icon__select" id="clubSelector" placeholder="Select Club" name="clubSelector" value="ATM" style="width:350px;">
-                                    <option value="">Choose</option>
                                     <option value="ATM" selected>Club Atlético de Madrid S.A.D</option>
-                                    <option value="ATM">Otro club deportivo S.A.D</option>
+                                    <option value="ATM">Club Deportivo2 S.A.D</option>
+                                    <option value="ATM">Club Deportivo3 S.A.D</option>
                                     </select>
                             </div> 
                         </li>
-                        <li><a class="navbar-links__textbutt-small" id="activeUserBtn">Username</a></li>
+                        <li><a class="navbar-links__textbutt-small" id="activeUserBtn">Nombre</a></li>
                         <li><button id="manageUsersBtn" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">group</span></a></button></li>
                         <li><button id="notifsBtn" class="cm-o-icon-button-small--primary"><span class="material-symbols-outlined">notifications</span><span class="cm-o-notification-bubble" id="userUnreadNotifs"></span></button></li>
                      </ul>
@@ -114,10 +114,12 @@
             <nav class="cm-c-navbar cm-u-spacer-mt-bigger">
                 <ul class="navbar-links-vert">
                     <li><button id="manageTeamBtn" class="cm-o-button-cat--ghost">Plantilla</button></li>
-                    <li><button id="manageMastersBtn" class="cm-o-button-cat--ghost">Maestros</button></li>
-                    <li><button class="cm-o-button-cat--ghost-inactive">Calendario pagos</button></li>
+                    <li><button id="manageMastersBtn" class="cm-o-button-cat--ghost">Gestión relacional</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Calendario de pagos</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Tesorería</button></li>
                     <li><button class="cm-o-button-cat--ghost-inactive">Reporting</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Scouting</button></li>
+                    <li><button class="cm-o-button-cat--ghost-inactive">Simula tu plantilla</button></li>
                 </ul>
             </nav>
         </aside>
@@ -129,10 +131,10 @@
                 </header> -->
                 <header class="cm-l-contentHeader">
                     <div class="cm-l-contentHeader__titleBar">
-                        <div class="titleBar__title"><h1 class="cm-u-text-bear"  id="teamsDetailsTitle">Add new team</h1></div>
+                        <div class="titleBar__title"><h1 class="cm-u-text-bear"  id="teamsDetailsTitle">Crear equipo</h1></div>
                         <div class="titleBar__tools">
-                            <button type="button" class="cm-o-button-mouse--primary" id="teamsDetailsFormAddBtn">Save</button>
-                            <button type="button" class="cm-o-button-mouse--primary" id="teamsDetailsFormUpdateBtn">Save</button>
+                            <button type="button" class="cm-o-button-mouse--primary" id="teamsDetailsFormAddBtn">Guardar</button>
+                            <button type="button" class="cm-o-button-mouse--primary" id="teamsDetailsFormUpdateBtn">Guardar</button>
                             <button type="button" class="cm-o-icon-button-small--primary" id="teamsDetailsFormDeleteBtn"><span class="material-symbols-outlined">delete</span></button>
                             <button type="button" class="cm-o-icon-button-small--primary" id="teamsDetailsFormCancelBtn"><span class="material-symbols-outlined">undo</span></button>
                         </div>
@@ -143,21 +145,20 @@
                         <form class="cm-l-form-panel cm-c-form-simple" id="teamsDetailsForm">
                             <div class="cm-c-form-tabs">
                                 <div class="cm-c-form-tabs__links cm-u-spacer-mb-big">
-                                    <button class="tabLink" data-target="generalData">General data</button>
-                                    <button class="tabLink" data-target="contacts">Contacts</button>
+                                    <button class="tabLink" data-target="generalData">General</button>
+                                    <button class="tabLink" data-target="contacts">Contractual</button>
                                 </div>
                                 <div class="cm-c-form-tabs__content">
                                     <div class="tabContent" id="generalData">
                                         <div class="cm-l-form-panel__row">
                                             <label for="teamName" class="panel-field-long">
-                                                <span>Name</span>
+                                                <span>Nombre</span>
                                                 <input type="text" id="teamsDetailsTeamName" name="teamName" placeholder="Name" required>
-                                                <span class="assistance" aria-live="polite">Write team name</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="teamLeague" class="panel-field-long">
-                                                <span>League</span>
+                                                <span>Liga</span>
                                                 <div class="cm-c-field-icon">
                                                     <input class="cm-c-field-icon__input" id="teamsDetailsTeamLeague" type="search" placeholder="Search league" name="teamLeague" required>
                                                     <button class="cm-o-icon-button--secondary cm-c-field-icon__button" id="teamsDetailsTeamLeagueSearchBtn"><span class="material-symbols-outlined">search</span></button>
@@ -167,58 +168,51 @@
                                     </div>
                                     <div class="tabContent" id="contacts">
                                         <header class="cm-l-body-static-header--inTab cm-u-spacer-mb-bigger">
-                                            <p class="cm-u-text-black-cat">Contact 1</p>
+                                            <p class="cm-u-text-black-cat">Contacto 1</p>
                                         </header>
                                         <div class="cm-l-form-panel__row">
                                             <label for="contact1Name" class="panel-field-long">
-                                                <span>Name</span>
+                                                <span>Nombre</span>
                                                 <input type="text" id="teamsDetailsContact1Name" name="contact1Name" placeholder="Name" required>
-                                                <span class="assistance" aria-live="polite">Write Name</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="contact1Phone" class="panel-field-long">
-                                                <span>Phone</span>
+                                                <span>Teléfono</span>
                                                 <input type="number" id="teamsDetailsContact1Phone" name="contact1Phone" placeholder="Phone">
-                                                <span class="assistance" aria-live="polite">Write phone nr.</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="contact1Email" class="panel-field-long">
                                                 <span>Email</span>
                                                 <input type="email" id="teamsDetailsContact1Email" name="contact1Email" placeholder="Email" required>
-                                                <span class="assistance" aria-live="polite">Write email</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="contact1Alias" class="panel-field-long">
                                                 <span>Alias</span>
                                                 <input type="text" id="teamsDetailsContact1Alias" name="contact1Alias" placeholder="Alias" required>
-                                                <span class="assistance" aria-live="polite">Write Alias</span>
                                             </label>
                                         </div>
                                         <header class="cm-l-body-static-header--inTab cm-u-spacer-mb-bigger">
-                                            <p class="cm-u-text-black-cat">Contact 2</p>
+                                            <p class="cm-u-text-black-cat">Contacto 2</p>
                                         </header>
                                         <div class="cm-l-form-panel__row">
                                             <label for="contact2Name" class="panel-field-long">
-                                                <span>Name</span>
+                                                <span>Nombre</span>
                                                 <input type="text" id="teamsDetailsContact2Name" name="contact2Name" placeholder="Name">
-                                                <span class="assistance" aria-live="polite">Write Name</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="contact2Phone" class="panel-field-long">
-                                                <span>Phone</span>
+                                                <span>Teléfono</span>
                                                 <input type="number" id="teamsDetailsContact2Phone" name="contact2Phone" placeholder="Phone">
-                                                <span class="assistance" aria-live="polite">Write phone nr.</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="contact2email" class="panel-field-long">
                                                 <span>Email</span>
                                                 <input type="email" id="teamsDetailsContact2Email" name="contact2email" placeholder="Email">
-                                                <span class="assistance" aria-live="polite">Write email</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
@@ -229,34 +223,30 @@
                                             </label>
                                         </div>
                                         <header class="cm-l-body-static-header--inTab cm-u-spacer-mb-bigger">
-                                            <p class="cm-u-text-black-cat">Contact 3</p>
+                                            <p class="cm-u-text-black-cat">Contacto 3</p>
                                         </header>
                                         <div class="cm-l-form-panel__row">
                                             <label for="contact3Name" class="panel-field-long">
-                                                <span>Name</span>
+                                                <span>Nombre</span>
                                                 <input type="text" id="teamsDetailsContact3Name" name="contact3Name" placeholder="Name">
-                                                <span class="assistance" aria-live="polite">Write Name</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="contact3Phone" class="panel-field-long">
-                                                <span>Phone</span>
+                                                <span>Teléfono</span>
                                                 <input type="number" id="teamsDetailsContact3Phone" name="contact3Phone" placeholder="Phone">
-                                                <span class="assistance" aria-live="polite">Write phone nr.</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="contact3email" class="panel-field-long">
                                                 <span>Email</span>
                                                 <input type="email" id="teamsDetailsContact3Email" name="contact3email" placeholder="Email">
-                                                <span class="assistance" aria-live="polite">Write email</span>
                                             </label>
                                         </div>
                                         <div class="cm-l-form-panel__row">
                                             <label for="contact3Alias" class="panel-field-long">
                                                 <span>Alias</span>
                                                 <input type="text" id="teamsDetailsContact3Alias" name="contact3Alias" placeholder="Alias">
-                                                <span class="assistance" aria-live="polite">Write Alias</span>
                                             </label>
                                         </div>
                                     </div>

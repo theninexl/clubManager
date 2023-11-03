@@ -3176,7 +3176,7 @@ const app = {
         playerActive.checked = false;
         playerName.removeAttribute('value');
         playerLastname.removeAttribute('value');
-        playerLastname2.removeAttribute('value');
+        // playerLastname2.removeAttribute('value');
         playerAlias.removeAttribute('value');
         playerCountry.removeAttribute('value');
         playerPassportDate.removeAttribute('value');
