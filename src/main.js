@@ -1197,7 +1197,7 @@ const app = {
 
 
         if (location.search.startsWith('?player=new')) {
-            nodes.playerDetailsTitle.innerHTML = 'Add new Player';
+            nodes.playerDetailsTitle.innerHTML = 'Nuevo jugador';
             //añadir al menos una fila para subir imagenes de ID
             app.addIdImageRow();
             //solicitar el listado de categorias para añadirlo al select
