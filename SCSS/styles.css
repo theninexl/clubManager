@@ -1882,7 +1882,7 @@ strong {
   -webkit-font-smoothing: antialiased;
   position: absolute;
   right: 0;
-  z-index: 0;
+  z-index: -1;
 }
 .cm-c-select-icon--disabled {
   border: 1px solid #E1E1E1;
