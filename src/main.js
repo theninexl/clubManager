@@ -892,7 +892,7 @@ const app = {
     //filtrar jugadores por busqueda
     filterPlayers: async (searchTerm, {page = 1, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = 5;
-        resource = '/players?search='+searchTerm;
+        const resource = '/players?search='+searchTerm;
         const results = await app.getData(resource, page, limit, sortBy, order)
         .then(function (response) {
             //console.log(response);
@@ -906,16 +906,13 @@ const app = {
         });
     },
     //filtrar jugadores por busqueda
-    filterPlayers: async (searchTerm, {page = 1, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
-        app.listLimit = 5;
+    filterPlayersCategories: async (searchTerm, {page = 1, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
+        app.listLimit = 10;
         const resource = '/players?search='+searchTerm;
         const results = await app.getData(resource, page, limit, sortBy, order)
         .then(function (response) {
-            //console.log(response);
-            app.listSearchResults(response,searchResultsListContainer,searchTerm);
-            if (response.count > 0) {
-                app.paginateList(response, tablePaginationSearchResults);
-            }  
+            app.listPlayers(response,nodes.playersListContainer);
+            app.paginateList(response, nodes.tablePaginationPlayers);
         })
         .catch(function (error) {
             console.warn(error);
@@ -1191,6 +1188,13 @@ const app = {
         addPlayersBtn.addEventListener('click',()=>{
             location.href="manage-player.html?player=new";
         });
+
+        //select filtrar jugadores por categoría
+        searchPlayerByCategory.addEventListener('change',(event)=>{
+            const searchTerm = event.target.value;
+            app.filterPlayersCategories(searchTerm);
+        
+        })
     },
     //pagina añadir/editar usuario
     managePlayerPage: () => {
@@ -2975,7 +2979,7 @@ const app = {
         // console.log('<------- paginateList');
         // console.log('añadir paginacion para: '+count);
         // console.log('limite listado: '+app.listLimit);
-        // console.log('paginas maximas: '+maxPages);
+        //console.log('paginas maximas: '+maxPages);
         
         // construir la tabla de paginación
         const paginationContainer = document.createElement('div');
@@ -3020,7 +3024,8 @@ const app = {
                     app.currentListPage++;
                     const params = new URLSearchParams(document.location.search);
                     if (page === 'manageUsers' && location.search === ''){ app.getUsers({page:app.currentListPage});}
-                    else if (page === 'manageTeam' && location.search === ''){ app.getPlayers({page:app.currentListPage})}
+                    else if (page === 'manageTeam' && location.search === ''){ 
+                        app.getPlayers({page:app.currentListPage})}
                     else if (page === 'manageUsers' && location.search.startsWith('?searchAction=searchUser')){ 
                         searchTerm = searchInModalInput.value;
                         app.filterUsers(searchTerm, {page:app.currentListPage, limit:5});
@@ -3078,29 +3083,29 @@ const app = {
         }
         if (maxPages > 1 && app.currentListPage === 1) {
             // console.log('estoy al principio');
-            paginationButtonForward.classList.remove('cm-o-icon-button-small--primary');
-            paginationButtonForward.classList.add('cm-o-icon-button-small--primary');
-            paginationButtonBack.classList.remove('cm-o-icon-button-small--primary');
-            paginationButtonBack.classList.add('cm-o-icon-button-small--disabled');
+            paginationButtonForward.classList.remove('cm-o-icon-button-smaller--primary');
+            paginationButtonForward.classList.add('cm-o-icon-button-smaller--primary');
+            paginationButtonBack.classList.remove('cm-o-icon-button-smaller--primary');
+            paginationButtonBack.classList.add('cm-o-icon-button-smaller--disabled');
             activatePagination();
         } else if (maxPages > 1 && app.currentListPage === maxPages) {
-            // console.log('estoy al final');
-            paginationButtonForward.classList.remove('cm-o-icon-button-small--primary');
-            paginationButtonForward.classList.add('cm-o-icon-button-small--disabled');
-            paginationButtonBack.classList.remove('cm-o-icon-button-small--disabled');
-            paginationButtonBack.classList.add('cm-o-icon-button-small--primary');
+            //console.log('estoy al final');
+            paginationButtonForward.classList.remove('cm-o-icon-button-smaller--primary');
+            paginationButtonForward.classList.add('cm-o-icon-button-smaller--disabled');
+            paginationButtonBack.classList.remove('cm-o-icon-button-smaller--disabled');
+            paginationButtonBack.classList.add('cm-o-icon-button-smaller--primary');
             activatePagination();
         } else if (maxPages > 1 && app.currentListPage < maxPages) {
             // console.log('estoy en medio');
-            paginationButtonBack.classList.remove('cm-o-icon-button-small--disabled');
-            paginationButtonBack.classList.add('cm-o-icon-button-small--primary');
+            paginationButtonBack.classList.remove('cm-o-icon-button-smaller--disabled');
+            paginationButtonBack.classList.add('cm-o-icon-button-smaller--primary');
             activatePagination();
         } else if (maxPages === 1 && app.currentListPage === 1 ) {
             // console.log('solo hay una página');
-            paginationButtonForward.classList.remove('cm-o-icon-button-small--primary');
-            paginationButtonForward.classList.add('cm-o-icon-button-small--disabled');
-            paginationButtonBack.classList.remove('cm-o-icon-button-small--primary');
-            paginationButtonBack.classList.add('cm-o-icon-button-small--disabled');
+            paginationButtonForward.classList.remove('cm-o-icon-button-smaller--primary');
+            paginationButtonForward.classList.add('cm-o-icon-button-smaller--disabled');
+            paginationButtonBack.classList.remove('cm-o-icon-button-smaller--primary');
+            paginationButtonBack.classList.add('cm-o-icon-button-smaller--disabled');
         }
     },
     //reordenar listados
