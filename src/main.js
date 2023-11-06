@@ -107,12 +107,12 @@ const app = {
         const resource = '/players/'+playerID;
         const data = await app.getData(resource)
         .then(function (response) {
-            console.log(response);
             app.listPlayerDetails(response);
             //solicitar intermediarios y fijar segun el id
             app.getIntermediariesOnSelect(response.intermediaryID);     
             //solicitar el listado de categorias para añadirlo al select
-            app.getCategoriesOnSelect(nodes.playerCategory,response.category);       
+            const endpoint = response.category;
+            app.getDataOnSelect('/categories','category',nodes.playerCategory,endpoint);       
             //leer la foto con el ID que corresponde al jugador
             (async ()=>{
                 const readPlayerIdPicture = await app.getData('/players/'+response.id+'/idImages')
@@ -234,13 +234,26 @@ const app = {
         })
     },
     //obtener listado de categorias para form de añadir nuevo jugador
+    getDataOnSelect:async (resource, endpoint, selectField, selectedOption) => {  
+        const results = await app.getData(resource)
+        .then(function (response) {            
+            selectField.innerHTML = '';
+            const options = response.map(option => option[endpoint]);
+            app.paintSelectOptions(selectField, options, selectedOption);
+            selectField.value = selectedOption;
+        })
+        .catch(function (error) {
+            console.warn(error);
+        });
+    },
+    //obtener listado de categorias para form de añadir nuevo jugador
     getCategoriesOnSelect:async (selectField, selectedCategory) => {
         const results = await app.getData('/categories')
         .then(function (response) {
-            console.log(selectField);
-            console.log(selectedCategory);
+            console.log(response);
             selectField.innerHTML = '';
-            const options = response.map(category => category.category)
+            const options = response.map(option => option.category)
+            console.log(options);
             app.paintSelectOptions(selectField, options);
             selectField.value = selectedCategory;
         })
@@ -1170,7 +1183,11 @@ const app = {
     manageTeamPage: () => {
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
-        app.getCategoriesOnSelect(nodes.searchPlayerByCategory,'');
+        //setear select categorias en header
+        app.getDataOnSelect('/categories','category',nodes.filterPlayerByCategory,'Selecciona categoria');
+        //setear select activo en header
+        const activeStatusOptions = ['activo','no activo'];
+        app.paintSelectOptions(filterPlayerByActive, activeStatusOptions, 'Selecciona estado');
         const listLimit = 10;
         nodes.manageTeamBtn.classList.add('active');
         app.getPlayers();
@@ -1190,10 +1207,43 @@ const app = {
         });
 
         //select filtrar jugadores por categoría
-        searchPlayerByCategory.addEventListener('change',(event)=>{
+        filterPlayerByCategory.addEventListener('change',(event)=>{
+            filterPlayerByActive.selectedIndex = '0';
             const searchTerm = event.target.value;
-            app.filterPlayersCategories(searchTerm);
-        
+            const selectedItem = nodes.filterPlayerByCategory.selectedIndex;
+
+            if (selectedItem > 0) {
+                app.filterPlayersCategories(searchTerm);  
+            } else {
+                app.getPlayers();
+            }      
+        });
+
+        filterPlayerByActive.addEventListener('change',(event) => {
+            filterPlayerByCategory.selectedIndex = '0';
+            const filterTerm = event.target.value;
+            console.log(filterTerm);
+            let searchTerm;
+            let resource = '/players?active=';
+
+            const filterPlayerbyActive = async (resource) => {
+                const results = await app.filterData(resource)
+                .then(function (response) {
+                    app.listPlayers(response,nodes.playersListContainer);
+                    app.paginateList(response, nodes.tablePaginationPlayers);
+                })
+                .catch(function (error) {
+                    console.warn(error);
+                });
+            }
+
+            if (filterTerm === 'activo') {
+                filterPlayerbyActive(resource+'on');
+            } else if (filterTerm === 'no activo') {
+                filterPlayerbyActive(resource+'false');
+            } else {
+                app.getPlayers();
+            }
         })
     },
     //pagina añadir/editar usuario
@@ -1210,7 +1260,7 @@ const app = {
             //añadir al menos una fila para subir imagenes de ID
             app.addIdImageRow();
             //solicitar el listado de categorias para añadirlo al select
-            app.getCategoriesOnSelect(nodes.playerCategory,'');
+            app.getDataOnSelect('/categories','category',nodes.playerCategory,'');
             //solicitar el listado de intermediarios para añadirlo al select
             app.getIntermediariesOnSelect();
             nodes.playerDetailsFormAddBtn.classList.remove('cm-u-inactive');
@@ -3407,18 +3457,22 @@ const app = {
         
     },
     //pintar un select con las opciones que le des
-    paintSelectOptions: (element,optionsList) => {
+    paintSelectOptions: (element,optionsList, selectedOption) => {
         const selectOptions = element.options;
         const firstOption = document.createElement("option");
-        firstOption.text = 'Selecciona';
-        firstOption.value = '';
+        if (selectedOption === '') {
+            firstOption.text = 'Selecciona';
+        } else {
+            firstOption.text = selectedOption;
+        }
         selectOptions.add(firstOption);
         optionsList.map(optionItem => {
             const newOption = document.createElement("option");
             newOption.text = optionItem;
             newOption.value = optionItem;
             selectOptions.add(newOption);
-        })
+        });        
+        element.options[0].setAttribute('selected',true);
     },
     //manejar contenido con tabs
     manageTabs: () => {

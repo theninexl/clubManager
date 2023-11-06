@@ -81,7 +81,8 @@ export const userDetailsFieldForm2write = $('#userForm2write');
 export const userDetailsFormAddBtn = $('#userDetailsFormAddBtn');
 
 //manageTeam Page
-export const searchPlayerByCategory = $('#searchPlayerByCategory');
+export const filterPlayerByCategory = $('#filterPlayerByCategory');
+export const filterPlayerByActive = $('#filterPlayerByActive');
 
 //playerDetails Fields
 export const playerDetailsForm = $('#playerDetailsForm');
