@@ -88,13 +88,12 @@ const app = {
             console.warn(error);
         });
     },
-    //obtener jugadores
+    //obtener 10 jugadores para una pagina determinada
     getPlayers: async ({page = app.currentListPage, limit = app.listLimit, sortBy = 'id', order = 'asc'} = {}) => {
         app.listLimit = 10;
         const resource = '/players';
         const results = await app.getData(resource, page, limit, sortBy, order)
         .then(function (response) {
-            app.setTeamSalaryLimit(response);
             app.listPlayers(response,nodes.playersListContainer);
             app.paginateList(response, nodes.tablePaginationPlayers);
         })
@@ -1181,6 +1180,8 @@ const app = {
     },
     //pagina listado plantilla jugadores
     manageTeamPage: () => {
+        const listLimit = 10;
+        nodes.manageTeamBtn.classList.add('active');
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
         //setear select categorias en header
@@ -1188,9 +1189,21 @@ const app = {
         //setear select activo en header
         const activeStatusOptions = ['activo','no activo'];
         app.paintSelectOptions(filterPlayerByActive, activeStatusOptions, 'Selecciona estado');
-        const listLimit = 10;
-        nodes.manageTeamBtn.classList.add('active');
+        //get players
         app.getPlayers();
+
+        //setear el widget de salario
+        const getAllPlayers = async () => {
+            const results = await app.getData('/players')
+            .then(function (response) {
+                app.setTeamSalaryLimit(response);
+            })
+            .catch(function (error) {
+                console.warn(error);
+            });
+        }
+
+        getAllPlayers();
 
         //boton buscar dentro de listado de jugadores
         searchPlayersBtn.addEventListener('click',(event)=>{
@@ -1219,6 +1232,7 @@ const app = {
             }      
         });
 
+        //select filtrar jugadores por estado activo o no
         filterPlayerByActive.addEventListener('change',(event) => {
             filterPlayerByCategory.selectedIndex = '0';
             const filterTerm = event.target.value;
