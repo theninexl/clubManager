@@ -581,53 +581,31 @@ const app = {
             netSalary:data.playerSalary,
             intermediaryID:data.playerIntermediary1,
         })
-        .then(function (response) {
-            console.log(response);
-            //meter el jugador asignado a un intermediario
+        .then(response => {
+            //mirar si hay un intermediario asignado
             const playerIntermediaryAssigned = playerIntermediary1.getAttribute('value');
-            console.log(playerIntermediaryAssigned);
-
-            if (playerIntermediaryAssigned === 'undefined' || playerIntermediaryAssigned === 'null' || playerIntermediaryAssigned ==='' ) {
-                console.log('no había intermediario asignado anteriormente, asi que tengo que postear el jugador en managedPLayers');
-                if (data.playerIntermediary1 !== '') {
-                    (async()=>{
-                        const postNewManagedPlayer = await app.api.post('/intermediaries/'+data.playerIntermediary1+'/managedPlayers/',{
-                            intermediaryId: data.playerIntermediary1,
-                            name: data.playerName,
-                            lastname: data.playerLastname
-                        })
-                        .then(response=>{
-                            console.log(response);
-                            app.updateImages();
-                        })
-                        .catch(e=>{
-                            console.log(e);
-                        })
-                    })();
-                } else {
-                    app.updateImages();
-                }
-            } else {
-                console.log('ya había un manager asignado anteriormente, tengo que actualizarlo');
+            //si hay intermediario actualizamos, si no, seguimos con la imagen
+            if (playerIntermediaryAssigned !== "undefined") {
                 (async()=>{
                     const updateManagedPlayer = await app.api.put('/intermediaries/'+data.playerIntermediary1+'/managedPlayers/'+playerID, {
                         intermediaryId: data.playerIntermediary1,
                         name: data.playerName,
                         lastname: data.playerLastname
                     })
-                    .then(response=>{
-                        console.log(response);
+                    .then(response =>{
                         app.updateImages();
                     })
                     .catch(e=>{
-                        console.log(e);
+                        console.warn(e);
                     })
                 })();
+            } else {
+                app.updateImages();
             }
         })
-        .catch(function (error) {
-            console.warn(error);
-        });
+        .catch(e=>{
+            console.warn(e);
+        })
     },
     //actualizar imagenes de un jugador existente
     updateImages: () => {
