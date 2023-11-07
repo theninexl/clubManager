@@ -106,6 +106,8 @@ const app = {
         const resource = '/players/'+playerID;
         const data = await app.getData(resource)
         .then(function (response) {
+            console.log(response);
+            playerDetailsTitle.innerHTML = 'Editttttt Player';    
             app.listPlayerDetails(response);
             //solicitar intermediarios y fijar segun el id
             app.getIntermediariesOnSelect(response.intermediaryID);     
@@ -1163,15 +1165,15 @@ const app = {
         app.setActiveUserOnMenu();
         app.setActiveUserNotificationsBubble();
         //setear select categorias en header
-        app.getDataOnSelect('/categories','category',nodes.filterPlayerByCategory,'Selecciona categoria');
+        app.getDataOnSelect('/categories','category',nodes.filterPlayerByCategory,'Todas las categorias');
         //setear select activo en header
         const activeStatusOptions = ['activo','no activo'];
-        app.paintSelectOptions(filterPlayerByActive, activeStatusOptions, 'Selecciona estado');
+        app.paintSelectOptions(filterPlayerByActive, activeStatusOptions, 'Todos los estados');
         //get players
         app.getPlayers();
 
         //setear el widget de salario
-        const getAllPlayers = async () => {
+        const getAllPlayers = (async () => {
             const results = await app.getData('/players')
             .then(function (response) {
                 app.setTeamSalaryLimit(response);
@@ -1179,9 +1181,7 @@ const app = {
             .catch(function (error) {
                 console.warn(error);
             });
-        }
-
-        getAllPlayers();
+        })();
 
         //boton buscar dentro de listado de jugadores
         searchPlayersBtn.addEventListener('click',(event)=>{
@@ -1279,7 +1279,7 @@ const app = {
             app.manageFileInputs();
         } else {
             app.cleanPlayerDetails();
-            nodes.playerDetailsTitle.innerHTML = 'Edit Player';    
+            // nodes.playerDetailsTitle.innerHTML = 'Editar jugador';    
             nodes.playerDetailsSection.classList.remove('cm-u-inactive');
             nodes.playerDetailsFormAddBtn.classList.add('cm-u-inactive');
             nodes.playerDetailsFormUpdateBtn.classList.remove('cm-u-inactive');
@@ -2389,7 +2389,6 @@ const app = {
 
         editPlayerBtns.forEach(btn => {
             btn.addEventListener('click', event => {
-                // console.log('edit player:'+btn.getAttribute('data-playerid'));
                 location.href="manage-player.html?player="+btn.getAttribute('data-playerid');
             })
         })
@@ -2398,7 +2397,7 @@ const app = {
     listPlayerDetails: (player) => {
         if (player.active === 'on'){playerActive.checked = true;} else if (player.active === false){playerActive.checked = false;}
         if (player.euPlayer === 'on'){playerEUStatus.checked = true;} else if (player.euPlayer === false){playerEUStatus.checked = false;}
-        playerDetailsTitle.textContent = 'Edit player';
+        playerDetailsTitle.textContent = player.userName+' '+player.userLastname;
         playerName.setAttribute('value',player.userName);
         playerLastname.setAttribute('value',player.userLastname);
         // playerLastname2.setAttribute('value',player.userLastname2);
