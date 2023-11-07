@@ -15,7 +15,7 @@
     <!--<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet" />-->
                 
 </head>
-<body id="home">
+<body id="managePayments">
     <div class="cm-c-modal cm-u-inactive">
         <div class="cm-c-modal__smallContent cm-u-inactive" id="modalSmall">
             <div class="modal-body cm-u-spacer-mb-bigger">
@@ -30,8 +30,8 @@
             <div class="modal-body">
                 <form class="cm-c-form-simple-hrz" id="searchUsersInModalForm">
                     <div class="cm-c-field-icon cm-u-spacer-mb-bigger">
-                        <input class="cm-c-field-icon__input" id="searchInModalInput" name="" placeholder="Search users" type="search" value="">
-                        <button type="submit" class="cm-o-icon-button--secondary cm-c-field-icon__button" id="searchInModalBtn"><span class="material-symbols-outlined">search</span></button>
+                        <input class="cm-c-field-icon__input" id="searchInModalInput" name="" placeholder="Buscar jugadores" type="search" value="">
+                        <button type="submit" class="cm-o-icon-button-small--secondary cm-c-field-icon__button" id="searchInModalBtn"><span class="material-symbols-outlined">search</span></button>
                     </div>                    
                 </form>
                 <section class="cm-l-body">
@@ -52,7 +52,7 @@
         <div class="cm-l-container">
             <nav class="cm-c-navbar">
                 <div class="cm-c-navbar__left">
-                    <a href="" class="cm-o-logo"><span class="shield"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    <a href="main.html" class="cm-o-logo"><span class="shield"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         viewBox="0 0 30 40.2" style="enable-background:new 0 0 30 40.2;" xml:space="preserve">
                    <style type="text/css">
                        .st0{fill:#FFFFFF;}
@@ -123,7 +123,60 @@
                 </ul>
             </nav>
         </aside>
-        <section class="cm-l-container-2col__body cm-u-spacer-mt-medium">
+        <section class="cm-l-container-2col__body">
+            <section id="paymentsPlayersList" class="">
+                <header class="cm-l-contentHeader">
+                    <div class="cm-l-contentHeader__titleBar">
+                        <div class="titleBar__title"><h1 class="cm-u-text-bear">Calendario de pagos</h1></div>
+                    </div>
+                    <div class="cm-l-contentHeader__toolBar cm-u-spacer-mt-big cm-u-spacer-mb-big">
+                        <div class="cm-c-select-icon">
+                            <select class="cm-c-select-icon__select" id="filterPlayerByCategory" placeholder="Select category" name="filterPlayerByCategory">
+                                <option value="">Todas las categorías</option>
+                                </select>
+                        </div> 
+                        <div class="cm-c-select-icon">
+                            <select class="cm-c-select-icon__select" id="filterPlayerByActive" placeholder="Select active" name="filterPlayerByActive">
+                                </select>
+                        </div> 
+                        <!-- <form class="cm-c-form-simple-hrz" id="searchPlayersForm">
+                            <div class="cm-c-field-icon">
+                                <input class="cm-c-field-icon__input" id="searchPlayer" name="searchPlayer" placeholder="Buscar jugadores">
+                                <button class="cm-o-icon-button-small--secondary cm-c-field-icon__button" id="searchPlayersBtn"><span class="material-symbols-outlined">search</span></button>
+                            </div>                    
+                        </form> -->
+                    </div>
+                </header>
+                <section class="cm-l-body">
+                    <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                        <p class="cm-u-text-black-cat">Jugadores</p>
+                    </header>
+                    <div class="cm-l-tabledata cm-u-spacer-mb-huge">
+                        <div class="cm-l-tabledata__header">
+                            <div class="tablecell-medium">
+                                <button data-field="userName" class="cm-o-sortButton">Nombre <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button>
+                            </div>
+                            <div class="tablecell-medium">
+                                <button data-field="userLastName" class="cm-o-sortButton">Apellidos <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button>
+                            </div>
+                            <div class="tablecell-medium">
+                                <button data-field="alias" class="cm-o-sortButton">Alias <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button>
+                            </div>
+                            <div class="tablecell-medium">
+                                <p class="">Jugador UE</p>
+                            </div>
+                            <div class="tablecell-medium">
+                                <p class="">Categoria</p>
+                            </div>
+                            <div class="tablecell-short cm-u-centerText">
+                                <button data-field="position" class="cm-o-sortButton">Activo <span class="material-symbols-outlined sortIcon--desc cm-u-inactive">expand_more</span><span class="material-symbols-outlined sortIcon--asc cm-u-inactive">expand_less</span></button></div>
+                            <div class="tablecell-short cm-u-centerText"></div>
+                        </div>
+                        <div id="playersListContainer"></div>
+                        <div id="tablePaginationPlayers"></div> 
+                    </div>
+                </section>
+            </section>
         </section>
     </main>
     

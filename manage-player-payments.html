@@ -15,7 +15,7 @@
     <!--<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet" />-->
                 
 </head>
-<body id="home">
+<body id="managePlayerPayments">
     <div class="cm-c-modal cm-u-inactive">
         <div class="cm-c-modal__smallContent cm-u-inactive" id="modalSmall">
             <div class="modal-body cm-u-spacer-mb-bigger">
@@ -52,7 +52,7 @@
         <div class="cm-l-container">
             <nav class="cm-c-navbar">
                 <div class="cm-c-navbar__left">
-                    <a href="" class="cm-o-logo"><span class="shield"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    <a href="main.html" class="cm-o-logo"><span class="shield"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         viewBox="0 0 30 40.2" style="enable-background:new 0 0 30 40.2;" xml:space="preserve">
                    <style type="text/css">
                        .st0{fill:#FFFFFF;}
@@ -123,23 +123,98 @@
                 </ul>
             </nav>
         </aside>
-        <section class="cm-l-container-2col__body cm-u-spacer-mt-medium">
+        <section class="cm-l-container-2col__body">
+            <section id="playerPaymentDetails" class="">
+                <header class="cm-l-contentHeader">
+                    <div class="cm-l-contentHeader__titleBar">
+                        <div class="titleBar__title">
+                            <div id="userDetailsImageContainer">
+                                <img id="userDetailsImage" src="https://placehold.co/200x200?text=Nuevo\nJugador" />
+                            </div>
+                            <h1 class="cm-u-text-bear"  id="playerDetailsTitle">&nbsp;</h1>
+                        </div>
+                        <div class="titleBar__tools">
+                            <button type="button" class="cm-o-icon-button-small--disabled" id="playerDetailsCancelBtn"><span class="material-symbols-outlined">add</span></button> 
+                        </div>
+                    </div>
+                </header>
+                <section class="cm-l-body">
+                    <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                        <p class="cm-u-text-black-cat">Pagos netos por temporada</p>
+                    </header>
+                    <div class="cm-l-tabledata cm-u-spacer-mt-big">
+                        <div class="cm-l-tabledata__header">
+                            <div class="tablecell-medium table-bg tablecell-bg-old">
+                                <p class="">Temp 19/20</p>
+                            </div>
+                            <div class="tablecell-medium table-bg tablecell-bg-old">
+                                <p class="">Temp 20/21</p>
+                            </div>
+                            <div class="tablecell-medium table-bg tablecell-bg-old">
+                                <p class="">Temp 21/22</p>
+                            </div>
+                            <div class="tablecell-medium table-bg tablecell-bg-present">
+                                <p class="">Temp 22/23</p>
+                            </div>
+                            <div class="tablecell-medium table-bg tablecell-bg-future">
+                                <p class="">Temp 23/24</p>
+                            </div>
+                            <div class="tablecell-medium table-bg tablecell-bg-totals">
+                                <p class="">Total</p>
+                            </div>
+                        </div>
+                        <div id="contractVariablesListContainer">
+                            <div class="cm-l-tabledata__row">
+                                <div class="tablecell-medium table-bg tablecell-bg-old">2.000.000€</div>
+                                <div class="tablecell-medium table-bg tablecell-bg-old">3.000.000€</div>
+                                <div class="tablecell-medium table-bg tablecell-bg-old">3.300.000€</div>
+                                <div class="tablecell-medium table-bg tablecell-bg-present">1.200.000€</div>
+                                <div class="tablecell-medium table-bg tablecell-bg-future">3.250.000€</div>
+                                <div class="tablecell-medium table-bg tablecell-bg-totals">12.50.000€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <header class="cm-l-body-static-header cm-u-spacer-mb-bigger">
+                        <p class="cm-u-text-black-cat">Pagos brutos por temporada</p>
+                    </header>
+                    <div class="cm-l-tabledata cm-u-spacer-mt-big">
+                        <div class="cm-l-tabledata__header">
+                            <div class="tablecell-medium table-bg tablecell-bg-old">
+                                <p class="">Temp 19/20</p>
+                            </div>
+                            <div class="tablecell-medium table-bg tablecell-bg-old">
+                                <p class="">Temp 20/21</p>
+                            </div>
+                            <div class="tablecell-medium table-bg tablecell-bg-old">
+                                <p class="">Temp 21/22</p>
+                            </div>
+                            <div class="tablecell-medium table-bg tablecell-bg-present">
+                                <p class="">Temp 22/23</p>
+                            </div>
+                            <div class="tablecell-medium  table-bg tablecell-bg-future">
+                                <p class="">Temp 23/24</p>
+                            </div>
+                            <div class="tablecell-medium  table-bg tablecell-bg-totals">
+                                <p class="">Total</p>
+                            </div>
+                        </div>
+                        <div id="contractVariablesListContainer">
+                            <div class="cm-l-tabledata__row">
+                                <div class="tablecell-medium table-bg tablecell-bg-old">3.770.000€</div>
+                                <div class="tablecell-medium table-bg tablecell-bg-old">5.660.000€</div>
+                                <div class="tablecell-medium table-bg tablecell-bg-old">6.230.000€</div>
+                                <div class="tablecell-medium table-bg tablecell-bg-present">2.260.000€</div>
+                                <div class="tablecell-medium table-bg tablecell-bg-future">6.130.000€</div>
+                                <div class="tablecell-medium table-bg tablecell-bg-totals">24.050.000€</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
         </section>
     </main>
-    
-    <!-- <footer class="cm-l-footer">
-        <div class="cm-l-container">
-            <nav class="cm-c-navbar">
-                <div class="cm-c-navbar__left">
-                    <ul class="navbar-links-hrz">
-                       <li><a class="navbar-links__link">Política de privacidad</a></li>
-                       <li><a class="navbar-links__link">Términos y condiciones</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </footer> -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="module" src="./src/main.js"></script>   
+    <script type="module" src="./src/main.js"></script>
 </body>
 </html>

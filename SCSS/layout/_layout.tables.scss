@@ -14,6 +14,30 @@
 
     &__header {
         @extend .cm-u-text-black-mouse;
+
+        .table-bg {
+            padding: 0 getSize($small);
+        }
+
+        .tablecell-bg-old {
+            background-color: getColor(black);
+            color: getColor(white);
+        }
+
+        .tablecell-bg-present {
+            background-color: getColor(primary);
+            color: getColor(white);
+        }
+
+        .tablecell-bg-future {
+            background-color: getColor(success);
+            color: getColor(black);
+        }
+
+        .tablecell-bg-totals {
+            background-color: getColor(secondary);
+            color: getColor(white);
+        }
     }
 
     &__row, &__footer {
@@ -27,6 +51,28 @@
     &__row--noRead {
         @extend .cm-u-text-black-mouse;
         background-color: getColor(scarpaFlowLightFade);
+    }
+
+    &__row {
+        .table-bg {
+            padding: 0 getSize($small);
+        }
+        .tablecell-bg-old {
+            background-color: getColor(modalBg);
+            color: getColor(white);
+        }
+        .tablecell-bg-present {
+            background-color: getColor(primaryLight);
+            color: getColor(white);
+        }
+        .tablecell-bg-future {
+            background-color: getColor(successLight);
+            color: getColor(black);
+        }
+        .tablecell-bg-totals {
+            background-color: getColor(secondaryLight);
+            color: getColor(black);
+        }
     }
 
     .tablecell {

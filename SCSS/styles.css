@@ -360,6 +360,25 @@ strong {
 .cm-l-tabledata__row, .cm-l-tabledata__header {
   border-bottom: 1px solid #E1E1E1;
 }
+.cm-l-tabledata__header .table-bg {
+  padding: 0 8px;
+}
+.cm-l-tabledata__header .tablecell-bg-old {
+  background-color: #1C1C1C;
+  color: #FFFFFF;
+}
+.cm-l-tabledata__header .tablecell-bg-present {
+  background-color: #2C325F;
+  color: #FFFFFF;
+}
+.cm-l-tabledata__header .tablecell-bg-future {
+  background-color: #0FCC81;
+  color: #1C1C1C;
+}
+.cm-l-tabledata__header .tablecell-bg-totals {
+  background-color: #C63527;
+  color: #FFFFFF;
+}
 .cm-l-tabledata__row, .cm-l-tabledata__footer {
   align-items: center;
   min-height: 32px;
@@ -368,6 +387,25 @@ strong {
 }
 .cm-l-tabledata__row--noRead {
   background-color: rgba(225, 225, 225, 0.3);
+}
+.cm-l-tabledata__row .table-bg {
+  padding: 0 8px;
+}
+.cm-l-tabledata__row .tablecell-bg-old {
+  background-color: rgba(69, 69, 72, 0.85);
+  color: #FFFFFF;
+}
+.cm-l-tabledata__row .tablecell-bg-present {
+  background-color: rgba(44, 50, 95, 0.5);
+  color: #FFFFFF;
+}
+.cm-l-tabledata__row .tablecell-bg-future {
+  background-color: rgba(15, 204, 129, 0.5);
+  color: #1C1C1C;
+}
+.cm-l-tabledata__row .tablecell-bg-totals {
+  background-color: rgba(198, 53, 39, 0.5);
+  color: #1C1C1C;
 }
 .cm-l-tabledata .tablecell-long, .cm-l-tabledata .tablecell-medium, .cm-l-tabledata .tablecell-short {
   display: flex;
@@ -467,6 +505,14 @@ strong {
 
 #playerDetails .cm-l-body {
   padding-top: 141px;
+}
+
+#paymentsPlayersList .cm-l-body {
+  padding-top: 126px;
+}
+
+#playerPaymentDetails .cm-l-body {
+  padding-top: 78px;
 }
 
 #manageMastersList .cm-l-body, #usersList .cm-l-body, #userDetails .cm-l-body, #teamDetails .cm-l-body, #intermsDetails .cm-l-body {

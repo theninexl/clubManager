@@ -47,6 +47,11 @@ const app = {
             app.manageMastersTeam();
         } else if (page === 'manageMastersIntermediary') {
             app.manageMastersIntermediary();
+        } else if (page === 'managePayments') {
+            app.managePaymentsPage();
+        } else if (page === 'managePlayerPayments') {
+            console.log('hit');
+            app.managePaymentsPlayerPage();
         }
     },
     //------------------------------------API & API FUNCTIONS ------------------------------------------
@@ -94,8 +99,14 @@ const app = {
         const resource = '/players';
         const results = await app.getData(resource, page, limit, sortBy, order)
         .then(function (response) {
-            app.listPlayers(response,nodes.playersListContainer);
-            app.paginateList(response, nodes.tablePaginationPlayers);
+            const page = document.body.id;
+            if (page === 'manageTeam') {
+                app.listPlayers(response,nodes.playersListContainer);
+                app.paginateList(response, nodes.tablePaginationPlayers);
+            } else if (page === 'managePayments') {
+                app.listPlayersForPayments(response,nodes.playersListContainer);
+                app.paginateList(response, nodes.tablePaginationPlayers);
+            }
         })
         .catch(function (error) {
             console.warn(error);
@@ -106,30 +117,35 @@ const app = {
         const resource = '/players/'+playerID;
         const data = await app.getData(resource)
         .then(function (response) {
-            app.listPlayerDetails(response);
-            //solicitar intermediarios y fijar segun el id
-            app.getIntermediariesOnSelect(response.intermediaryID);     
-            //solicitar el listado de categorias para añadirlo al select
-            const endpoint = response.category;
-            app.getDataOnSelect('/categories','category',nodes.playerCategory,endpoint);       
-            //leer la foto con el ID que corresponde al jugador
-            (async ()=>{
-                const readPlayerIdPicture = await app.getData('/players/'+response.id+'/idImages')
-                .then(responseImgs=>{
-                    // console.log(responseImgs);
-                    if (responseImgs.length !== 0) {
-                        app.listPlayerIdPicture(responseImgs);
-                    } else {
-                        //añadir al menos una fila para subir imagenes de ID
-                        app.addIdImageRow();
-                        //remake upload inputs
-                        app.manageFileInputs();
-                    }
-                })
-                .catch(function(error){
-                    console.warn(error);
-                });
-            })();
+            const page = document.body.id;
+            if (page === 'managePlayer') {
+                app.listPlayerDetails(response);
+                //solicitar intermediarios y fijar segun el id
+                app.getIntermediariesOnSelect(response.intermediaryID);     
+                //solicitar el listado de categorias para añadirlo al select
+                const endpoint = response.category;
+                app.getDataOnSelect('/categories','category',nodes.playerCategory,endpoint);       
+                //leer la foto con el ID que corresponde al jugador
+                (async ()=>{
+                    const readPlayerIdPicture = await app.getData('/players/'+response.id+'/idImages')
+                    .then(responseImgs=>{
+                        // console.log(responseImgs);
+                        if (responseImgs.length !== 0) {
+                            app.listPlayerIdPicture(responseImgs);
+                        } else {
+                            //añadir al menos una fila para subir imagenes de ID
+                            app.addIdImageRow();
+                            //remake upload inputs
+                            app.manageFileInputs();
+                        }
+                    })
+                    .catch(function(error){
+                        console.warn(error);
+                    });
+                })();
+            } else if (page === 'managePlayerPayments') {
+                app.listPlayerPaymentsDetails(response);
+            }
         })
         .catch(function(error){
             console.log(error);
@@ -901,8 +917,14 @@ const app = {
         const resource = '/players?search='+searchTerm;
         const results = await app.getData(resource, page, limit, sortBy, order)
         .then(function (response) {
-            app.listPlayers(response,nodes.playersListContainer);
-            app.paginateList(response, nodes.tablePaginationPlayers);
+            const page = document.body.id;
+            if (page === 'manageTeam') {
+                app.listPlayers(response,nodes.playersListContainer);
+                app.paginateList(response, nodes.tablePaginationPlayers);
+            } else if (page === 'managePayments') {
+                app.listPlayersForPayments(response,nodes.playersListContainer);
+                app.paginateList(response, nodes.tablePaginationPlayers);
+            }
         })
         .catch(function (error) {
             console.warn(error);
@@ -1038,11 +1060,6 @@ const app = {
         app.listLimit = 10;
         manageUsersBtn.classList.add('active');
         manageTeamBtn.classList.remove('active');
-        // manageUsersBtn.classList.add('active');
-        // usersListSection.classList.remove('cm-u-inactive');
-        // userDetailsSection.classList.add('cm-u-inactive');
-        // playersListSection.classList.add('cm-u-inactive');
-        // playerDetailsSection.classList.add('cm-u-inactive');
         app.getUsers();
         //app.cleanUserDetails();
 
@@ -1809,7 +1826,81 @@ const app = {
             nodes.modalContainer.classList.add('cm-u-inactive');
         })
     },
-    //------------------------------------------EVENTOS NAVEGACION ESTRUCTURALES------------------------------------------
+    //pagina calendario de pagos
+    managePaymentsPage:() => {
+        const listLimit = 10;
+        app.setActiveUserOnMenu();
+        app.setActiveUserNotificationsBubble();
+        managePaymentsBtn.classList.add('active');
+        //setear select categorias en header
+        app.getDataOnSelect('/categories','category',nodes.filterPlayerByCategory,'Todas las categorias');
+        //setear select activo en header
+        const activeStatusOptions = ['activo','no activo'];
+        app.paintSelectOptions(filterPlayerByActive, activeStatusOptions, 'Todos los estados');
+        //get players
+        app.getPlayers();
+
+         //boton buscar dentro de listado de jugadores
+        //  searchPlayersBtn.addEventListener('click',(event)=>{
+        //     event.preventDefault();
+        //     const inputTerm = searchPlayer.value;
+        //     const newParams ='?searchAction=searchPlayer&searchTerm='+inputTerm;
+        //     window.history.replaceState({},document.title, newParams);
+        //     app.searchPlayersModal();
+        // })
+
+        //select filtrar jugadores por categoría
+        filterPlayerByCategory.addEventListener('change',(event)=>{
+            filterPlayerByActive.selectedIndex = '0';
+            const searchTerm = event.target.value;
+            const selectedItem = nodes.filterPlayerByCategory.selectedIndex;
+
+            if (selectedItem > 0) {
+                app.filterPlayersCategories(searchTerm);  
+            } else {
+                app.getPaymentPlayersList();
+            }      
+        });
+
+        //select filtrar jugadores por estado activo o no
+        filterPlayerByActive.addEventListener('change',(event) => {
+            filterPlayerByCategory.selectedIndex = '0';
+            const filterTerm = event.target.value;
+            console.log(filterTerm);
+            let searchTerm;
+            let resource = '/players?active=';
+
+            const filterPlayerbyActive = async (resource) => {
+                const results = await app.filterData(resource)
+                .then(function (response) {
+                    app.listPlayersForPayments(response,nodes.playersListContainer);
+                    app.paginateList(response, nodes.tablePaginationPlayers);
+                })
+                .catch(function (error) {
+                    console.warn(error);
+                });
+            }
+
+            if (filterTerm === 'activo') {
+                filterPlayerbyActive(resource+'on');
+            } else if (filterTerm === 'no activo') {
+                filterPlayerbyActive(resource+'false');
+            } else {
+                app.getPlayers();
+            }
+        })
+    },
+    //pagina de pagos de jugador
+    managePaymentsPlayerPage:() => {
+        console.log('managePaymentsPlayer');
+        app.setActiveUserOnMenu();
+        app.setActiveUserNotificationsBubble();
+        managePaymentsBtn.classList.add('active');
+        const params = new URLSearchParams(document.location.search);
+        const playerID = params.get('player');
+        app.getPlayer(playerID);
+    },
+    //-----------------------EVENTOS NAVEGACION ESTRUCTURALES-----------------------------
     navigationEvents:() => {
         const page = document.body.id;
         if (page !== 'login') {
@@ -1848,6 +1939,15 @@ const app = {
                     app.currentListPage = 1;
                 }
             });
+            //boton abrir calendario pagos
+            managePaymentsBtn.addEventListener('click',()=> {
+                if (page === 'managePayments') {
+                    window.history.back();
+                } else {
+                    location.href="manage-payments.html";
+                    app.currentListPage = 1;
+                }
+            })
             //llamar a sortButton desde los botones que ya estaban precreados en el html
             nodes.sortBtns.forEach(btn => {
                 app.sortButton(btn, nodes.sortBtns);
@@ -2391,6 +2491,81 @@ const app = {
             })
         })
     },
+    //listar plantilla de jugadores en calendario de pagos
+    listPlayersForPayments: (players,container,{clean = true}={}) => {
+        if(clean) {
+            container.innerHTML = '';
+        }
+
+        players.items.forEach(player => {
+            const playerContainer = document.createElement('div');
+            playerContainer.classList.add('cm-l-tabledata__row');
+            const playerName = document.createElement('div');
+            playerName.classList.add('tablecell-medium');
+            playerName.textContent = player.userName;
+            const playerLastName = document.createElement('div');
+            playerLastName.classList.add('tablecell-medium');
+            playerLastName.textContent = player.userLastname;
+            const playerAlias = document.createElement('div');
+            playerAlias.classList.add('tablecell-medium');
+            playerAlias.textContent = player.alias;
+            const playerEU = document.createElement('div');
+            playerEU.classList.add('tablecell-medium');
+            if(player.euPlayer === 'on') {
+                playerEU.textContent = 'Yes';
+            } else {
+                playerEU.textContent = 'No';
+            }
+            const playerCategory = document.createElement('div');
+            playerCategory.classList.add('tablecell-medium');
+            playerCategory.textContent = player.category;
+            const playerActive = document.createElement('div');
+            playerActive.classList.add('tablecell-short');
+            playerActive.classList.add('cm-u-centerText');
+            const playerActiveIconContainer = document.createElement('div');
+            const playerActiveIconState = document.createElement('span');
+            playerActiveIconState.classList.add('material-symbols-outlined');
+            if(player.active === 'on') {
+                playerActiveIconState.textContent = 'check';
+                playerActiveIconContainer.classList.add('cm-o-icon-button-smaller--success');
+            } else {
+                playerActiveIconState.textContent = 'block';
+                playerActiveIconContainer.classList.add('cm-o-icon-button-smaller--error');
+            }
+            playerActiveIconContainer.appendChild(playerActiveIconState);
+            playerActive.appendChild(playerActiveIconContainer);
+            
+            const playerEditBtnContainer = document.createElement('div');
+            playerEditBtnContainer.classList.add('tablecell-short');
+            playerEditBtnContainer.classList.add('cm-u-centerText');
+            const playerEditBtn = document.createElement('button');
+            playerEditBtn.classList.add('cm-o-icon-button-smaller--primary');
+            playerEditBtn.setAttribute('id','editPlayerDetailsBtn');
+            playerEditBtn.setAttribute('data-playerId',player.id);
+            const playerEditBtnIcon = document.createElement('span');
+            playerEditBtnIcon.classList.add('material-symbols-outlined');
+            playerEditBtnIcon.textContent = 'bar_chart';        
+            playerEditBtn.appendChild(playerEditBtnIcon);
+            playerEditBtnContainer.appendChild(playerEditBtn);
+
+            playerContainer.appendChild(playerName);
+            playerContainer.appendChild(playerLastName);
+            playerContainer.appendChild(playerAlias);
+            playerContainer.appendChild(playerEU);
+            playerContainer.appendChild(playerCategory);           
+            playerContainer.appendChild(playerActive);
+            playerContainer.appendChild(playerEditBtnContainer);
+            container.appendChild(playerContainer);
+        })
+
+        const editPlayerBtns = document.querySelectorAll('#editPlayerDetailsBtn');
+
+        editPlayerBtns.forEach(btn => {
+            btn.addEventListener('click', event => {
+                location.href="manage-player-payments.html?player="+btn.getAttribute('data-playerid');
+            })
+        })
+    },
     //listar detalles jugador
     listPlayerDetails: (player) => {
         if (player.active === 'on'){playerActive.checked = true;} else if (player.active === false){playerActive.checked = false;}
@@ -2439,6 +2614,11 @@ const app = {
 
         //remake upload inputs
         app.manageFileInputs();
+    },
+    //listar detalles de pago de jugador
+    listPlayerPaymentsDetails: (player) => {
+        playerDetailsTitle.textContent = player.userName+' '+player.userLastname;
+        userDetailsImage.setAttribute('src','https://placehold.co/200x200?text='+player.userName+'\\n'+player.userLastname)
     },
     //listar resultados de busqueda en modal
     listSearchResults: (results,container,searchTerm,{clean = true} = {}) => {
@@ -3086,6 +3266,8 @@ const app = {
                         app.getAllTeams({page:app.currentListPage});
                     } else if (page === 'manageMasters' && location.search.startsWith('?section=intermediaries')) {
                         app.getIntermediariesList({page:app.currentListPage});
+                    } else if (page === 'managePayments') {
+                        app.getPlayers({page:app.currentListPage})
                     }
                     // console.log('voy a la pagina: '+app.currentListPage);                    
                 })
@@ -3116,6 +3298,8 @@ const app = {
                         app.getAllTeams({page:app.currentListPage});
                     } else if (page === 'manageMasters' && location.search.startsWith('?section=intermediaries')) {
                         app.getIntermediariesList({page:app.currentListPage});
+                    } else if (page === 'managePayments') {
+                        app.getPlayers({page:app.currentListPage})
                     }
                     //console.log('voy a la pagina: '+app.currentListPage);  
                 })

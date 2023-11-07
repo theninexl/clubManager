@@ -1,5 +1,6 @@
 $colorPalette: (
     white:#FFFFFF,
+    black: #1C1C1C,
     scarpaFlowLight:#E1E1E1,
     scarpaFlowLightFade: fade-out(#E1E1E1,0.70),
     scarpaFlow:#454548,
@@ -13,5 +14,6 @@ $colorPalette: (
     scarpaHover: fade-out(#454548,0.95),
     modalBg: fade-out(#454548,0.15),
     primaryLight: fade-out(#2C325F,0.50),
-    secondaryLight: fade-out(#C63527,0.50)
+    secondaryLight: fade-out(#C63527,0.50),
+    successLight: fade-out(#0FCC81,0.50),
 );

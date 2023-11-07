@@ -39,6 +39,7 @@ export const searchUsersBtn = $('#searchUsersBtn');
 export const searchPlayersBtn = $('#searchPlayersBtn');
 export const searchInModalBtn = $('#searchInModalBtn');
 export const manageMastersBtn = $('#manageMastersBtn');
+export const managePaymentsBtn = $('#managePaymentsBtn');
 export const sortBtns = document.querySelectorAll('.cm-o-sortButton');
 
 //salary widget
