@@ -151,6 +151,7 @@
                                 <button class="tabLink" data-target="sportDetails">Deportivo</button>
                                 <button class="tabLink" data-target="contractDetails">Contractual</button>
                                 <button class="tabLink" data-target="contractVariables">Variables</button>
+                                <button class="tabLink" data-target="playerDocuments">Documentos</button>
                             </div>
                         </div>
                     </div>
@@ -382,21 +383,21 @@
                                                 <div class="cm-l-contentHeader__titleBar">
                                                     <div class="titleBar__title"></div>
                                                     <div class="titleBar__tools">
-                                                        <button class="cm-o-icon-button-small--primary" id="addBonusVariable"><span class="material-symbols-outlined">add</span></button>
+                                                        <button class="cm-o-icon-button-small--primary" id="addNewBonusBtn"><span class="material-symbols-outlined">add</span></button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="cm-c-simpleAccordion__content">
+                                            <div class="cm-c-simpleAccordion__content" id="newVariable">
                                                 <header class="cm-l-body-static-header--inTab" style="margin-top:0;">
                                                     <p class="cm-u-text-black-cat">Crear variable</p>
                                                 </header>
-                                                <div class="cm-l-form-panel__row">
+                                                <div class="cm-l-form-panel__row cm-u-spacer-mt-big">
                                                     <label for="newVariableDescription" class="panel-field-long">
                                                         <span>Descripción</span>
                                                         <input type="text" id="newVariableDescription" name="newVariableDescription" placeholder="Add description"> 
                                                     </label>
                                                 </div>
-                                                <div class="cm-l-form-panel__row cm-u-spacer-mt-big">
+                                                <div class="cm-l-form-panel__row">
                                                     <label for="" class="">
                                                         <span style="display:inline-block; width:160px;">Condición</span>
                                                         <div class="cm-c-select-icon">
@@ -570,6 +571,112 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="tabContent" id="playerDocuments">
+                                        <div class="cm-c-simpleAccordion cm-u-spacer-mb-bigger">
+                                            <div class="cm-c-simpleAccordion__trigger">
+                                                <div class="cm-l-contentHeader__titleBar">
+                                                    <div class="titleBar__title"></div>
+                                                    <div class="titleBar__tools">
+                                                        <button class="cm-o-icon-button-small--primary" id="addNewDocumentBtn"><span class="material-symbols-outlined">add</span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cm-c-simpleAccordion__content" id="newDocumentContent">
+                                                <header class="cm-l-body-static-header--inTab" style="margin-top:0;">
+                                                    <p class="cm-u-text-black-cat">Añadir documento</p>
+                                                </header>
+                                                <div class="cm-l-form-panel__row">
+                                                    <label for="newVariableDescription" class="panel-field-long">
+                                                        <span>Descripción</span>
+                                                        <input type="text" id="newVariableDescription" name="newVariableDescription" placeholder="Add description"> 
+                                                    </label>
+                                                </div>
+                                                <div class="cm-l-form-panel__row">
+                                                    <label for="" class="panel-field-long">
+                                                        <span>Tipo</span>
+                                                        <div class="cm-c-select-icon">
+                                                            <select class="cm-c-select-icon__select" id="" placeholder="Condicion" name="" style="width:200px;">
+                                                                <option value="1">Contrato alta</option>
+                                                                <option value="2">Contrato ampliación</option>
+                                                                <option value="3">Pasaporte</option>
+                                                                <option value="4">Otro</option>
+                                                                </select>
+                                                        </div>            
+                                                    </label>
+                                                </div>
+                                                <div class="cm-l-form-panel__row">
+                                                    <label class="panel-field-long" for="idPicture1">
+                                                        <span>Archivo</span>
+                                                        <div class="cm-c-field-icon fileUpload">
+                                                            <input class="cm-c-field-icon__input addFileInput" id="addFileInput" name="addFileInput" type="file" style="display:none;"><span class="pictureInputName">Click to select</span>
+                                                        </div>
+                                                        <span class="assistance" aria-live="polite">
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                                <div class="cm-l-form-panel__row cm-u-spacer-mt-big cm-u-centerText cm-u-spacer-mb-large">
+                                                    <button type="button" class="cm-o-button-mouse--primary" id="documentAddBtn">Guardar</button>
+                                                    <button type="button" class="cm-o-button-mouse--ghost" id="documentCloseBtn">Cancelar</button> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                        <div class="cm-l-tabledata cm-u-spacer-mt-big">
+                                            <div class="cm-l-tabledata__header">
+                                                <div class="tablecell-long">
+                                                    <p class="">Descripción</p>
+                                                </div>
+                                                <div class="tablecell-medium">
+                                                    <p class="">Tipo</p>
+                                                </div>
+                                                <div class="tablecell-medium">
+                                                    <p class="">Fecha subida</p>
+                                                </div>
+                                                <div class="tablecell-short cm-u-centerText"></div>
+                                                <div class="tablecell-short cm-u-centerText"></div>
+                                            </div>
+                                            <div id="contractVariablesListContainer">
+                                                <div class="cm-l-tabledata__row">
+                                                    <div class="tablecell-long">Descripción documento</div>
+                                                    <div class="tablecell-medium">Contrato inicial</div>
+                                                    <div class="tablecell-medium">01/01/2023</div>
+                                                    <div class="tablecell-short cm-u-centerText">
+                                                        <p class="cm-o-icon-button-smaller--primary" id="" data-playerid="1"><span class="material-symbols-outlined">visibility</span></p>
+                                                    </div>
+                                                    <div class="tablecell-short cm-u-centerText">
+                                                        <p class="cm-o-icon-button-smaller--primary" id="" data-playerid="1"><span class="material-symbols-outlined">delete</span></p>
+                                                    </div>
+                                                </div>
+                                                <div class="cm-l-tabledata__row">
+                                                    <div class="tablecell-long">Descripción documento</div>
+                                                    <div class="tablecell-medium">Contrato ampliacion</div>
+                                                    <div class="tablecell-medium">01/01/2023</div>
+                                                    <div class="tablecell-short cm-u-centerText">
+                                                        <p class="cm-o-icon-button-smaller--primary" id="" data-playerid="1"><span class="material-symbols-outlined">visibility</span></p>
+                                                    </div>
+                                                    <div class="tablecell-short cm-u-centerText">
+                                                        <p class="cm-o-icon-button-smaller--primary" id="" data-playerid="1"><span class="material-symbols-outlined">delete</span></p>
+                                                    </div>
+                                                </div>
+                                                <div class="cm-l-tabledata__row">
+                                                    <div class="tablecell-long">Descripción documento</div>
+                                                    <div class="tablecell-medium">Pasaporte</div>
+                                                    <div class="tablecell-medium">01/01/2023</div>
+                                                    <div class="tablecell-short cm-u-centerText">
+                                                        <p class="cm-o-icon-button-smaller--primary" id="" data-playerid="1"><span class="material-symbols-outlined">visibility</span></p>
+                                                    </div>
+                                                    <div class="tablecell-short cm-u-centerText">
+                                                        <p class="cm-o-icon-button-smaller--primary" id="" data-playerid="1"><span class="material-symbols-outlined">delete</span></p>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             
@@ -588,29 +695,53 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module" src="./src/main.js"></script>
     <script>
-        const variableContent = document.querySelector('.cm-c-simpleAccordion__content');
-        const addBonusVariable = document.querySelector('#addBonusVariable');
-        const variableAdd = document.querySelector('#variableAdd');
-        const variableClose = document.querySelector('#variableClose');
+        const variableContent = document.querySelector('#newVariable');
+        const addNewBonusBtn = document.querySelector('#addNewBonusBtn');
+        const variableAddBtn = document.querySelector('#variableAdd');
+        const variableCloseBtn = document.querySelector('#variableClose');
         variableContent.classList.add('cm-u-inactive');
-        addBonusVariable.addEventListener('click', (e)=>{
+        addNewBonusBtn.addEventListener('click', (e)=>{
             e.preventDefault();
             if (variableContent.classList.contains('cm-u-inactive')) {
                 variableContent.classList.remove('cm-u-inactive');
             }
         }); 
-        variableClose.addEventListener('click', (e)=>{
+        variableCloseBtn.addEventListener('click', (e)=>{
             e.preventDefault();
             if (!variableContent.classList.contains('cm-u-inactive')) {
                 variableContent.classList.add('cm-u-inactive');
             }
         });
-        variableAdd.addEventListener('click', (e)=>{
+        variableAddBtn.addEventListener('click', (e)=>{
             e.preventDefault();
             if (!variableContent.classList.contains('cm-u-inactive')) {
                 variableContent.classList.add('cm-u-inactive');
             }
-        });          
+        });   
+        
+        const documentContent = document.querySelector('#newDocumentContent');
+        const addNewDocumentBtn = document.querySelector('#addNewDocumentBtn');
+        const DocumentAddBtn = document.querySelector('#documentAddBtn');
+        const DocumentCloseBtn = document.querySelector('#documentCloseBtn');
+        documentContent.classList.add('cm-u-inactive');
+        addNewDocumentBtn.addEventListener('click', (e)=>{
+            e.preventDefault();
+            if (documentContent.classList.contains('cm-u-inactive')) {
+                documentContent.classList.remove('cm-u-inactive');
+            }
+        }); 
+        DocumentAddBtn.addEventListener('click', (e)=>{
+            e.preventDefault();
+            if (!documentContent.classList.contains('cm-u-inactive')) {
+                documentContent.classList.add('cm-u-inactive');
+            }
+        });
+        DocumentCloseBtn.addEventListener('click', (e)=>{
+            e.preventDefault();
+            if (!documentContent.classList.contains('cm-u-inactive')) {
+                documentContent.classList.add('cm-u-inactive');
+            }
+        });  
         
     </script>    
 </body>
