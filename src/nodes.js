@@ -63,6 +63,7 @@ export const searchInModalInput = $('#searchInModalInput');
 export const searchPlayer = $('#searchPlayer');
 
 //userDetails Fields
+export const userDetailsImage = $('#userDetailsImage');
 export const userDetailsForm = $('#userDetailsForm');
 export const userDetailsFormUpdateBtn = $('#userDetailsFormUpdateBtn');
 export const userDetailsFormDeleteBtn = $('#userDetailsFormDeleteBtn');

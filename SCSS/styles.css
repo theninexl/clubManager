@@ -430,12 +430,25 @@ strong {
 .cm-l-contentHeader__titleBar {
   display: flex;
   flex-direction: row;
+  align-items: center;
   margin-top: 12px;
 }
 .cm-l-contentHeader__titleBar .titleBar__title {
   display: flex;
   flex-grow: 1;
   align-items: center;
+}
+.cm-l-contentHeader__titleBar .titleBar__title #userDetailsImageContainer {
+  border: 1px solid #E1E1E1;
+  border-radius: 100%;
+  margin-right: 8px;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+}
+.cm-l-contentHeader__titleBar .titleBar__title #userDetailsImageContainer img {
+  width: 100%;
+  height: 100%;
 }
 .cm-l-contentHeader__titleBar .titleBar__tools {
   display: flex;
@@ -452,7 +465,11 @@ strong {
   padding-top: 214px;
 }
 
-#manageMastersList .cm-l-body, #usersList .cm-l-body, #userDetails .cm-l-body, #playerDetails .cm-l-body, #teamDetails .cm-l-body, #intermsDetails .cm-l-body {
+#playerDetails .cm-l-body {
+  padding-top: 141px;
+}
+
+#manageMastersList .cm-l-body, #usersList .cm-l-body, #userDetails .cm-l-body, #teamDetails .cm-l-body, #intermsDetails .cm-l-body {
   padding-top: 64px;
 }
 

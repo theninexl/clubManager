@@ -106,8 +106,6 @@ const app = {
         const resource = '/players/'+playerID;
         const data = await app.getData(resource)
         .then(function (response) {
-            console.log(response);
-            playerDetailsTitle.innerHTML = 'Editttttt Player';    
             app.listPlayerDetails(response);
             //solicitar intermediarios y fijar segun el id
             app.getIntermediariesOnSelect(response.intermediaryID);     
@@ -2398,6 +2396,7 @@ const app = {
         if (player.active === 'on'){playerActive.checked = true;} else if (player.active === false){playerActive.checked = false;}
         if (player.euPlayer === 'on'){playerEUStatus.checked = true;} else if (player.euPlayer === false){playerEUStatus.checked = false;}
         playerDetailsTitle.textContent = player.userName+' '+player.userLastname;
+        userDetailsImage.setAttribute('src','https://placehold.co/200x200?text='+player.userName+'\\n'+player.userLastname)
         playerName.setAttribute('value',player.userName);
         playerLastname.setAttribute('value',player.userLastname);
         // playerLastname2.setAttribute('value',player.userLastname2);

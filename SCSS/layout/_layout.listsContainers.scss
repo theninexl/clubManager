@@ -4,7 +4,13 @@
   }
 }
 
-#manageMastersList, #usersList, #userDetails, #playerDetails, #teamDetails, #intermsDetails {
+#playerDetails {
+  .cm-l-body {
+    padding-top: 141px;
+  }
+}
+
+#manageMastersList, #usersList, #userDetails, #teamDetails, #intermsDetails {
   .cm-l-body {
     padding-top: 64px;
   }

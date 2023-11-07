@@ -131,7 +131,12 @@
                 </header> -->
                 <header class="cm-l-contentHeader">
                     <div class="cm-l-contentHeader__titleBar">
-                        <div class="titleBar__title"><h1 class="cm-u-text-bear"  id="playerDetailsTitle">&nbsp;</h1></div>
+                        <div class="titleBar__title">
+                            <div id="userDetailsImageContainer">
+                                <img id="userDetailsImage" src="https://placehold.co/200x200?text=Nuevo\nJugador" />
+                            </div>
+                            <h1 class="cm-u-text-bear"  id="playerDetailsTitle">&nbsp;</h1>
+                        </div>
                         <div class="titleBar__tools">
                             <button type="button" class="cm-o-button-mouse--primary" id="playerDetailsFormAddBtn">Guardar</button>
                             <button type="button" class="cm-o-button-mouse--primary" id="playerDetailsFormUpdateBtn">Guardar</button>
@@ -139,17 +144,21 @@
                             <button type="button" class="cm-o-icon-button-small--primary" id="playerDetailsCancelBtn"><span class="material-symbols-outlined">undo</span></button> 
                         </div>
                     </div>
+                    <div class="cm-l-contentHeader__toolbar">
+                        <div class="cm-c-form-tabs">
+                            <div class="cm-c-form-tabs__links cm-u-spacer-mb-big">
+                                <button class="tabLink" data-target="generalData">General</button>
+                                <button class="tabLink" data-target="sportDetails">Deportivo</button>
+                                <button class="tabLink" data-target="contractDetails">Contractual</button>
+                                <button class="tabLink" data-target="contractVariables">Variables</button>
+                            </div>
+                        </div>
+                    </div>
                 </header>
                 <section class="cm-l-body">
                     <div class="cm-c-accordion cm-u-spacer-mb-huge">
                         <form class="cm-l-form-panel cm-c-form-simple" id="playerDetailsForm">
                             <div class="cm-c-form-tabs">
-                                <div class="cm-c-form-tabs__links cm-u-spacer-mb-big">
-                                    <button class="tabLink" data-target="generalData">General</button>
-                                    <button class="tabLink" data-target="sportDetails">Deportivo</button>
-                                    <button class="tabLink" data-target="contractDetails">Contractual</button>
-                                    <button class="tabLink" data-target="contractVariables">Variables</button>
-                                </div>
                                 <div class="cm-c-form-tabs__content">
                                     <div class="tabContent" id="generalData">
                                         <div class="cm-l-form-panel__row">
