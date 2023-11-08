@@ -53,17 +53,25 @@
         background-color: getColor(scarpaFlowLightFade);
     }
 
+    &__row--nospace, &__header--nospace {
+        align-items: stretch;
+        border-bottom: 0;
+        padding: 0 0 1px 0;
+        min-height: auto;
+        gap: 1px;
+    }
+
     &__row {
         .table-bg {
             padding: 0 getSize($small);
         }
         .tablecell-bg-old {
-            background-color: getColor(modalBg);
-            color: getColor(white);
+            background-color: getColor(scarpaFlowLight);
+            color: getColor(black);
         }
         .tablecell-bg-present {
             background-color: getColor(primaryLight);
-            color: getColor(white);
+            color: getColor(black);
         }
         .tablecell-bg-future {
             background-color: getColor(successLight);

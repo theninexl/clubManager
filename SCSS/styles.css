@@ -388,16 +388,23 @@ strong {
 .cm-l-tabledata__row--noRead {
   background-color: rgba(225, 225, 225, 0.3);
 }
+.cm-l-tabledata__row--nospace, .cm-l-tabledata__header--nospace {
+  align-items: stretch;
+  border-bottom: 0;
+  padding: 0 0 1px 0;
+  min-height: auto;
+  gap: 1px;
+}
 .cm-l-tabledata__row .table-bg {
   padding: 0 8px;
 }
 .cm-l-tabledata__row .tablecell-bg-old {
-  background-color: rgba(69, 69, 72, 0.85);
-  color: #FFFFFF;
+  background-color: #E1E1E1;
+  color: #1C1C1C;
 }
 .cm-l-tabledata__row .tablecell-bg-present {
   background-color: rgba(44, 50, 95, 0.5);
-  color: #FFFFFF;
+  color: #1C1C1C;
 }
 .cm-l-tabledata__row .tablecell-bg-future {
   background-color: rgba(15, 204, 129, 0.5);
