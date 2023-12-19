@@ -194,3 +194,4 @@ src/secrets.js
 # others
 node_modules
 demo
+fileInput.html
